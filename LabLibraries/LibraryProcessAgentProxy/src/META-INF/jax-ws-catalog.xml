@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/I_ProcessAgent.asmx.wsdl" uri="xml-resources/web-service-references/I_ProcessAgent.asmx/wsdl/I_ProcessAgent.asmx.wsdl"/>
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/IProcessAgentProxy.asmx.wsdl" uri="wsdl/IProcessAgentProxy.asmx.wsdl"/>
+</catalog>

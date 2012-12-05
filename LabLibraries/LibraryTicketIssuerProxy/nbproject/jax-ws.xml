@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
+  <services/>
+  <clients>
+    <client name="ITicketIssuerProxy.asmx">
+      <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl</wsdl-url>
+      <local-wsdl-file>ITicketIssuerProxy.asmx.wsdl</local-wsdl-file>
+      <package-name forceReplace="true">uq.ilabs.ticketissuer</package-name>
+      <catalog-file>catalog.xml</catalog-file>
+      <binding>
+        <file-name>ITicketIssuerProxy.asmx_handler.xml</file-name>
+      </binding>
+      <handler-binding-file>ITicketIssuerProxy.asmx_handler.xml</handler-binding-file>
+      <wsimport-options>
+        <wsimport-option>
+          <wsimport-option-name>extension</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>verbose</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>wsdlLocation</wsimport-option-name>
+          <wsimport-option-value>file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xnocompile</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xendorsed</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>package</wsimport-option-name>
+          <wsimport-option-value>uq.ilabs.ticketissuer</wsimport-option-value>
+        </wsimport-option>
+      </wsimport-options>
+    </client>
+  </clients>
+</jax-ws>

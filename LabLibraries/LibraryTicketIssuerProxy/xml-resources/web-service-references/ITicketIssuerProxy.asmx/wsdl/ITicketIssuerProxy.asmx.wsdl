@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ilab.mit.edu/iLabs/Services" xmlns:s1="http://ilab.mit.edu/iLabs/type" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://ilab.mit.edu/iLabs/Services" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/Services">
+      <s:import namespace="http://ilab.mit.edu/iLabs/type" />
+      <s:element name="AddTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddTicketResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:CreateTicketResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:RedeemTicketResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestTicketCancellation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestTicketCancellationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestTicketCancellationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/type">
+      <s:element name="coupon" nillable="true" type="s1:Coupon" />
+      <s:complexType name="Coupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="couponId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="passkey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AgentAuthHeader" type="s1:AgentAuthHeader" />
+      <s:complexType name="AgentAuthHeader">
+        <s:complexContent mixed="false">
+          <s:extension base="s1:AuthenticationHeader">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="agentGuid" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="coupon" type="s1:Coupon" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="CreateTicketResult" nillable="true" type="s1:Coupon" />
+      <s:element name="RedeemTicketResult" nillable="true" type="s1:Ticket" />
+      <s:complexType name="Ticket">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ticketId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="couponId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sponsorGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="creationTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isCancelled" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:AddTicket" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:AddTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateTicket" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:RedeemTicket" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:RedeemTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestTicketCancellation" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestTicketCancellationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:portType name="TicketIssuerProxySoap">
+    <wsdl:operation name="AddTicket">
+      <wsdl:input message="tns:AddTicketSoapIn" />
+      <wsdl:output message="tns:AddTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <wsdl:input message="tns:CreateTicketSoapIn" />
+      <wsdl:output message="tns:CreateTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <wsdl:input message="tns:RedeemTicketSoapIn" />
+      <wsdl:output message="tns:RedeemTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <wsdl:input message="tns:RequestTicketCancellationSoapIn" />
+      <wsdl:output message="tns:RequestTicketCancellationSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TicketIssuerProxySoap" type="tns:TicketIssuerProxySoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CreateTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RedeemTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestTicketCancellation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RequestTicketCancellationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TicketIssuerProxySoap12" type="tns:TicketIssuerProxySoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CreateTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RedeemTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestTicketCancellation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RequestTicketCancellationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TicketIssuerProxy">
+    <wsdl:port name="TicketIssuerProxySoap" binding="tns:TicketIssuerProxySoap">
+      <soap:address location="http://localhost:8098/ITicketIssuerProxy.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TicketIssuerProxySoap12" binding="tns:TicketIssuerProxySoap12">
+      <soap12:address location="http://localhost:8098/ITicketIssuerProxy.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

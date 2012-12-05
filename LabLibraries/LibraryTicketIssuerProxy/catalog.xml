@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/I_TicketIssuer.asmx.wsdl" uri="xml-resources/web-service-references/I_TicketIssuer.asmx/wsdl/I_TicketIssuer.asmx.wsdl"/>
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl" uri="xml-resources/web-service-references/ITicketIssuerProxy.asmx/wsdl/ITicketIssuerProxy.asmx.wsdl"/>
+</catalog>

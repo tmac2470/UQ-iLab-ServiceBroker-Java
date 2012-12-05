@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/IExperimentStorageService.asmx.wsdl" uri="xml-resources/web-service-references/IExperimentStorageService.asmx/wsdl/IExperimentStorageService.asmx.wsdl"/>
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/I_ExperimentStorageService.asmx.wsdl" uri="xml-resources/web-service-references/I_ExperimentStorageService.asmx/wsdl/I_ExperimentStorageService.asmx.wsdl"/>
+    <system systemId="file:/D:/NetBeans/ServiceBroker/Wsdl/IExperimentStorageProxy.asmx.wsdl" uri="wsdl/IExperimentStorageProxy.asmx.wsdl"/>
+</catalog>
