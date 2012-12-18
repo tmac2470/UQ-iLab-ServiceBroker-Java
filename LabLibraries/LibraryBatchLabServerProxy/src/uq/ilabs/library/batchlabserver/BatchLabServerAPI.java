@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
 import uq.ilabs.batchlabserver.ArrayOfString;
 import uq.ilabs.batchlabserver.AuthHeader;
@@ -126,9 +127,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -158,9 +159,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -189,9 +190,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -219,9 +220,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -248,9 +249,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -278,9 +279,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -309,9 +310,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -343,9 +344,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -375,9 +376,9 @@ public class BatchLabServerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -403,6 +404,7 @@ public class BatchLabServerAPI {
         ((BindingProvider) this.batchLabServerProxy).getRequestContext().put(this.qnameAuthHeader.getLocalPart(), authHeader);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="ConvertType">
     /**
      *
      * @param arrayOfString
@@ -428,7 +430,7 @@ public class BatchLabServerAPI {
 
         if (proxySubmissionReport != null) {
             submissionReport = new SubmissionReport();
-            submissionReport.setExperimentId(proxySubmissionReport.getLabExperimentID());
+            submissionReport.setExperimentId(proxySubmissionReport.getExperimentID());
             submissionReport.setMinTimeToLive(proxySubmissionReport.getMinTimetoLive());
             submissionReport.setValidationReport(this.ConvertType(proxySubmissionReport.getVReport()));
             submissionReport.setWaitEstimate(this.ConvertType(proxySubmissionReport.getWait()));
@@ -546,4 +548,5 @@ public class BatchLabServerAPI {
 
         return waitEstimate;
     }
+    //</editor-fold>
 }

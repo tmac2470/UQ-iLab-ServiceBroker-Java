@@ -10,7 +10,7 @@ public class SubmissionReport {
     /**
      * A number greater than 0 that identifies the experiment.
      */
-    private long experimentId;
+    private int experimentId;
     /**
      * Guaranteed minimum time (in seconds, starting now) before this
      * experimentID and associated data will be purged from the Lab Server.
@@ -21,11 +21,11 @@ public class SubmissionReport {
      */
     private WaitEstimate waitEstimate;
 
-    public long getExperimentId() {
+    public int getExperimentId() {
         return experimentId;
     }
 
-    public void setExperimentId(long experimentId) {
+    public void setExperimentId(int experimentId) {
         this.experimentId = experimentId;
     }
 

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
 import uq.ilabs.batchservicebroker.ArrayOfString;
 import uq.ilabs.batchservicebroker.BatchServiceBrokerProxy;
@@ -143,7 +144,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -182,7 +183,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -213,7 +214,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -242,7 +243,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -271,7 +272,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -301,7 +302,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -332,7 +333,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -374,7 +375,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
@@ -405,7 +406,7 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw ex;
+            throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
