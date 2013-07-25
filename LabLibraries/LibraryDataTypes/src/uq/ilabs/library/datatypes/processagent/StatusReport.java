@@ -37,4 +37,13 @@ public class StatusReport {
     public void setPayload(String payload) {
         this.payload = payload;
     }
+
+    public StatusReport() {
+    }
+
+    public StatusReport(boolean online, String serviceGuid, String payload) {
+        this.online = online;
+        this.serviceGuid = serviceGuid;
+        this.payload = payload;
+    }
 }

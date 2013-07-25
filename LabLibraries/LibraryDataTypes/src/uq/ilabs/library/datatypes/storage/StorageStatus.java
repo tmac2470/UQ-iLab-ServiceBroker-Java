@@ -5,6 +5,7 @@
 package uq.ilabs.library.datatypes.storage;
 
 import java.util.Calendar;
+import uq.ilabs.library.datatypes.batch.StatusCodes;
 
 /**
  *
@@ -13,9 +14,10 @@ import java.util.Calendar;
 public class StorageStatus {
 
     public long experimentId;
-    public String issuerGuid;
     public StorageStatusCodes statusCode;
+    public StatusCodes batchStatusCode;
     public int recordCount;
+    public String issuerGuid;
     public Calendar dateCreated;
     public Calendar dateModified;
     public Calendar dateClosed;
@@ -28,14 +30,6 @@ public class StorageStatus {
         this.experimentId = experimentId;
     }
 
-    public String getIssuerGuid() {
-        return issuerGuid;
-    }
-
-    public void setIssuerGuid(String issuerGuid) {
-        this.issuerGuid = issuerGuid;
-    }
-
     public StorageStatusCodes getStatusCode() {
         return statusCode;
     }
@@ -44,12 +38,28 @@ public class StorageStatus {
         this.statusCode = statusCode;
     }
 
+    public StatusCodes getBatchStatusCode() {
+        return batchStatusCode;
+    }
+
+    public void setBatchStatusCode(StatusCodes batchStatusCode) {
+        this.batchStatusCode = batchStatusCode;
+    }
+
     public int getRecordCount() {
         return recordCount;
     }
 
     public void setRecordCount(int recordCount) {
         this.recordCount = recordCount;
+    }
+
+    public String getIssuerGuid() {
+        return issuerGuid;
+    }
+
+    public void setIssuerGuid(String issuerGuid) {
+        this.issuerGuid = issuerGuid;
     }
 
     public Calendar getDateCreated() {
@@ -74,5 +84,11 @@ public class StorageStatus {
 
     public void setDateClosed(Calendar dateClosed) {
         this.dateClosed = dateClosed;
+    }
+
+    public StorageStatus() {
+        this.experimentId = -1;
+        this.statusCode = StorageStatusCodes.Unknown;
+        this.batchStatusCode = StatusCodes.Unknown;
     }
 }

@@ -33,6 +33,7 @@ import uq.ilabs.processagent.ObjectFactory;
 public class AuthenticateToProcessAgent implements SOAPHandler<SOAPMessageContext> {
 
     //<editor-fold defaultstate="collapsed" desc="Constants">
+    private static final String STR_ClassName = AuthenticateToProcessAgent.class.getName();
     /*
      * String constants
      */
@@ -84,7 +85,7 @@ public class AuthenticateToProcessAgent implements SOAPHandler<SOAPMessageContex
                  */
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 messageContext.getMessage().writeTo(outputStream);
-                System.out.println(outputStream.toString());
+                System.out.println(STR_ClassName + outputStream.toString());
 
                 success = true;
             } catch (SOAPException | IOException ex) {
@@ -120,7 +121,10 @@ public class AuthenticateToProcessAgent implements SOAPHandler<SOAPMessageContex
          */
         SOAPMessage soapMessage = messageContext.getMessage();
         SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnvelope.addHeader();
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        if (soapHeader == null) {
+            soapHeader = soapEnvelope.addHeader();
+        }
 
         /*
          * Get authentication header information and process the information according to the authentication header type
@@ -131,14 +135,13 @@ public class AuthenticateToProcessAgent implements SOAPHandler<SOAPMessageContex
              * AgentAuthHeader
              */
             this.ProcessAgentAuthHeader((AgentAuthHeader) object, qnameAgentAuthHeader, soapHeader);
-        } else {
-            object = messageContext.get(qnameInitAuthHeader.getLocalPart());
-            if (object != null && object instanceof InitAuthHeader) {
-                /*
-                 * InitAuthHeader
-                 */
-                this.ProcessInitAuthHeader((InitAuthHeader) object, qnameInitAuthHeader, soapHeader);
-            }
+        }
+        object = messageContext.get(qnameInitAuthHeader.getLocalPart());
+        if (object != null && object instanceof InitAuthHeader) {
+            /*
+             * InitAuthHeader
+             */
+            this.ProcessInitAuthHeader((InitAuthHeader) object, qnameInitAuthHeader, soapHeader);
         }
     }
 

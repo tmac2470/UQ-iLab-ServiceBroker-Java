@@ -42,6 +42,7 @@ public class LabsideSchedulingAPI {
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    private static final String STRERR_LabsideSchedulingUnaccessible = "LabsideScheduling is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private LabsideSchedulingProxySoap labsideSchedulingProxy;
@@ -87,9 +88,6 @@ public class LabsideSchedulingAPI {
              * Create a proxy for the web service and set the web service URL
              */
             LabsideSchedulingProxy webServiceClient = new LabsideSchedulingProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(LabsideSchedulingProxy.class.getSimpleName());
-            }
             this.labsideSchedulingProxy = webServiceClient.getLabsideSchedulingProxySoap();
             ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -136,6 +134,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -171,6 +172,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -204,6 +208,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -241,6 +248,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -274,6 +284,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -309,6 +322,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -342,6 +358,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -379,6 +398,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -411,6 +433,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -442,6 +467,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -479,6 +507,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -509,6 +540,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -547,6 +581,9 @@ public class LabsideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -588,6 +625,21 @@ public class LabsideSchedulingAPI {
         ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
     }
 
+    /**
+     *
+     */
+    private void UnsetAgentAuthHeader() {
+        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
+    }
+
+    /**
+     *
+     */
+    private void UnsetOperationAuthHeader() {
+        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().remove(this.qnameOperationAuthHeader.getLocalPart());
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="ConvertType">
     /**
      *
      * @param coupon
@@ -641,4 +693,5 @@ public class LabsideSchedulingAPI {
 
         return timePeriods;
     }
+    //</editor-fold>
 }

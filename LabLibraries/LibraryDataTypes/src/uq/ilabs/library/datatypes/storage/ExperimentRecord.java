@@ -12,10 +12,19 @@ import java.util.Calendar;
  */
 public class ExperimentRecord {
 
+    public static final String STR_TypeExperimentSpecification = "Experiment Specification";
+    public static final String STR_TypeLabConfiguration = "Lab Configuration";
+    public static final String STR_TypeExperimentResult = "Result";
+    public static final String STR_TypeBlobExtension = "Blob Extension";
+    public static final String STR_TypeResultExtension = "Result Extension";
+    public static final String STR_TypeValidationWarningMessage = "Validation Warning Message";
+    public static final String STR_TypeValidationErrorMessage = "Validation Error Message";
+    public static final String STR_TypeExecutionWarningMessage = "Execution Warning Message";
+    public static final String STR_TypeExecutionErrorMessage = "Execution Error Message";
     /**
      * A tag to identify the type of content represented by a record
      */
-    private String type;
+    private String recordType;
     /**
      * optional source of the record
      */
@@ -37,12 +46,12 @@ public class ExperimentRecord {
      */
     private String contents;
 
-    public String getType() {
-        return type;
+    public String getRecordType() {
+        return recordType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
 
     public String getSubmitter() {
@@ -88,11 +97,9 @@ public class ExperimentRecord {
     public ExperimentRecord() {
     }
 
-    public ExperimentRecord(String type, String submitter, int sequenceNum, Calendar dateCreated, boolean xmlSearchable, String contents) {
-        this.type = type;
+    public ExperimentRecord(String recordType, String submitter, boolean xmlSearchable, String contents) {
+        this.recordType = recordType;
         this.submitter = submitter;
-        this.sequenceNum = sequenceNum;
-        this.dateCreated = dateCreated;
         this.xmlSearchable = xmlSearchable;
         this.contents = contents;
     }

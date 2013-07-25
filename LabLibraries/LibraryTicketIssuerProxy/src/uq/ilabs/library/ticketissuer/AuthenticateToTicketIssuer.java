@@ -115,7 +115,10 @@ public class AuthenticateToTicketIssuer implements SOAPHandler<SOAPMessageContex
          */
         SOAPMessage soapMessage = messageContext.getMessage();
         SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnvelope.addHeader();
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        if (soapHeader == null) {
+            soapHeader = soapEnvelope.addHeader();
+        }
 
         /*
          * Get authentication header information and process the information according to the authentication header type

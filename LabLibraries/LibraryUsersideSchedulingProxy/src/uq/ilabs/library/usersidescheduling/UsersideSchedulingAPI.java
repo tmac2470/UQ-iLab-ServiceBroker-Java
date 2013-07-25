@@ -44,6 +44,7 @@ public class UsersideSchedulingAPI {
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    private static final String STRERR_UsersideSchedulingUnaccessible = "UsersideScheduling is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private UsersideSchedulingProxySoap usersideSchedulingProxy;
@@ -89,9 +90,6 @@ public class UsersideSchedulingAPI {
              * Create a proxy for the web service and set the web service URL
              */
             UsersideSchedulingProxy webServiceClient = new UsersideSchedulingProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(UsersideSchedulingProxy.class.getSimpleName());
-            }
             this.usersideSchedulingProxy = webServiceClient.getUsersideSchedulingProxySoap();
             ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -137,6 +135,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -173,6 +174,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -205,6 +209,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -241,6 +248,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -278,6 +288,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -310,6 +323,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -346,6 +362,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -378,6 +397,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -412,6 +434,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -443,6 +468,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -475,6 +503,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -505,6 +536,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -542,6 +576,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -579,6 +616,9 @@ public class UsersideSchedulingAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -620,6 +660,21 @@ public class UsersideSchedulingAPI {
         ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
     }
 
+    /**
+     *
+     */
+    private void UnsetAgentAuthHeader() {
+        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
+    }
+
+    /**
+     *
+     */
+    private void UnsetOperationAuthHeader() {
+        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().remove(this.qnameOperationAuthHeader.getLocalPart());
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="ConvertType">
     /**
      *
      * @param coupon
@@ -722,4 +777,5 @@ public class UsersideSchedulingAPI {
 
         return timePeriods;
     }
+    //</editor-fold>
 }

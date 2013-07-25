@@ -4,30 +4,18 @@
  */
 package uq.ilabs.library.experimentstorage;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import edu.mit.ilab.ilabs.AgentAuthHeader;
+import edu.mit.ilab.ilabs.ExperimentStorageProxy;
+import edu.mit.ilab.ilabs.ExperimentStorageProxySoap;
+import edu.mit.ilab.ilabs.ObjectFactory;
+import edu.mit.ilab.ilabs.OperationAuthHeader;
+import java.util.Map;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
-import uq.ilabs.experimentstorage.AgentAuthHeader;
-import uq.ilabs.experimentstorage.ArrayOfBlob;
-import uq.ilabs.experimentstorage.ArrayOfCriterion;
-import uq.ilabs.experimentstorage.ArrayOfExperimentRecord;
-import uq.ilabs.experimentstorage.ArrayOfExperimentRecord1;
-import uq.ilabs.experimentstorage.ArrayOfInt;
-import uq.ilabs.experimentstorage.ArrayOfLong;
-import uq.ilabs.experimentstorage.ArrayOfRecordAttribute;
-import uq.ilabs.experimentstorage.ArrayOfString;
-import uq.ilabs.experimentstorage.ExperimentStorageProxy;
-import uq.ilabs.experimentstorage.ExperimentStorageProxySoap;
-import uq.ilabs.experimentstorage.ObjectFactory;
-import uq.ilabs.experimentstorage.OperationAuthHeader;
 import uq.ilabs.library.datatypes.Criterion;
 import uq.ilabs.library.datatypes.storage.Blob;
 import uq.ilabs.library.datatypes.storage.Experiment;
@@ -55,6 +43,7 @@ public class ExperimentStorageAPI {
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    private static final String STRERR_ExperimentStorageUnaccessible = "ExperimentStorage is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private ExperimentStorageProxySoap experimentStorageProxy;
@@ -62,15 +51,20 @@ public class ExperimentStorageAPI {
     private QName qnameOperationAuthHeader;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
-    private String authHeaderAgentGuid;
-    private Coupon authHeaderCoupon;
+    private String agentAuthHeaderAgentGuid;
+    private Coupon agentAuthHeaderCoupon;
+    private Coupon operationAuthHeaderCoupon;
 
-    public void setAuthHeaderAgentGuid(String authHeaderAgentGuid) {
-        this.authHeaderAgentGuid = authHeaderAgentGuid;
+    public void setAgentAuthHeaderAgentGuid(String agentAuthHeaderAgentGuid) {
+        this.agentAuthHeaderAgentGuid = agentAuthHeaderAgentGuid;
     }
 
-    public void setAuthHeaderCoupon(Coupon authHeaderCoupon) {
-        this.authHeaderCoupon = authHeaderCoupon;
+    public void setAgentAuthHeaderCoupon(Coupon agentAuthHeaderCoupon) {
+        this.agentAuthHeaderCoupon = agentAuthHeaderCoupon;
+    }
+
+    public void setOperationAuthHeaderCoupon(Coupon operationAuthHeaderCoupon) {
+        this.operationAuthHeaderCoupon = operationAuthHeaderCoupon;
     }
     //</editor-fold>
 
@@ -95,9 +89,6 @@ public class ExperimentStorageAPI {
              * Create a proxy for the web service and set the web service URL
              */
             ExperimentStorageProxy webServiceClient = new ExperimentStorageProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(ExperimentStorageProxy.class.getSimpleName());
-            }
             this.experimentStorageProxy = webServiceClient.getExperimentStorageProxySoap();
             ((BindingProvider) this.experimentStorageProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -136,14 +127,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfInt arrayOfInt = this.experimentStorageProxy.addAttributes(experimentId, sequenceNum, this.ConvertType(attributes));
-            ints = this.ConvertType(arrayOfInt);
+            edu.mit.ilab.ilabs.ArrayOfInt proxyArrayOfInt =
+                    this.experimentStorageProxy.addAttributes(experimentId, sequenceNum, ConvertTypes.Convert(attributes));
+            ints = ConvertTypes.Convert(proxyArrayOfInt);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -176,6 +171,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -204,13 +202,16 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            retval = this.experimentStorageProxy.addRecord(experimentId, submitter, type, xmlSearchable, contents, this.ConvertType(attributes));
+            retval = this.experimentStorageProxy.addRecord(experimentId, submitter, type, xmlSearchable, contents, ConvertTypes.Convert(attributes));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -235,13 +236,16 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            retval = this.experimentStorageProxy.addRecords(experimentId, this.ConvertType(records));
+            retval = this.experimentStorageProxy.addRecords(experimentId, ConvertTypes.Convert(records));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -272,6 +276,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -295,14 +302,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            uq.ilabs.experimentstorage.StorageStatus proxyStorageStatus = this.experimentStorageProxy.closeExperiment(experimentId);
-            storageStatus = this.ConvertType(proxyStorageStatus);
+            edu.mit.ilab.ilabs.StorageStatus proxyStorageStatus =
+                    this.experimentStorageProxy.closeExperiment(experimentId);
+            storageStatus = ConvertTypes.Convert(proxyStorageStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -337,6 +348,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -367,6 +381,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -392,14 +409,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfRecordAttribute arrayOfRecordAttribute = this.experimentStorageProxy.deleteRecordAttributes(experimentId, sequenceNum, this.ConvertType(attributeIds));
-            recordAttributes = this.ConvertType(arrayOfRecordAttribute);
+            edu.mit.ilab.ilabs.ArrayOfRecordAttribute proxyArrayOfRecordAttribute =
+                    this.experimentStorageProxy.deleteRecordAttributes(experimentId, sequenceNum, ConvertTypes.Convert(attributeIds));
+            recordAttributes = ConvertTypes.Convert(proxyArrayOfRecordAttribute);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -430,6 +451,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -460,6 +484,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -490,6 +517,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -513,14 +543,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfBlob arrayOfBlob = this.experimentStorageProxy.getBlobs(experimentId);
-            blobs = this.ConvertType(arrayOfBlob);
+            edu.mit.ilab.ilabs.ArrayOfBlob proxyArrayOfBlob =
+                    this.experimentStorageProxy.getBlobs(experimentId);
+            blobs = ConvertTypes.Convert(proxyArrayOfBlob);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -545,14 +579,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfBlob arrayOfBlob = this.experimentStorageProxy.getBlobsForRecord(experimentId, sequenceNum);
-            blobs = this.ConvertType(arrayOfBlob);
+            edu.mit.ilab.ilabs.ArrayOfBlob proxyArrayOfBlob =
+                    this.experimentStorageProxy.getBlobsForRecord(experimentId, sequenceNum);
+            blobs = ConvertTypes.Convert(proxyArrayOfBlob);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -576,14 +614,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            uq.ilabs.experimentstorage.Experiment proxyExperiment = this.experimentStorageProxy.getExperiment(experimentId);
-            experiment = this.ConvertType(proxyExperiment);
+            edu.mit.ilab.ilabs.Experiment proxyExperiment =
+                    this.experimentStorageProxy.getExperiment(experimentId);
+            experiment = ConvertTypes.Convert(proxyExperiment);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -608,14 +650,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            ArrayOfLong arrayOfLong = this.experimentStorageProxy.getExperimentIDs(this.ConvertType(expSet), this.ConvertType(filter));
-            longs = this.ConvertType(arrayOfLong);
+            edu.mit.ilab.ilabs.ArrayOfLong proxyArrayOfLong =
+                    this.experimentStorageProxy.getExperimentIDs(ConvertTypes.Convert(expSet), ConvertTypes.Convert(filter));
+            longs = ConvertTypes.Convert(proxyArrayOfLong);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -635,14 +681,22 @@ public class ExperimentStorageAPI {
         StorageStatus storageStatus = null;
 
         try {
-            uq.ilabs.experimentstorage.StorageStatus proxyStorageStatus = this.experimentStorageProxy.getExperimentStatus(experimentId);
-            storageStatus = this.ConvertType(proxyStorageStatus);
+            /*
+             * Set the authentication information and call the web service
+             */
+            this.SetOperationAuthHeader();
+            edu.mit.ilab.ilabs.StorageStatus proxyStorageStatus =
+                    this.experimentStorageProxy.getExperimentStatus(experimentId);
+            storageStatus = ConvertTypes.Convert(proxyStorageStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -673,6 +727,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -697,14 +754,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            uq.ilabs.experimentstorage.ExperimentRecord proxyExperimentRecord = this.experimentStorageProxy.getRecord(experimentId, sequenceNum);
-            experimentRecord = this.ConvertType(proxyExperimentRecord);
+            edu.mit.ilab.ilabs.ExperimentRecord proxyExperimentRecord =
+                    this.experimentStorageProxy.getRecord(experimentId, sequenceNum);
+            experimentRecord = ConvertTypes.Convert(proxyExperimentRecord);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -730,14 +791,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfRecordAttribute arrayOfRecordAttribute = this.experimentStorageProxy.getRecordAttributes(experimentId, sequenceNum, this.ConvertType(attributeIds));
-            recordAttributes = this.ConvertType(arrayOfRecordAttribute);
+            edu.mit.ilab.ilabs.ArrayOfRecordAttribute proxyArrayOfRecordAttribute =
+                    this.experimentStorageProxy.getRecordAttributes(experimentId, sequenceNum, ConvertTypes.Convert(attributeIds));
+            recordAttributes = ConvertTypes.Convert(proxyArrayOfRecordAttribute);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -763,14 +828,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfRecordAttribute arrayOfRecordAttribute = this.experimentStorageProxy.getRecordAttributesByName(experimentId, sequenceNum, attributeName);
-            recordAttributes = this.ConvertType(arrayOfRecordAttribute);
+            edu.mit.ilab.ilabs.ArrayOfRecordAttribute proxyArrayOfRecordAttribute =
+                    this.experimentStorageProxy.getRecordAttributesByName(experimentId, sequenceNum, attributeName);
+            recordAttributes = ConvertTypes.Convert(proxyArrayOfRecordAttribute);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -795,14 +864,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfInt arrayOfInt = this.experimentStorageProxy.getRecordIDs(experimentId, this.ConvertType(target));
-            ints = this.ConvertType(arrayOfInt);
+            edu.mit.ilab.ilabs.ArrayOfInt proxyArrayOfInt =
+                    this.experimentStorageProxy.getRecordIDs(experimentId, ConvertTypes.Convert(target));
+            ints = ConvertTypes.Convert(proxyArrayOfInt);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -827,14 +900,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfExperimentRecord arrayOfExperimentRecord = this.experimentStorageProxy.getRecords(experimentId, this.ConvertType(target));
-            experimentRecords = this.ConvertType(arrayOfExperimentRecord);
+            edu.mit.ilab.ilabs.ArrayOfExperimentRecord proxyArrayOfExperimentRecord =
+                    this.experimentStorageProxy.getRecords(experimentId, ConvertTypes.Convert(target));
+            experimentRecords = ConvertTypes.Convert(proxyArrayOfExperimentRecord);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -857,14 +934,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfString arrayOfString = this.experimentStorageProxy.getSupportedBlobExportProtocols();
-            strings = this.ConvertType(arrayOfString);
+            edu.mit.ilab.ilabs.ArrayOfString proxyArrayOfString =
+                    this.experimentStorageProxy.getSupportedBlobExportProtocols();
+            strings = ConvertTypes.Convert(proxyArrayOfString);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -887,14 +968,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfString arrayOfString = this.experimentStorageProxy.getSupportedBlobImportProtocols();
-            strings = this.ConvertType(arrayOfString);
+            edu.mit.ilab.ilabs.ArrayOfString proxyArrayOfString =
+                    this.experimentStorageProxy.getSupportedBlobImportProtocols();
+            strings = ConvertTypes.Convert(proxyArrayOfString);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -917,14 +1002,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfString arrayOfString = this.experimentStorageProxy.getSupportedChecksumAlgorithms();
-            strings = this.ConvertType(arrayOfString);
+            edu.mit.ilab.ilabs.ArrayOfString proxyArrayOfString =
+                    this.experimentStorageProxy.getSupportedChecksumAlgorithms();
+            strings = ConvertTypes.Convert(proxyArrayOfString);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -949,14 +1038,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            uq.ilabs.experimentstorage.StorageStatus proxyStorageStatus = this.experimentStorageProxy.openExperiment(experimentId, duration);
-            storageStatus = this.ConvertType(proxyStorageStatus);
+            edu.mit.ilab.ilabs.StorageStatus proxyStorageStatus =
+                    this.experimentStorageProxy.openExperiment(experimentId, duration);
+            storageStatus = ConvertTypes.Convert(proxyStorageStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -989,6 +1082,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -1020,6 +1116,9 @@ public class ExperimentStorageAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -1044,14 +1143,18 @@ public class ExperimentStorageAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            uq.ilabs.experimentstorage.StorageStatus proxyStorageStatus = this.experimentStorageProxy.setExperimentStatus(experimentId, statusCode.getValue());
-            storageStatus = this.ConvertType(proxyStorageStatus);
+            edu.mit.ilab.ilabs.StorageStatus proxyStorageStatus =
+                    this.experimentStorageProxy.setExperimentStatus(experimentId, statusCode.getValue());
+            storageStatus = ConvertTypes.Convert(proxyStorageStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ExperimentStorageUnaccessible);
+        } finally {
+            this.UnsetOperationAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -1068,13 +1171,14 @@ public class ExperimentStorageAPI {
          * Create authentication header
          */
         AgentAuthHeader agentAuthHeader = new AgentAuthHeader();
-        agentAuthHeader.setAgentGuid(this.authHeaderAgentGuid);
-        agentAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        agentAuthHeader.setAgentGuid(this.agentAuthHeaderAgentGuid);
+        agentAuthHeader.setCoupon(ConvertTypes.Convert(this.agentAuthHeaderCoupon));
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.experimentStorageProxy).getRequestContext().put(this.qnameAgentAuthHeader.getLocalPart(), agentAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.experimentStorageProxy).getRequestContext();
+        requestContext.put(this.qnameAgentAuthHeader.getLocalPart(), agentAuthHeader);
     }
 
     /**
@@ -1085,455 +1189,28 @@ public class ExperimentStorageAPI {
          * Create authentication header
          */
         OperationAuthHeader operationAuthHeader = new OperationAuthHeader();
-        operationAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        operationAuthHeader.setCoupon(ConvertTypes.Convert(this.operationAuthHeaderCoupon));
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.experimentStorageProxy).getRequestContext().put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.experimentStorageProxy).getRequestContext();
+        requestContext.put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
     }
 
     /**
      *
-     * @param ints
-     * @return ArrayOfInt
      */
-    private ArrayOfInt ConvertType(int[] ints) {
-        ArrayOfInt arrayOfInt = null;
-
-        if (ints != null) {
-            arrayOfInt = new ArrayOfInt();
-            for (int i = 0; i < ints.length; i++) {
-                arrayOfInt.getInt().add(Integer.valueOf(ints[i]));
-            }
-        }
-
-        return arrayOfInt;
+    private void UnsetAgentAuthHeader() {
+        Map<String, Object> requestContext = ((BindingProvider) this.experimentStorageProxy).getRequestContext();
+        requestContext.remove(this.qnameAgentAuthHeader.getLocalPart());
     }
 
     /**
      *
-     * @param arrayOfInt
-     * @return int[]
      */
-    private int[] ConvertType(ArrayOfInt arrayOfInt) {
-        int[] ints = null;
-
-        if (arrayOfInt != null) {
-            Integer[] integerArray = arrayOfInt.getInt().toArray(new Integer[0]);
-            if (integerArray != null) {
-                ints = new int[integerArray.length];
-                for (int i = 0; i < integerArray.length; i++) {
-                    ints[i] = integerArray[i].intValue();
-                }
-            }
-        }
-
-        return ints;
-    }
-
-    /**
-     *
-     * @param longs
-     * @return ArrayOfLong
-     */
-    private ArrayOfLong ConvertType(long[] longs) {
-        ArrayOfLong arrayOfLong = null;
-
-        if (longs != null) {
-            arrayOfLong = new ArrayOfLong();
-            for (int i = 0; i < longs.length; i++) {
-                arrayOfLong.getLong().add(Long.valueOf(longs[i]));
-            }
-        }
-
-        return arrayOfLong;
-    }
-
-    /**
-     *
-     * @param arrayOfLong
-     * @return long[]
-     */
-    private long[] ConvertType(ArrayOfLong arrayOfLong) {
-        long[] longs = null;
-
-        if (arrayOfLong != null) {
-            Long[] longArray = arrayOfLong.getLong().toArray(new Long[0]);
-            if (longArray != null) {
-                longs = new long[longArray.length];
-                for (int i = 0; i < longArray.length; i++) {
-                    longs[i] = longArray[i].intValue();
-                }
-            }
-        }
-
-        return longs;
-    }
-
-    /**
-     *
-     * @param arrayOfString
-     * @return String[]
-     */
-    private String[] ConvertType(ArrayOfString arrayOfString) {
-        String[] strings = null;
-
-        if (arrayOfString != null) {
-            strings = arrayOfString.getString().toArray(new String[0]);
-        }
-
-        return strings;
-    }
-
-    /**
-     *
-     * @param coupon
-     * @return uq.ilabs.experimentstorage.Coupon
-     */
-    private uq.ilabs.experimentstorage.Coupon ConvertType(Coupon coupon) {
-        uq.ilabs.experimentstorage.Coupon proxyCoupon = null;
-
-        if (coupon != null) {
-            proxyCoupon = new uq.ilabs.experimentstorage.Coupon();
-            proxyCoupon.setCouponId(coupon.getCouponId());
-            proxyCoupon.setIssuerGuid(coupon.getIssuerGuid());
-            proxyCoupon.setPasskey(coupon.getPasskey());
-        }
-
-        return proxyCoupon;
-    }
-
-    /**
-     *
-     * @param proxyStorageStatus
-     * @return StorageStatus
-     */
-    private StorageStatus ConvertType(uq.ilabs.experimentstorage.StorageStatus proxyStorageStatus) {
-        StorageStatus storageStatus = null;
-
-        if (proxyStorageStatus != null) {
-            storageStatus = new StorageStatus();
-            storageStatus.setExperimentId(proxyStorageStatus.getExperimentId());
-            storageStatus.setStatusCode(StorageStatusCodes.ToStorageStatusCode(proxyStorageStatus.getStatus()));
-            storageStatus.setRecordCount(proxyStorageStatus.getRecordCount());
-            storageStatus.setDateCreated(this.ConvertType(proxyStorageStatus.getCreationTime()));
-            storageStatus.setDateClosed(this.ConvertType(proxyStorageStatus.getCloseTime()));
-            storageStatus.setDateModified(this.ConvertType(proxyStorageStatus.getLastModified()));
-            storageStatus.setIssuerGuid(proxyStorageStatus.getIssuerGuid());
-        }
-
-        return storageStatus;
-    }
-
-    /**
-     *
-     * @param calendar
-     * @return XMLGregorianCalendar
-     */
-    private XMLGregorianCalendar ConvertType(Calendar calendar) {
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-
-        if (calendar != null) {
-            try {
-                DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTime(calendar.getTime());
-                xmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException ex) {
-            }
-        }
-
-        return xmlGregorianCalendar;
-    }
-
-    /**
-     *
-     * @param xmlGregorianCalendar
-     * @return Calendar
-     */
-    private Calendar ConvertType(XMLGregorianCalendar xmlGregorianCalendar) {
-        Calendar calendar = null;
-
-        if (xmlGregorianCalendar != null) {
-            calendar = Calendar.getInstance();
-            calendar.setTime(xmlGregorianCalendar.toGregorianCalendar().getTime());
-        }
-
-        return calendar;
-    }
-
-    /**
-     *
-     * @param proxyExperiment
-     * @return Experiment
-     */
-    private Experiment ConvertType(uq.ilabs.experimentstorage.Experiment proxyExperiment) {
-        Experiment experiment = null;
-
-        if (proxyExperiment != null) {
-            experiment = new Experiment();
-            experiment.setExperimentId(proxyExperiment.getExperimentId());
-            experiment.setIssuerGuid(proxyExperiment.getIssuerGuid());
-            experiment.setRecords(this.ConvertType(proxyExperiment.getRecords()));
-        }
-
-        return experiment;
-    }
-
-    /**
-     *
-     * @param proxyExperimentRecord
-     * @return ExperimentRecord
-     */
-    private ExperimentRecord ConvertType(uq.ilabs.experimentstorage.ExperimentRecord proxyExperimentRecord) {
-        ExperimentRecord experimentRecord = null;
-
-        if (proxyExperimentRecord != null) {
-            experimentRecord = new ExperimentRecord();
-            experimentRecord.setType(proxyExperimentRecord.getType());
-            experimentRecord.setSubmitter(proxyExperimentRecord.getSubmitter());
-            experimentRecord.setSequenceNum(proxyExperimentRecord.getSequenceNum());
-            experimentRecord.setDateCreated(this.ConvertType(proxyExperimentRecord.getTimestamp()));
-            experimentRecord.setXmlSearchable(proxyExperimentRecord.isXmlSearchable());
-            experimentRecord.setContents(proxyExperimentRecord.getContents());
-        }
-
-        return experimentRecord;
-    }
-
-    /**
-     *
-     * @param experimentRecord
-     * @return uq.ilabs.experimentstorage.ExperimentRecord
-     */
-    private uq.ilabs.experimentstorage.ExperimentRecord ConvertType(ExperimentRecord experimentRecord) {
-        uq.ilabs.experimentstorage.ExperimentRecord proxyExperimentRecord = null;
-
-        if (experimentRecord != null) {
-            proxyExperimentRecord = new uq.ilabs.experimentstorage.ExperimentRecord();
-            proxyExperimentRecord.setType(experimentRecord.getType());
-            proxyExperimentRecord.setSubmitter(experimentRecord.getSubmitter());
-            proxyExperimentRecord.setSequenceNum(experimentRecord.getSequenceNum());
-            proxyExperimentRecord.setTimestamp(this.ConvertType(experimentRecord.getDateCreated()));
-            proxyExperimentRecord.setXmlSearchable(experimentRecord.isXmlSearchable());
-            proxyExperimentRecord.setContents(experimentRecord.getContents());
-        }
-
-        return proxyExperimentRecord;
-    }
-
-    /**
-     *
-     * @param experimentRecords
-     * @return ArrayOfExperimentRecord
-     */
-    private ArrayOfExperimentRecord ConvertType(ExperimentRecord[] experimentRecords) {
-        ArrayOfExperimentRecord arrayOfExperimentRecord = null;
-
-        if (experimentRecords != null) {
-            arrayOfExperimentRecord = new ArrayOfExperimentRecord();
-            for (int i = 0; i < experimentRecords.length; i++) {
-                arrayOfExperimentRecord.getExperimentRecord().add(this.ConvertType(experimentRecords[i]));
-            }
-        }
-
-        return arrayOfExperimentRecord;
-    }
-
-    /**
-     *
-     * @param arrayOfExperimentRecord
-     * @return ExperimentRecord[]
-     */
-    private ExperimentRecord[] ConvertType(ArrayOfExperimentRecord arrayOfExperimentRecord) {
-        ExperimentRecord[] experimentRecords = null;
-
-        if (arrayOfExperimentRecord != null) {
-            uq.ilabs.experimentstorage.ExperimentRecord[] proxyExperimentRecords = arrayOfExperimentRecord.getExperimentRecord().toArray(new uq.ilabs.experimentstorage.ExperimentRecord[0]);
-            if (proxyExperimentRecords != null) {
-                experimentRecords = new ExperimentRecord[proxyExperimentRecords.length];
-                for (int i = 0; i < proxyExperimentRecords.length; i++) {
-                    experimentRecords[i] = this.ConvertType(proxyExperimentRecords[i]);
-                }
-            }
-        }
-
-        return experimentRecords;
-    }
-
-    /**
-     *
-     * @param arrayOfExperimentRecord
-     * @return ExperimentRecord[]
-     */
-    private ExperimentRecord[] ConvertType(ArrayOfExperimentRecord1 arrayOfExperimentRecord) {
-        ExperimentRecord[] experimentRecords = null;
-
-        if (arrayOfExperimentRecord != null) {
-            uq.ilabs.experimentstorage.ExperimentRecord[] proxyExperimentRecords = arrayOfExperimentRecord.getExperimentRecord().toArray(new uq.ilabs.experimentstorage.ExperimentRecord[0]);
-            if (proxyExperimentRecords != null) {
-                experimentRecords = new ExperimentRecord[proxyExperimentRecords.length];
-                for (int i = 0; i < proxyExperimentRecords.length; i++) {
-                    experimentRecords[i] = this.ConvertType(proxyExperimentRecords[i]);
-                }
-            }
-        }
-
-        return experimentRecords;
-    }
-
-    /**
-     *
-     * @param criterion
-     * @return uq.ilabs.experimentstorage.Criterion
-     */
-    private uq.ilabs.experimentstorage.Criterion ConvertType(Criterion criterion) {
-        uq.ilabs.experimentstorage.Criterion proxyCriterion = null;
-
-        if (criterion != null) {
-            proxyCriterion = new uq.ilabs.experimentstorage.Criterion();
-            proxyCriterion.setAttribute(criterion.getAttribute());
-            proxyCriterion.setPredicate(criterion.getPredicate());
-            proxyCriterion.setValue(criterion.getValue());
-        }
-
-        return proxyCriterion;
-    }
-
-    /**
-     *
-     * @param criterions
-     * @return ArrayOfCriterion
-     */
-    private ArrayOfCriterion ConvertType(Criterion[] criterions) {
-        ArrayOfCriterion arrayOfCriterion = null;
-
-        if (criterions != null) {
-            arrayOfCriterion = new ArrayOfCriterion();
-            for (int i = 0; i < criterions.length; i++) {
-                arrayOfCriterion.getCriterion().add(this.ConvertType(criterions[i]));
-            }
-        }
-
-        return arrayOfCriterion;
-    }
-
-    /**
-     *
-     * @param recordAttributes
-     * @return ArrayOfRecordAttribute
-     */
-    private ArrayOfRecordAttribute ConvertType(RecordAttribute[] recordAttributes) {
-        ArrayOfRecordAttribute arrayOfRecordAttribute = null;
-
-        if (recordAttributes != null) {
-            arrayOfRecordAttribute = new ArrayOfRecordAttribute();
-            for (int i = 0; i < recordAttributes.length; i++) {
-                arrayOfRecordAttribute.getRecordAttribute().add(this.ConvertType(recordAttributes[i]));
-            }
-        }
-
-        return arrayOfRecordAttribute;
-    }
-
-    /**
-     *
-     * @param recordAttribute
-     * @return uq.ilabs.experimentstorage.RecordAttribute
-     */
-    private uq.ilabs.experimentstorage.RecordAttribute ConvertType(RecordAttribute recordAttribute) {
-        uq.ilabs.experimentstorage.RecordAttribute proxyRecordAttribute = null;
-
-        if (recordAttribute != null) {
-            proxyRecordAttribute = new uq.ilabs.experimentstorage.RecordAttribute();
-            proxyRecordAttribute.setName(recordAttribute.getName());
-            proxyRecordAttribute.setValue(recordAttribute.getValue());
-        }
-
-        return proxyRecordAttribute;
-    }
-
-    /**
-     *
-     * @param proxyRecordAttribute
-     * @return RecordAttribute
-     */
-    private RecordAttribute ConvertType(uq.ilabs.experimentstorage.RecordAttribute proxyRecordAttribute) {
-        RecordAttribute recordAttribute = null;
-
-        if (proxyRecordAttribute != null) {
-            recordAttribute = new RecordAttribute();
-            recordAttribute.setName(proxyRecordAttribute.getName());
-            recordAttribute.setValue(proxyRecordAttribute.getValue());
-        }
-
-        return recordAttribute;
-    }
-
-    /**
-     *
-     * @param arrayOfRecordAttribute
-     * @return RecordAttribute[]
-     */
-    private RecordAttribute[] ConvertType(ArrayOfRecordAttribute arrayOfRecordAttribute) {
-        RecordAttribute[] recordAttributes = null;
-
-        if (arrayOfRecordAttribute != null) {
-            uq.ilabs.experimentstorage.RecordAttribute[] proxyRecordAttributes = arrayOfRecordAttribute.getRecordAttribute().toArray(new uq.ilabs.experimentstorage.RecordAttribute[0]);
-            if (proxyRecordAttributes != null) {
-                recordAttributes = new RecordAttribute[proxyRecordAttributes.length];
-                for (int i = 0; i < proxyRecordAttributes.length; i++) {
-                    recordAttributes[i] = this.ConvertType(proxyRecordAttributes[i]);
-                }
-            }
-        }
-
-        return recordAttributes;
-    }
-
-    /**
-     *
-     * @param proxyBlob
-     * @return Blob
-     */
-    private Blob ConvertType(uq.ilabs.experimentstorage.Blob proxyBlob) {
-        Blob blob = null;
-
-        if (proxyBlob != null) {
-            blob = new Blob();
-            blob.setBlobId(proxyBlob.getBlobId());
-            blob.setExperimentId(proxyBlob.getExperimentId());
-            blob.setRecordNumber(proxyBlob.getRecordNumber());
-            blob.setDateCreated(this.ConvertType(proxyBlob.getTimestamp()));
-            blob.setDescription(proxyBlob.getDescription());
-            blob.setMimeType(proxyBlob.getMimeType());
-            blob.setByteCount(proxyBlob.getByteCount());
-            blob.setChecksum(proxyBlob.getChecksum());
-            blob.setChecksumAlgorithm(proxyBlob.getChecksumAlgorithm());
-        }
-
-        return blob;
-    }
-
-    /**
-     *
-     * @param arrayOfBlob
-     * @return Blob[]
-     */
-    private Blob[] ConvertType(ArrayOfBlob arrayOfBlob) {
-        Blob[] blobs = null;
-
-        if (arrayOfBlob != null) {
-            uq.ilabs.experimentstorage.Blob[] proxyBlobs = arrayOfBlob.getBlob().toArray(new uq.ilabs.experimentstorage.Blob[0]);
-            if (proxyBlobs != null) {
-                blobs = new Blob[proxyBlobs.length];
-                for (int i = 0; i < proxyBlobs.length; i++) {
-                    blobs[i] = this.ConvertType(proxyBlobs[i]);
-                }
-            }
-        }
-
-        return blobs;
+    private void UnsetOperationAuthHeader() {
+        Map<String, Object> requestContext = ((BindingProvider) this.experimentStorageProxy).getRequestContext();
+        requestContext.remove(this.qnameOperationAuthHeader.getLocalPart());
     }
 }

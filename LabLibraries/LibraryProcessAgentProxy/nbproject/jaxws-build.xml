@@ -19,7 +19,7 @@
     <target name="wsimport-client-IProcessAgentProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx"/>
         <property name="wsdl-IProcessAgentProxy.asmx" location="xml-resources/web-service-references/IProcessAgentProxy.asmx/wsdl/IProcessAgentProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx" wsdl="${wsdl-IProcessAgentProxy.asmx}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IProcessAgentProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.processagent">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx" wsdl="${wsdl-IProcessAgentProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IProcessAgentProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.processagent">
             <binding dir="xml-resources/web-service-references/IProcessAgentProxy.asmx/bindings" includes="IProcessAgentProxy.asmx_handler.xml"/>
             <depends file="${wsdl-IProcessAgentProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/IProcessAgentProxy.asmx"/>

@@ -10,46 +10,6 @@ package uq.ilabs.library.datatypes.storage;
  */
 public enum StorageStatusCodes {
 
-    /*
-     * Batch status codes
-     */
-    BatchMask(0x000F),
-    /**
-     * Ready to execute
-     */
-    BatchReady(0),
-    /**
-     * Waiting in the execution queue
-     */
-    BatchWaiting(1),
-    /**
-     * Currently running
-     */
-    BatchRunning(2),
-    /**
-     * Completely normally
-     */
-    BatchCompleted(3),
-    /**
-     * Terminated with errors
-     */
-    BatchFailed(4),
-    /**
-     * Cancelled by user before execution had begun
-     */
-    BatchCancelled(5),
-    /**
-     * Unknown experimentID
-     */
-    BatchUnknown(6),
-    /**
-     * Invalid experiment
-     */
-    BatchInvalid(7),
-    /*
-     * Interactive status codes
-     */
-    InteractiveMask(0xFFF0),
     Unknown(0x0010),
     Initialised(0x0020),
     Open(0x0080),
@@ -61,7 +21,11 @@ public enum StorageStatusCodes {
     Error(0x1000),
     ClosedTimeout(0x0600),
     ClosedUserAction(0x0A00),
-    ClosedError(0x1200);
+    ClosedError(0x1200),
+    /*
+     * Interactive status codes
+     */
+    InteractiveMask(0xFFF0);
     //
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private final int value;
@@ -71,48 +35,53 @@ public enum StorageStatusCodes {
     }
     //</editor-fold>
 
+    /**
+     * Constructor
+     *
+     * @param value
+     */
     private StorageStatusCodes(int value) {
         this.value = value;
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public static StorageStatusCodes ToStorageStatusCode(int value) {
-        switch (value) {
-            case 0:
-                return BatchReady;
-            case 1:
-                return BatchWaiting;
-            case 2:
-                return BatchRunning;
-            case 3:
-                return BatchCompleted;
-            case 4:
-                return BatchFailed;
-            case 5:
-                return BatchCancelled;
-            case 6:
-                return BatchUnknown;
-            case 7:
-                return BatchInvalid;
-            case 0x0010:
-                return Unknown;
-            case 0x0020:
-                return Initialised;
-            case 0x0080:
-                return Open;
-            case 0x00C0:
-                return Reopened;
-            case 0x0100:
-                return Running;
-            case 0x0200:
-                return Closed;
-            case 0x0400:
-                return Timeout;
-            case 0x0800:
-                return UserAction;
-            case 0x1000:
-                return Error;
-            default:
-                return Unknown;
+        /*
+         * Get the interactive status code portion of the value
+         */
+        value &= InteractiveMask.getValue();
+
+        /*
+         * Search for the value
+         */
+        for (StorageStatusCodes storageStatusCode : StorageStatusCodes.values()) {
+            if (storageStatusCode.getValue() == value) {
+                return storageStatusCode;
+            }
         }
+
+        /*
+         * Value not found
+         */
+        return Unknown;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    public static StorageStatusCodes ToCode(String value) {
+        StorageStatusCodes storageStatusCode;
+        try {
+            storageStatusCode = StorageStatusCodes.valueOf(value);
+        } catch (IllegalArgumentException ex) {
+            storageStatusCode = Unknown;
+        }
+        return storageStatusCode;
     }
 }

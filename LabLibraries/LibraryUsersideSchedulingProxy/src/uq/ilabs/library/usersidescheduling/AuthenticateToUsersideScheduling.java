@@ -119,7 +119,10 @@ public class AuthenticateToUsersideScheduling implements SOAPHandler<SOAPMessage
          */
         SOAPMessage soapMessage = messageContext.getMessage();
         SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnvelope.addHeader();
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        if (soapHeader == null) {
+            soapHeader = soapEnvelope.addHeader();
+        }
 
         /*
          * Get authentication header information and process the information according to the authentication header type
@@ -130,14 +133,13 @@ public class AuthenticateToUsersideScheduling implements SOAPHandler<SOAPMessage
              * AgentAuthHeader
              */
             this.ProcessAgentAuthHeader((AgentAuthHeader) object, qnameAgentAuthHeader, soapHeader);
-        } else {
-            object = messageContext.get(qnameOperationAuthHeader.getLocalPart());
-            if (object != null && object instanceof OperationAuthHeader) {
-                /*
-                 * OperationAuthHeader
-                 */
-                this.ProcessOperationAuthHeader((OperationAuthHeader) object, qnameOperationAuthHeader, soapHeader);
-            }
+        }
+        object = messageContext.get(qnameOperationAuthHeader.getLocalPart());
+        if (object != null && object instanceof OperationAuthHeader) {
+            /*
+             * OperationAuthHeader
+             */
+            this.ProcessOperationAuthHeader((OperationAuthHeader) object, qnameOperationAuthHeader, soapHeader);
         }
     }
 

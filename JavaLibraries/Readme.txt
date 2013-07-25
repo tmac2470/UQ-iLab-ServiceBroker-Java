@@ -1,7 +1,7 @@
 Download JAR files from the appropriate web sites and place in this folder:
+
+https://java.net/projects/javamail/downloads
+	javax.mail.jar (JavaMail API 1.5.0)
 	
 http://jdbc.postgresql.org/
-	postgresql-9.2-1002.jdbc4.jar
-
-http://www.oracle.com/technetwork/java/javamail/index.html
-	javamail-1.4.5.jar (as javamail.jar)
+	postgresql-9.2-1003.jdbc4.jar

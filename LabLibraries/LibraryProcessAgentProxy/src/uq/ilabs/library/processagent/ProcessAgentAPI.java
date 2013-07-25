@@ -4,20 +4,15 @@
  */
 package uq.ilabs.library.processagent;
 
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
 import uq.ilabs.library.datatypes.processagent.ProcessAgent;
-import uq.ilabs.library.datatypes.processagent.ProcessAgentTypes;
 import uq.ilabs.library.datatypes.processagent.ServiceDescription;
 import uq.ilabs.library.datatypes.processagent.StatusNotificationReport;
 import uq.ilabs.library.datatypes.processagent.StatusReport;
@@ -40,6 +35,12 @@ public class ProcessAgentAPI {
     private static final String STR_ClassName = ProcessAgentAPI.class.getName();
     private static final Level logLevel = Level.FINE;
     /*
+     * String constants
+     */
+    public static final String STR_Online = "Online";
+    public static final String STR_Offline = "Offline";
+    public static final String STR_ProcessAgentStatus_arg2 = "ProcessAgent Status: %s - %s";
+    /*
      * String constants for logfile messages
      */
     private static final String STRLOG_ServiceUrl_arg = "ServiceUrl: '%s'";
@@ -47,6 +48,7 @@ public class ProcessAgentAPI {
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    public static final String STRERR_ProcessAgentUnaccessible = "ProcessAgent is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private ProcessAgentProxySoap processAgentProxy;
@@ -97,9 +99,6 @@ public class ProcessAgentAPI {
              * Create a proxy for the web service and set the web service URL
              */
             ProcessAgentProxy webServiceClient = new ProcessAgentProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(ProcessAgentProxy.class.getSimpleName());
-            }
             this.processAgentProxy = webServiceClient.getProcessAgentProxySoap();
             ((BindingProvider) this.processAgentProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -138,13 +137,16 @@ public class ProcessAgentAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            success = this.processAgentProxy.cancelTicket(this.ConvertType(coupon), type, redeemer);
+            success = this.processAgentProxy.cancelTicket(ConvertTypes.ConvertType(coupon), type, redeemer);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -167,13 +169,14 @@ public class ProcessAgentAPI {
              * Set no authentication information and call the web service
              */
             XMLGregorianCalendar xmlGregorianCalendar = this.processAgentProxy.getServiceTime();
-            calendar = this.ConvertType(xmlGregorianCalendar);
+            calendar = ConvertTypes.ConvertType(xmlGregorianCalendar);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -196,13 +199,14 @@ public class ProcessAgentAPI {
              * Set no authentication information and call the web service
              */
             uq.ilabs.processagent.StatusReport proxyStatusReport = this.processAgentProxy.getStatus();
-            statusReport = this.ConvertType(proxyStatusReport);
+            statusReport = ConvertTypes.ConvertType(proxyStatusReport);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -229,14 +233,17 @@ public class ProcessAgentAPI {
              */
             this.SetInitAuthHeader();
             uq.ilabs.processagent.ProcessAgent proxyProcessAgent = this.processAgentProxy.installDomainCredentials(
-                    this.ConvertType(agent), this.ConvertType(inCoupon), this.ConvertType(outCoupon));
-            processAgent = this.ConvertType(proxyProcessAgent);
+                    ConvertTypes.ConvertType(agent), ConvertTypes.ConvertType(inCoupon), ConvertTypes.ConvertType(outCoupon));
+            processAgent = ConvertTypes.ConvertType(proxyProcessAgent);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetInitAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -253,7 +260,7 @@ public class ProcessAgentAPI {
      * @param outCoupon
      * @return int
      */
-    public int ModifyDomainCredentials(String originalGuid, ProcessAgent agent, String extra, Coupon inCoupon, Coupon outCoupon) {
+    public int ModifyDomainCredentials(String originalGuid, ProcessAgent agent, String xmlSystemSupport, Coupon inCoupon, Coupon outCoupon) {
         final String methodName = "ModifyDomainCredentials";
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
@@ -263,14 +270,18 @@ public class ProcessAgentAPI {
             /*
              * Set authentication information and call the web service
              */
-            this.SetInitAuthHeader();
-            retval = this.processAgentProxy.modifyDomainCredentials(originalGuid, this.ConvertType(agent), extra, this.ConvertType(inCoupon), this.ConvertType(outCoupon));
+            this.SetAgentAuthHeader();
+            retval = this.processAgentProxy.modifyDomainCredentials(
+                    originalGuid, ConvertTypes.ConvertType(agent), xmlSystemSupport, ConvertTypes.ConvertType(inCoupon), ConvertTypes.ConvertType(outCoupon));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -296,13 +307,16 @@ public class ProcessAgentAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            retval = this.processAgentProxy.modifyProcessAgent(originalGuid, this.ConvertType(agent), extra);
+            retval = this.processAgentProxy.modifyProcessAgent(originalGuid, ConvertTypes.ConvertType(agent), extra);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -319,18 +333,23 @@ public class ProcessAgentAPI {
         final String methodName = "Register";
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
+        ArrayOfServiceDescription proxyServiceDescriptions = ConvertTypes.ConvertType(serviceDescriptions);
+
         try {
             /*
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            this.processAgentProxy.register(registerGuid, (ArrayOfServiceDescription) Arrays.asList(serviceDescriptions));
+            this.processAgentProxy.register(registerGuid, proxyServiceDescriptions);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -360,6 +379,9 @@ public class ProcessAgentAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -392,6 +414,9 @@ public class ProcessAgentAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -412,13 +437,16 @@ public class ProcessAgentAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            this.processAgentProxy.statusNotification(this.ConvertType(report));
+            this.processAgentProxy.statusNotification(ConvertTypes.ConvertType(report));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ProcessAgentUnaccessible);
+        } finally {
+            this.UnsetAgentAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -434,7 +462,7 @@ public class ProcessAgentAPI {
          */
         AgentAuthHeader agentAuthHeader = new AgentAuthHeader();
         agentAuthHeader.setAgentGuid(this.authHeaderAgentGuid);
-        agentAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        agentAuthHeader.setCoupon(ConvertTypes.ConvertType(this.authHeaderCoupon));
 
         /*
          * Pass the authentication header to the message handler through the message context
@@ -460,153 +488,15 @@ public class ProcessAgentAPI {
 
     /**
      *
-     * @param coupon
-     * @return uq.ilabs.processagent.Coupon
      */
-    private uq.ilabs.processagent.Coupon ConvertType(Coupon coupon) {
-        uq.ilabs.processagent.Coupon proxyCoupon = null;
-
-        if (coupon != null) {
-            proxyCoupon = new uq.ilabs.processagent.Coupon();
-            proxyCoupon.setCouponId(coupon.getCouponId());
-            proxyCoupon.setIssuerGuid(coupon.getIssuerGuid());
-            proxyCoupon.setPasskey(coupon.getPasskey());
-        }
-
-        return proxyCoupon;
+    private void UnsetAgentAuthHeader() {
+        ((BindingProvider) this.processAgentProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
     }
 
     /**
      *
-     * @param proxyCoupon
-     * @return Coupon
      */
-    private Coupon ConvertType(uq.ilabs.processagent.Coupon proxyCoupon) {
-        Coupon coupon = null;
-
-        if (proxyCoupon != null) {
-            coupon = new Coupon();
-            coupon.setCouponId(proxyCoupon.getCouponId());
-            coupon.setIssuerGuid(proxyCoupon.getIssuerGuid());
-            coupon.setPasskey(proxyCoupon.getPasskey());
-        }
-
-        return coupon;
-    }
-
-    /**
-     *
-     * @param calendar
-     * @return XMLGregorianCalendar
-     */
-    private XMLGregorianCalendar ConvertType(Calendar calendar) {
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-
-        if (calendar != null) {
-            try {
-                DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTime(calendar.getTime());
-                xmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException ex) {
-            }
-        }
-
-        return xmlGregorianCalendar;
-    }
-
-    /**
-     *
-     * @param xmlGregorianCalendar
-     * @return Calendar
-     */
-    private Calendar ConvertType(XMLGregorianCalendar xmlGregorianCalendar) {
-        Calendar calendar = null;
-
-        if (xmlGregorianCalendar != null) {
-            calendar = Calendar.getInstance();
-            calendar.setTime(xmlGregorianCalendar.toGregorianCalendar().getTime());
-        }
-
-        return calendar;
-    }
-
-    /**
-     *
-     * @param processAgent
-     * @return uq.ilabs.processagent.ProcessAgent
-     */
-    private uq.ilabs.processagent.ProcessAgent ConvertType(ProcessAgent processAgent) {
-        uq.ilabs.processagent.ProcessAgent proxyProcessAgent = null;
-
-        if (processAgent != null) {
-            proxyProcessAgent = new uq.ilabs.processagent.ProcessAgent();
-            proxyProcessAgent.setAgentGuid(processAgent.getAgentGuid());
-            proxyProcessAgent.setAgentName(processAgent.getAgentName());
-            proxyProcessAgent.setType(ProcessAgentTypes.ToProcessAgentTypeName(processAgent.getAgentType()));
-            proxyProcessAgent.setWebServiceUrl(processAgent.getServiceUrl());
-            proxyProcessAgent.setCodeBaseUrl(processAgent.getClientUrl());
-            proxyProcessAgent.setDomainGuid(processAgent.getDomainGuid());
-        }
-
-        return proxyProcessAgent;
-    }
-
-    /**
-     *
-     * @param proxyProcessAgent
-     * @return ProcessAgent
-     */
-    private ProcessAgent ConvertType(uq.ilabs.processagent.ProcessAgent proxyProcessAgent) {
-        ProcessAgent processAgent = null;
-
-        if (proxyProcessAgent != null) {
-            processAgent = new ProcessAgent();
-            processAgent.setAgentGuid(proxyProcessAgent.getAgentGuid());
-            processAgent.setAgentName(proxyProcessAgent.getAgentName());
-            processAgent.setAgentType(ProcessAgentTypes.ToProcessAgentType(proxyProcessAgent.getType()));
-            processAgent.setServiceUrl(proxyProcessAgent.getWebServiceUrl());
-            processAgent.setClientUrl(proxyProcessAgent.getCodeBaseUrl());
-            processAgent.setDomainGuid(proxyProcessAgent.getDomainGuid());
-        }
-
-        return processAgent;
-    }
-
-    /**
-     *
-     * @param statusNotificationReport
-     * @return uq.ilabs.processagent.StatusNotificationReport
-     */
-    private uq.ilabs.processagent.StatusNotificationReport ConvertType(StatusNotificationReport statusNotificationReport) {
-        uq.ilabs.processagent.StatusNotificationReport proxyStatusNotificationReport = null;
-
-        if (statusNotificationReport != null) {
-            proxyStatusNotificationReport = new uq.ilabs.processagent.StatusNotificationReport();
-            proxyStatusNotificationReport.setAlertCode(statusNotificationReport.getAlertCode());
-            proxyStatusNotificationReport.setServiceGuid(statusNotificationReport.getServiceGuid());
-            proxyStatusNotificationReport.setTime(this.ConvertType(statusNotificationReport.getTimestamp()));
-            proxyStatusNotificationReport.setPayload(statusNotificationReport.getPayload());
-        }
-
-        return proxyStatusNotificationReport;
-    }
-
-    /**
-     *
-     * @param proxyStatusReport
-     * @return StatusReport
-     */
-    private StatusReport ConvertType(uq.ilabs.processagent.StatusReport proxyStatusReport) {
-        StatusReport statusReport = null;
-
-        if (proxyStatusReport != null) {
-            statusReport = new StatusReport();
-            statusReport.setOnline(proxyStatusReport.isOnline());
-            statusReport.setServiceGuid(proxyStatusReport.getServiceGuid());
-            statusReport.setPayload(proxyStatusReport.getPayload());
-        }
-
-        return statusReport;
+    private void UnsetInitAuthHeader() {
+        ((BindingProvider) this.processAgentProxy).getRequestContext().remove(this.qnameInitAuthHeader.getLocalPart());
     }
 }

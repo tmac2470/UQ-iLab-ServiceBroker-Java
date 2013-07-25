@@ -73,7 +73,7 @@ public class AuthenticateToBatchLabServer implements SOAPHandler<SOAPMessageCont
 
                 success = true;
             } catch (SOAPException | IOException ex) {
-                Logfile.WriteError(ex.getMessage());
+                Logfile.WriteError(ex.toString());
             }
         }
 
@@ -105,13 +105,16 @@ public class AuthenticateToBatchLabServer implements SOAPHandler<SOAPMessageCont
          */
         SOAPMessage soapMessage = messageContext.getMessage();
         SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnvelope.addHeader();
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        if (soapHeader == null) {
+            soapHeader = soapEnvelope.addHeader();
+        }
 
         /*
-         * Get authentication header information and process
+         * Get authentication header information from the context and process
          */
         Object object = messageContext.get(qnameAuthHeader.getLocalPart());
-        if (object != null && object instanceof AuthHeader) {
+        if (object instanceof AuthHeader) {
             /*
              * AuthHeader
              */

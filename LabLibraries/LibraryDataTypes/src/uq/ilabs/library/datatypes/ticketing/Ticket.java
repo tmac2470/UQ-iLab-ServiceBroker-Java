@@ -134,6 +134,10 @@ public class Ticket {
         this.payload = payload;
     }
 
+    public boolean isExpired() {
+        return this.IsExpired();
+    }
+
     public Ticket() {
     }
 
@@ -153,7 +157,7 @@ public class Ticket {
      *
      * @return boolean
      */
-    public boolean HasExpired() {
+    private boolean IsExpired() {
         return false;
     }
 //        public boolean IsExpired()

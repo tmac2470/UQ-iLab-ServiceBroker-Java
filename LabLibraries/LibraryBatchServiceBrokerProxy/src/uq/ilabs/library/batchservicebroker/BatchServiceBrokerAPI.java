@@ -10,7 +10,6 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
-import uq.ilabs.batchservicebroker.ArrayOfString;
 import uq.ilabs.batchservicebroker.BatchServiceBrokerProxy;
 import uq.ilabs.batchservicebroker.BatchServiceBrokerProxySoap;
 import uq.ilabs.batchservicebroker.ObjectFactory;
@@ -38,10 +37,13 @@ public class BatchServiceBrokerAPI {
      * String constants for logfile messages
      */
     private static final String STRLOG_ServiceUrl_arg = "ServiceUrl: '%s'";
+    private static final String STRLOG_ExperimentId_arg = "ExperimentId: %d";
+    private static final String STRLOG_Success_arg = "Success: %s";
     /*
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    private static final String STRERR_ServiceBrokerUnaccessible = "ServiceBroker is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private BatchServiceBrokerProxySoap batchServiceBrokerProxy;
@@ -103,9 +105,6 @@ public class BatchServiceBrokerAPI {
              * Create a proxy for the web service and set the web service URL
              */
             BatchServiceBrokerProxy webServiceClient = new BatchServiceBrokerProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(BatchServiceBrokerProxy.class.getSimpleName());
-            }
             this.batchServiceBrokerProxy = webServiceClient.getBatchServiceBrokerProxySoap();
             ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -147,6 +146,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -186,6 +188,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -217,6 +222,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -246,6 +254,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -275,6 +286,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -305,6 +319,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -336,6 +353,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -378,6 +398,9 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -409,11 +432,43 @@ public class BatchServiceBrokerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        } finally {
+            this.UnsetSbAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
 
         return validationReport;
+    }
+
+    /**
+     *
+     * @param experimentID
+     */
+    public boolean Notify(int experimentId) {
+        final String methodName = "Notify";
+        Logfile.WriteCalled(logLevel, STR_ClassName, methodName,
+                String.format(STRLOG_ExperimentId_arg, experimentId));
+
+        boolean success = false;
+
+        try {
+            this.batchServiceBrokerProxy.notify(experimentId);
+            success = true;
+
+        } catch (SOAPFaultException ex) {
+            Logfile.Write(ex.getMessage());
+            throw new ProtocolException(ex.getFault().getFaultString());
+        } catch (Exception ex) {
+            Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+        }
+
+        Logfile.WriteCompleted(logLevel, STR_ClassName, methodName,
+                String.format(STRLOG_Success_arg, success));
+
+        return success;
     }
 
     //================================================================================================================//
@@ -436,10 +491,18 @@ public class BatchServiceBrokerAPI {
 
     /**
      *
+     */
+    private void UnsetSbAuthHeader() {
+        ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext().remove(this.qNameSbAuthHeader.getLocalPart());
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="ConvertType">
+    /**
+     *
      * @param arrayOfString
      * @return String[]
      */
-    private String[] ConvertType(ArrayOfString arrayOfString) {
+    private String[] ConvertType(uq.ilabs.batchservicebroker.ArrayOfString arrayOfString) {
         String[] strings = null;
 
         if (arrayOfString != null) {
@@ -577,4 +640,5 @@ public class BatchServiceBrokerAPI {
 
         return waitEstimate;
     }
+    //</editor-fold>
 }

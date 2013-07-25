@@ -20,10 +20,10 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-import uq.ilabs.experimentstorage.AgentAuthHeader;
-import uq.ilabs.experimentstorage.Coupon;
-import uq.ilabs.experimentstorage.ObjectFactory;
-import uq.ilabs.experimentstorage.OperationAuthHeader;
+import edu.mit.ilab.ilabs.AgentAuthHeader;
+import edu.mit.ilab.ilabs.Coupon;
+import edu.mit.ilab.ilabs.ObjectFactory;
+import edu.mit.ilab.ilabs.OperationAuthHeader;
 import uq.ilabs.library.lab.utilities.Logfile;
 
 /**
@@ -119,7 +119,10 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
          */
         SOAPMessage soapMessage = messageContext.getMessage();
         SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnvelope.addHeader();
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        if (soapHeader == null) {
+            soapHeader = soapEnvelope.addHeader();
+        }
 
         /*
          * Get authentication header information and process the information according to the authentication header type
@@ -130,15 +133,15 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
              * AgentAuthHeader
              */
             this.ProcessAgentAuthHeader((AgentAuthHeader) object, qnameAgentAuthHeader, soapHeader);
-        } else {
-            object = messageContext.get(qnameOperationAuthHeader.getLocalPart());
-            if (object != null && object instanceof OperationAuthHeader) {
-                /*
-                 * OperationAuthHeader
-                 */
-                this.ProcessOperationAuthHeader((OperationAuthHeader) object, qnameOperationAuthHeader, soapHeader);
-            }
         }
+        object = messageContext.get(qnameOperationAuthHeader.getLocalPart());
+        if (object != null && object instanceof OperationAuthHeader) {
+            /*
+             * OperationAuthHeader
+             */
+            this.ProcessOperationAuthHeader((OperationAuthHeader) object, qnameOperationAuthHeader, soapHeader);
+        }
+
     }
 
     /**

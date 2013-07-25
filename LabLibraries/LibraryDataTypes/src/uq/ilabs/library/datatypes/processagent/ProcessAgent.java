@@ -83,26 +83,16 @@ public class ProcessAgent {
         this.domainGuid = domainGuid;
     }
 
-    /**
-     *
-     */
     public ProcessAgent() {
     }
 
-    /**
-     *
-     * @param agentName
-     * @param agentGuid
-     * @param agentType
-     * @param serviceUrl
-     * @param clientUrl
-     */
-    public ProcessAgent(String agentName, String agentGuid, ProcessAgentTypes agentType, String serviceUrl, String clientUrl) {
+    public ProcessAgent(String agentName, String agentGuid, ProcessAgentTypes agentType, String serviceUrl, String clientUrl, String domainGuid) {
         this.agentName = agentName;
         this.agentGuid = agentGuid;
         this.agentType = agentType;
         this.serviceUrl = serviceUrl;
         this.clientUrl = clientUrl;
+        this.domainGuid = domainGuid;
     }
 
     @Override

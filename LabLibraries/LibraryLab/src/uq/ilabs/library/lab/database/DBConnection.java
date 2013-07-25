@@ -5,9 +5,13 @@
 package uq.ilabs.library.lab.database;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
 import uq.ilabs.library.lab.utilities.Logfile;
 
 /**
@@ -18,49 +22,42 @@ public class DBConnection {
 
     //<editor-fold defaultstate="collapsed" desc="Constants">
     public static final String STR_ClassName = DBConnection.class.getName();
+    private static final Level logLevel = Level.FINEST;
     /*
      * String constants
      */
-    public static final String STR_Driver = "org.postgresql.Driver";
-    public static final String STR_Url_arg3 = "jdbc:postgresql://%s:%d/%s";
     public static final String STR_User = "user";
     public static final String STR_Password = "password";
-    public static final String STR_DefaultHost = "localhost";
     public static final String STR_DefaultUser = "LabServer";
     public static final String STR_DefaultPassword = "ilab";
     /*
      * Constants
      */
-    public static final int INT_DefaultPort = 5432;
+    private static final int INT_MaxConnections = 1;
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private Semaphore connections;
+    private ArrayList<Connection> connectionList;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
+    private String driverName;
+    private String url;
     private Properties properties;
-    private String host;
-    private int port;
-    private String database;
 
-    public String getHost() {
-        return host;
+    public String getDriverName() {
+        return driverName;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
-    public int getPort() {
-        return port;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(String database) {
-        this.database = database;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getUser() {
@@ -78,10 +75,6 @@ public class DBConnection {
     public void setPassword(String password) {
         this.properties.setProperty(STR_Password, password);
     }
-
-    public String getUrl() {
-        return String.format(STR_Url_arg3, host, port, database);
-    }
     //</editor-fold>
 
     /**
@@ -89,16 +82,15 @@ public class DBConnection {
      * @param database
      * @throws Exception
      */
-    public DBConnection(String database) throws Exception {
+    public DBConnection(String driverName, String url) throws Exception {
         final String methodName = "DBConnection";
-        Logfile.WriteCalled(STR_ClassName, methodName);
+        Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
         /*
          * Initial local variables
          */
-        this.database = database;
-        this.host = STR_DefaultHost;
-        this.port = INT_DefaultPort;
+        this.driverName = driverName;
+        this.url = url;
         this.properties = new Properties();
         this.properties.setProperty(STR_User, STR_DefaultUser);
         this.properties.setProperty(STR_Password, STR_DefaultPassword);
@@ -107,33 +99,82 @@ public class DBConnection {
          * Load the database driver to ensure that it exists
          */
         try {
-            Class.forName(STR_Driver);
+            Class.forName(this.driverName);
         } catch (ClassNotFoundException ex) {
             Logfile.WriteError(ex.toString());
             throw ex;
         }
 
-        Logfile.WriteCompleted(STR_ClassName, methodName);
+        Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
     }
 
     /**
      *
-     * @return @throws SQLException
+     * @return
      */
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         final String methodName = "getConnection";
-        Logfile.WriteCalled(STR_ClassName, methodName);
+        Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
-        Connection sqlConnection;
+        Connection connection = null;
+
         try {
-            sqlConnection = DriverManager.getConnection(this.getUrl(), this.properties);
-        } catch (SQLException ex) {
+            /*
+             * Check if connection pool has been created
+             */
+            if (this.connectionList == null) {
+                /*
+                 * Create connection pool
+                 */
+                this.connectionList = new ArrayList<>(INT_MaxConnections);
+                for (int i = 0; i < INT_MaxConnections; i++) {
+                    this.connectionList.add(DriverManager.getConnection(this.url, this.properties));
+                }
+                this.connections = new Semaphore(INT_MaxConnections, true);
+            }
+
+            /*
+             * Get a connection from the pool
+             */
+            this.connections.acquire();
+            connection = this.connectionList.remove(0);
+        } catch (SQLException | InterruptedException ex) {
             Logfile.WriteError(ex.toString());
-            throw ex;
         }
 
-        Logfile.WriteCompleted(STR_ClassName, methodName);
+        Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
 
-        return sqlConnection;
+        return connection;
+    }
+
+    /**
+     *
+     * @param connection
+     */
+    public void putConnection(Connection connection) {
+        final String methodName = "putConnection";
+        Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
+
+        /*
+         * Return the connection to the pool
+         */
+        this.connectionList.add(connection);
+        this.connections.release();
+
+        Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
+    }
+
+    /**
+     * Deregister the loaded driver
+     */
+    public void DeRegister() {
+        try {
+            Driver driver = DriverManager.getDriver(this.url);
+            if (driver != null) {
+                DriverManager.deregisterDriver(driver);
+            }
+        } catch (SQLException ex) {
+            Logfile.WriteError(ex.toString());
+        }
     }
 }

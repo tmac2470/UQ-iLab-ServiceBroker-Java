@@ -37,7 +37,11 @@ public enum StatusCodes {
     /**
      * Invalid experiment
      */
-    Invalid(7);
+    Invalid(7),
+    /*
+     * Batch status codes
+     */
+    BatchMask(0x000F);
     //
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private final int value;
@@ -47,6 +51,11 @@ public enum StatusCodes {
     }
     //</editor-fold>
 
+    /**
+     * Constructor
+     *
+     * @param value
+     */
     private StatusCodes(int value) {
         this.value = value;
     }
@@ -57,27 +66,38 @@ public enum StatusCodes {
      * @return
      */
     public static StatusCodes ToStatusCode(int value) {
-        if (value == Ready.value) {
-            return Ready;
+        /*
+         * Get the batch status code portion of the value
+         */
+        value &= BatchMask.getValue();
+
+        /*
+         * Search for the value
+         */
+        for (StatusCodes statusCode : StatusCodes.values()) {
+            if (statusCode.getValue() == value) {
+                return statusCode;
+            }
         }
-        if (value == Waiting.value) {
-            return Waiting;
-        }
-        if (value == Running.value) {
-            return Running;
-        }
-        if (value == Completed.value) {
-            return Completed;
-        }
-        if (value == Failed.value) {
-            return Failed;
-        }
-        if (value == Cancelled.value) {
-            return Cancelled;
-        }
-        if (value == Invalid.value) {
-            return Invalid;
-        }
+
+        /*
+         * Value not found
+         */
         return Unknown;
+    }
+
+    /**
+     * 
+     * @param value
+     * @return 
+     */
+    public static StatusCodes ToCode(String value) {
+        StatusCodes statusCode;
+        try {
+            statusCode = StatusCodes.valueOf(value);
+        } catch (IllegalArgumentException ex) {
+            statusCode = Unknown;
+        }
+        return statusCode;
     }
 }

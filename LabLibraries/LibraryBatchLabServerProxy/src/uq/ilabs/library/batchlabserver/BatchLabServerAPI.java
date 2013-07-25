@@ -10,7 +10,6 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.ProtocolException;
 import javax.xml.ws.soap.SOAPFaultException;
-import uq.ilabs.batchlabserver.ArrayOfString;
 import uq.ilabs.batchlabserver.AuthHeader;
 import uq.ilabs.batchlabserver.BatchLabServerProxy;
 import uq.ilabs.batchlabserver.BatchLabServerProxySoap;
@@ -33,7 +32,7 @@ public class BatchLabServerAPI {
 
     //<editor-fold defaultstate="collapsed" desc="Constants">
     private static final String STR_ClassName = BatchLabServerAPI.class.getName();
-    private static final Level logLevel = Level.FINE;
+    private static final Level logLevel = Level.FINER;
     /*
      * String constants for logfile messages
      */
@@ -42,6 +41,7 @@ public class BatchLabServerAPI {
      * String constants for exception messages
      */
     private static final String STRERR_ServiceUrl = "serviceUrl";
+    private static final String STRERR_LabServerUnaccessible = "LabServer is unaccessible!";
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private BatchLabServerProxySoap batchLabServerProxy;
@@ -67,7 +67,7 @@ public class BatchLabServerAPI {
      */
     public BatchLabServerAPI(String serviceUrl) throws Exception {
         final String methodName = "BatchLabServerAPI";
-        Logfile.WriteCalled(STR_ClassName, methodName,
+        Logfile.WriteCalled(logLevel, STR_ClassName, methodName,
                 String.format(STRLOG_ServiceUrl_arg, serviceUrl));
 
         try {
@@ -86,9 +86,6 @@ public class BatchLabServerAPI {
              * Create a proxy for the LabServer's web service and set the web service URL
              */
             BatchLabServerProxy webServiceClient = new BatchLabServerProxy();
-            if (webServiceClient == null) {
-                throw new NullPointerException(BatchLabServerProxy.class.getSimpleName());
-            }
             this.batchLabServerProxy = webServiceClient.getBatchLabServerProxySoap();
             ((BindingProvider) this.batchLabServerProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
@@ -100,11 +97,11 @@ public class BatchLabServerAPI {
             this.qnameAuthHeader = jaxbElementAuthHeader.getName();
 
         } catch (NullPointerException | IllegalArgumentException ex) {
-            Logfile.WriteError(ex.getMessage());
+            Logfile.WriteError(ex.toString());
             throw ex;
         }
 
-        Logfile.WriteCompleted(STR_ClassName, methodName);
+        Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
     }
 
     /**
@@ -120,7 +117,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             cancelled = this.batchLabServerProxy.cancel(experimentId);
@@ -130,6 +127,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -151,7 +151,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             uq.ilabs.batchlabserver.WaitEstimate proxyWaitEstimate = this.batchLabServerProxy.getEffectiveQueueLength(userGroup, priorityHint);
@@ -162,6 +162,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -182,7 +185,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             uq.ilabs.batchlabserver.LabExperimentStatus proxyLabExperimentStatus = this.batchLabServerProxy.getExperimentStatus(experimentId);
@@ -193,6 +196,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -213,7 +219,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             labConfiguration = this.batchLabServerProxy.getLabConfiguration(userGroup);
@@ -223,6 +229,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -242,7 +251,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             labInfo = this.batchLabServerProxy.getLabInfo();
@@ -252,6 +261,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -271,7 +283,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             uq.ilabs.batchlabserver.LabStatus proxyLabStatus = this.batchLabServerProxy.getLabStatus();
@@ -282,6 +294,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -302,7 +317,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             uq.ilabs.batchlabserver.ResultReport proxyResultReport = this.batchLabServerProxy.retrieveResult(experimentId);
@@ -313,6 +328,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -336,7 +354,7 @@ public class BatchLabServerAPI {
 
         try {
             /*
-             * Set authentication information and call the web service
+             * Set the authentication information and call the web service
              */
             this.SetAuthHeader();
             uq.ilabs.batchlabserver.SubmissionReport proxySubmissionReport = this.batchLabServerProxy.submit(experimentId, experimentSpecification, userGroup, priorityHint);
@@ -347,6 +365,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -379,6 +400,9 @@ public class BatchLabServerAPI {
             throw new ProtocolException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
+            throw new ProtocolException(STRERR_LabServerUnaccessible);
+        } finally {
+            this.UnsetAuthHeader();
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
@@ -404,13 +428,20 @@ public class BatchLabServerAPI {
         ((BindingProvider) this.batchLabServerProxy).getRequestContext().put(this.qnameAuthHeader.getLocalPart(), authHeader);
     }
 
+    /**
+     *
+     */
+    private void UnsetAuthHeader() {
+        ((BindingProvider) this.batchLabServerProxy).getRequestContext().remove(this.qnameAuthHeader.getLocalPart());
+    }
+
     //<editor-fold defaultstate="collapsed" desc="ConvertType">
     /**
      *
      * @param arrayOfString
      * @return String[]
      */
-    private String[] ConvertType(ArrayOfString arrayOfString) {
+    private String[] ConvertType(uq.ilabs.batchlabserver.ArrayOfString arrayOfString) {
         String[] strings = null;
 
         if (arrayOfString != null) {

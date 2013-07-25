@@ -12,6 +12,7 @@ import uq.ilabs.library.datatypes.ticketing.Coupon;
  */
 public class ServiceDescription {
 
+    public static final String STR_RequestSystemSupport = "requestSystemSupport";
     /**
      * An XML-encoded string that describes the services provided by the service provider described by this registry
      * entry.

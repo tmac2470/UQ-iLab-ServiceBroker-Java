@@ -48,20 +48,29 @@ public class Coupon {
     }
 
     public Coupon() {
+        this.couponId = -1;
+        this.cancelled = false;
+    }
+
+    public Coupon(long couponId) {
+        this.couponId = couponId;
+        this.cancelled = false;
+    }
+
+    public Coupon(String passkey) {
+        this();
+        this.passkey = passkey;
     }
 
     public Coupon(String issuerGuid, String passkey) {
-        this.couponId = -1;
+        this(passkey);
         this.issuerGuid = issuerGuid;
         this.passkey = passkey;
-        this.cancelled = false;
     }
 
     public Coupon(long couponId, String issuerGuid, String passkey) {
+        this(issuerGuid, passkey);
         this.couponId = couponId;
-        this.issuerGuid = issuerGuid;
-        this.passkey = passkey;
-        this.cancelled = false;
     }
 
     @Override
