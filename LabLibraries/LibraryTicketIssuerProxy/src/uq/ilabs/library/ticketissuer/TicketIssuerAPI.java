@@ -4,20 +4,18 @@
  */
 package uq.ilabs.library.ticketissuer;
 
+import edu.mit.ilab.ilabs.ticketissuer.proxy.TicketIssuerProxy;
+import edu.mit.ilab.ilabs.ticketissuer.proxy.TicketIssuerProxySoap;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.ProtocolException;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 import uq.ilabs.library.datatypes.ticketing.Coupon;
 import uq.ilabs.library.datatypes.ticketing.Ticket;
 import uq.ilabs.library.datatypes.ticketing.TicketTypes;
 import uq.ilabs.library.lab.utilities.Logfile;
-import uq.ilabs.ticketissuer.AgentAuthHeader;
-import uq.ilabs.ticketissuer.ObjectFactory;
-import uq.ilabs.ticketissuer.TicketIssuerProxy;
-import uq.ilabs.ticketissuer.TicketIssuerProxySoap;
+import java.util.Map;
+import uq.ilabs.library.datatypes.service.AgentAuthHeader;
 
 /**
  *
@@ -45,7 +43,6 @@ public class TicketIssuerAPI {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private TicketIssuerProxySoap ticketIssuerProxy;
-    private QName qnameAgentAuthHeader;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private String authHeaderAgentGuid;
@@ -99,13 +96,6 @@ public class TicketIssuerAPI {
             ((BindingProvider) this.ticketIssuerProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
             /*
-             * Get authentication header QName
-             */
-            ObjectFactory objectFactory = new ObjectFactory();
-            JAXBElement<AgentAuthHeader> jaxbElementAgentAuthHeader = objectFactory.createAgentAuthHeader(new AgentAuthHeader());
-            this.qnameAgentAuthHeader = jaxbElementAgentAuthHeader.getName();
-
-            /*
              * Initialise local variables
              */
             this.retryCount = INT_RetryCount;
@@ -140,16 +130,16 @@ public class TicketIssuerAPI {
                  * Set authentication information and call the web service
                  */
                 this.SetAgentAuthHeader();
-                success = this.ticketIssuerProxy.addTicket(ConvertTypes.ConvertType(coupon), type, redeemerGuid, duration, payload);
+                success = this.ticketIssuerProxy.addTicket(ConvertTypes.Convert(coupon), type, redeemerGuid, duration, payload);
                 break;
 
             } catch (SOAPFaultException ex) {
                 Logfile.Write(ex.getMessage());
-                throw new ProtocolException(ex.getFault().getFaultString());
+                throw new WebServiceException(ex.getFault().getFaultString());
             } catch (Exception ex) {
                 Logfile.WriteError(String.format(STRERR_MessageRetries_arg2, ex.toString(), retries));
                 if (--retries == 0) {
-                    throw new ProtocolException(STRERR_TicketIssuerUnaccessible);
+                    throw new WebServiceException(STRERR_TicketIssuerUnaccessible);
                 }
             } finally {
                 this.UnsetAgentAuthHeader();
@@ -182,17 +172,17 @@ public class TicketIssuerAPI {
                  * Set authentication information and call the web service
                  */
                 this.SetAgentAuthHeader();
-                uq.ilabs.ticketissuer.Coupon proxyCoupon = this.ticketIssuerProxy.createTicket(type, redeemerGuid, duration, payload);
-                coupon = ConvertTypes.ConvertType(proxyCoupon);
+                edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon proxyCoupon = this.ticketIssuerProxy.createTicket(type, redeemerGuid, duration, payload);
+                coupon = ConvertTypes.Convert(proxyCoupon);
                 break;
 
             } catch (SOAPFaultException ex) {
                 Logfile.Write(ex.getMessage());
-                throw new ProtocolException(ex.getFault().getFaultString());
+                throw new WebServiceException(ex.getFault().getFaultString());
             } catch (Exception ex) {
                 Logfile.WriteError(String.format(STRERR_MessageRetries_arg2, ex.toString(), retries));
                 if (--retries == 0) {
-                    throw new ProtocolException(STRERR_TicketIssuerUnaccessible);
+                    throw new WebServiceException(STRERR_TicketIssuerUnaccessible);
                 }
             } finally {
                 this.UnsetAgentAuthHeader();
@@ -224,18 +214,18 @@ public class TicketIssuerAPI {
                  * Set authentication information and call the web service
                  */
                 this.SetAgentAuthHeader();
-                uq.ilabs.ticketissuer.Ticket proxyTicket =
-                        this.ticketIssuerProxy.redeemTicket(ConvertTypes.ConvertType(coupon), ticketType.toString(), redeemerGuid);
-                ticket = ConvertTypes.ConvertType(proxyTicket);
+                edu.mit.ilab.ilabs.ticketissuer.proxy.Ticket proxyTicket =
+                        this.ticketIssuerProxy.redeemTicket(ConvertTypes.Convert(coupon), ticketType.toString(), redeemerGuid);
+                ticket = ConvertTypes.Convert(proxyTicket);
                 break;
 
             } catch (SOAPFaultException ex) {
                 Logfile.Write(ex.getMessage());
-                throw new ProtocolException(ex.getFault().getFaultString());
+                throw new WebServiceException(ex.getFault().getFaultString());
             } catch (Exception ex) {
                 Logfile.WriteError(String.format(STRERR_MessageRetries_arg2, ex.toString(), retries));
                 if (--retries == 0) {
-                    throw new ProtocolException(STRERR_TicketIssuerUnaccessible);
+                    throw new WebServiceException(STRERR_TicketIssuerUnaccessible);
                 }
             } finally {
                 this.UnsetAgentAuthHeader();
@@ -267,16 +257,16 @@ public class TicketIssuerAPI {
                  * Set authentication information and call the web service
                  */
                 this.SetAgentAuthHeader();
-                success = this.ticketIssuerProxy.requestTicketCancellation(ConvertTypes.ConvertType(coupon), type, redeemerGuid);
+                success = this.ticketIssuerProxy.requestTicketCancellation(ConvertTypes.Convert(coupon), type, redeemerGuid);
                 break;
 
             } catch (SOAPFaultException ex) {
                 Logfile.Write(ex.getMessage());
-                throw new ProtocolException(ex.getFault().getFaultString());
+                throw new WebServiceException(ex.getFault().getFaultString());
             } catch (Exception ex) {
                 Logfile.WriteError(String.format(STRERR_MessageRetries_arg2, ex.toString(), retries));
                 if (--retries == 0) {
-                    throw new ProtocolException(STRERR_TicketIssuerUnaccessible);
+                    throw new WebServiceException(STRERR_TicketIssuerUnaccessible);
                 }
             } finally {
                 this.UnsetAgentAuthHeader();
@@ -298,18 +288,20 @@ public class TicketIssuerAPI {
          */
         AgentAuthHeader agentAuthHeader = new AgentAuthHeader();
         agentAuthHeader.setAgentGuid(this.authHeaderAgentGuid);
-        agentAuthHeader.setCoupon(ConvertTypes.ConvertType(this.authHeaderCoupon));
+        agentAuthHeader.setCoupon(this.authHeaderCoupon);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.ticketIssuerProxy).getRequestContext().put(this.qnameAgentAuthHeader.getLocalPart(), agentAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.ticketIssuerProxy).getRequestContext();
+        requestContext.put(AgentAuthHeader.class.getSimpleName(), agentAuthHeader);
     }
 
     /**
      *
      */
     private void UnsetAgentAuthHeader() {
-        ((BindingProvider) this.ticketIssuerProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.ticketIssuerProxy).getRequestContext();
+        requestContext.remove(AgentAuthHeader.class.getSimpleName());
     }
 }

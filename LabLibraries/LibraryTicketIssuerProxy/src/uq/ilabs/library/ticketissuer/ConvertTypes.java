@@ -21,7 +21,7 @@ public class ConvertTypes {
      * @param xmlGregorianCalendar
      * @return Calendar
      */
-    public static Calendar ConvertType(XMLGregorianCalendar xmlGregorianCalendar) {
+    public static Calendar Convert(XMLGregorianCalendar xmlGregorianCalendar) {
         Calendar calendar = null;
 
         if (xmlGregorianCalendar != null) {
@@ -37,7 +37,7 @@ public class ConvertTypes {
      * @param proxyCoupon
      * @return Coupon
      */
-    public static Coupon ConvertType(uq.ilabs.ticketissuer.Coupon proxyCoupon) {
+    public static Coupon Convert(edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon proxyCoupon) {
         Coupon coupon = null;
 
         if (proxyCoupon != null) {
@@ -55,7 +55,7 @@ public class ConvertTypes {
      * @param proxyTicket
      * @return Ticket
      */
-    public static Ticket ConvertType(uq.ilabs.ticketissuer.Ticket proxyTicket) {
+    public static Ticket Convert(edu.mit.ilab.ilabs.ticketissuer.proxy.Ticket proxyTicket) {
         Ticket ticket = null;
 
         if (proxyTicket != null) {
@@ -69,7 +69,7 @@ public class ConvertTypes {
             ticket.setDuration(proxyTicket.getDuration());
             ticket.setCancelled(proxyTicket.isIsCancelled());
             ticket.setPayload(proxyTicket.getPayload());
-            ticket.setDateCreated(ConvertType(proxyTicket.getCreationTime()));
+            ticket.setDateCreated(Convert(proxyTicket.getCreationTime()));
         }
 
         return ticket;
@@ -78,13 +78,13 @@ public class ConvertTypes {
     /**
      *
      * @param coupon
-     * @return uq.ilabs.ticketissuer.Coupon
+     * @return edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon
      */
-    public static uq.ilabs.ticketissuer.Coupon ConvertType(Coupon coupon) {
-        uq.ilabs.ticketissuer.Coupon proxyCoupon = null;
+    public static edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon Convert(Coupon coupon) {
+        edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon proxyCoupon = null;
 
         if (coupon != null) {
-            proxyCoupon = new uq.ilabs.ticketissuer.Coupon();
+            proxyCoupon = new edu.mit.ilab.ilabs.ticketissuer.proxy.Coupon();
             proxyCoupon.setCouponId(coupon.getCouponId());
             proxyCoupon.setIssuerGuid(coupon.getIssuerGuid());
             proxyCoupon.setPasskey(coupon.getPasskey());

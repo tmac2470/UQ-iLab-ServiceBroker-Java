@@ -12,6 +12,8 @@ import uq.ilabs.library.datatypes.ticketing.Coupon;
  */
 public class AgentAuthHeader extends AuthenticationHeader {
 
+    public static final String STR_AgentGuid = "agentGuid";
+    //
     protected String agentGuid;
 
     public String getAgentGuid() {

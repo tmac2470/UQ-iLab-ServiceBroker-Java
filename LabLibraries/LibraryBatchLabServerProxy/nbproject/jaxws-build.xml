@@ -19,7 +19,7 @@
     <target name="wsimport-client-IBatchLabServerProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx"/>
         <property name="wsdl-IBatchLabServerProxy.asmx" location="xml-resources/web-service-references/IBatchLabServerProxy.asmx/wsdl/IBatchLabServerProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx" wsdl="${wsdl-IBatchLabServerProxy.asmx}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IBatchLabServerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.batchlabserver">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx" wsdl="${wsdl-IBatchLabServerProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IBatchLabServerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.batchlabserver.proxy">
             <binding dir="xml-resources/web-service-references/IBatchLabServerProxy.asmx/bindings" includes="IBatchLabServerProxy.asmx_handler.xml"/>
             <depends file="${wsdl-IBatchLabServerProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx"/>
@@ -37,7 +37,7 @@
     </target>
     <target name="wsimport-client-clean-IBatchLabServerProxy.asmx" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/IBatchLabServerProxy.asmx"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uq/ilabs/batchlabserver"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-IBatchLabServerProxy.asmx"/>
 </project>

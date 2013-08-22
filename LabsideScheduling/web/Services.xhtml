@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./LabsideScheduling.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Services
+            </ui:define>
+
+            <ui:define name="content">
+                #{servicesBean.pageLoad()}
+                <h4>
+                    Select a Service:
+                </h4>
+                <h:form>
+                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{servicesBean.hsomService}">
+                        <f:selectItems value="#{servicesBean.serviceList}" var="i" itemLabel="#{i.label}" itemValue="#{i.value}" />
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{servicesBean.actionSelect()}"/>
+                </h:form>
+                <p />
+                <h:panelGroup rendered="#{servicesBean.registered}">
+                    <h4>
+                        Service Information:
+                    </h4>
+                    <h:form>
+                        <table  border="1">
+                            <tr>
+                                <td class="infotable">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="information">
+                                                Service Name:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceName}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="information">
+                                                Service Guid:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceGuid}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Service Url:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceUrl}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Client Url:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitClientUrl}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Service Type:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceType}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <h4>
+                                                    Optional Information
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Description:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputTextarea class="hinputTextarea" readonly="true" rows="2" value="#{servicesBean.htaDescription}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Location:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitLocation}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Information Url:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitInfoUrl}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Contact Name:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitContactName}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Contact Email:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitContactEmail}" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                </h:panelGroup>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{servicesBean.holMessageClass}" value="#{servicesBean.holMessage}" rendered="#{!empty(servicesBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

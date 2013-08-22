@@ -5,7 +5,7 @@
     <client name="IBatchServiceBrokerProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/IBatchServiceBrokerProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>IBatchServiceBrokerProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uq.ilabs.batchservicebroker</package-name>
+      <package-name forceReplace="true">edu.mit.ilab</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <binding>
         <file-name>IBatchServiceBrokerProxy.asmx_handler.xml</file-name>
@@ -34,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uq.ilabs.batchservicebroker</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.batchservicebroker.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

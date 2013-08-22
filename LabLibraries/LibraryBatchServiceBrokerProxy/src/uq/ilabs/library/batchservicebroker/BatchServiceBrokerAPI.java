@@ -4,24 +4,20 @@
  */
 package uq.ilabs.library.batchservicebroker;
 
+import edu.mit.ilab.ilabs.batchservicebroker.proxy.BatchServiceBrokerProxy;
+import edu.mit.ilab.ilabs.batchservicebroker.proxy.BatchServiceBrokerProxySoap;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.ProtocolException;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
-import uq.ilabs.batchservicebroker.BatchServiceBrokerProxy;
-import uq.ilabs.batchservicebroker.BatchServiceBrokerProxySoap;
-import uq.ilabs.batchservicebroker.ObjectFactory;
-import uq.ilabs.batchservicebroker.SbAuthHeader;
+import java.util.Map;
 import uq.ilabs.library.datatypes.batch.ClientSubmissionReport;
-import uq.ilabs.library.datatypes.batch.ExperimentStatus;
 import uq.ilabs.library.datatypes.batch.LabExperimentStatus;
 import uq.ilabs.library.datatypes.batch.LabStatus;
 import uq.ilabs.library.datatypes.batch.ResultReport;
-import uq.ilabs.library.datatypes.batch.StatusCodes;
 import uq.ilabs.library.datatypes.batch.ValidationReport;
 import uq.ilabs.library.datatypes.batch.WaitEstimate;
+import uq.ilabs.library.datatypes.service.SbAuthHeader;
 import uq.ilabs.library.lab.utilities.Logfile;
 
 /**
@@ -47,7 +43,6 @@ public class BatchServiceBrokerAPI {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private BatchServiceBrokerProxySoap batchServiceBrokerProxy;
-    private QName qNameSbAuthHeader;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private long couponId;
@@ -108,13 +103,6 @@ public class BatchServiceBrokerAPI {
             this.batchServiceBrokerProxy = webServiceClient.getBatchServiceBrokerProxySoap();
             ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
-            /*
-             * Get authentication header QName
-             */
-            ObjectFactory objectFactory = new ObjectFactory();
-            JAXBElement<SbAuthHeader> jaxbElementSbAuthHeader = objectFactory.createSbAuthHeader(new SbAuthHeader());
-            this.qNameSbAuthHeader = jaxbElementSbAuthHeader.getName();
-
         } catch (NullPointerException | IllegalArgumentException ex) {
             Logfile.WriteError(ex.toString());
             throw ex;
@@ -143,10 +131,10 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -180,15 +168,15 @@ public class BatchServiceBrokerAPI {
              * Set authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.WaitEstimate proxyWaitEstimate = this.batchServiceBrokerProxy.getEffectiveQueueLength(this.labServerId, priorityHint);
-            waitEstimate = this.ConvertType(proxyWaitEstimate);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.WaitEstimate proxyWaitEstimate = this.batchServiceBrokerProxy.getEffectiveQueueLength(this.labServerId, priorityHint);
+            waitEstimate = ConvertTypes.Convert(proxyWaitEstimate);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -214,15 +202,15 @@ public class BatchServiceBrokerAPI {
              * Set the authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.LabExperimentStatus proxyLabExperimentStatus = this.batchServiceBrokerProxy.getExperimentStatus(experimentId);
-            labExperimentStatus = this.ConvertType(proxyLabExperimentStatus);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.LabExperimentStatus proxyLabExperimentStatus = this.batchServiceBrokerProxy.getExperimentStatus(experimentId);
+            labExperimentStatus = ConvertTypes.Convert(proxyLabExperimentStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -251,10 +239,10 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -283,10 +271,10 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -311,15 +299,15 @@ public class BatchServiceBrokerAPI {
              * Set authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.LabStatus proxyLabStatus = this.batchServiceBrokerProxy.getLabStatus(this.labServerId);
-            labStatus = this.ConvertType(proxyLabStatus);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.LabStatus proxyLabStatus = this.batchServiceBrokerProxy.getLabStatus(this.labServerId);
+            labStatus = ConvertTypes.Convert(proxyLabStatus);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -345,15 +333,15 @@ public class BatchServiceBrokerAPI {
              * Set authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.ResultReport proxyResultReport = this.batchServiceBrokerProxy.retrieveResult(experimentId);
-            resultReport = this.ConvertType(proxyResultReport);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.ResultReport proxyResultReport = this.batchServiceBrokerProxy.retrieveResult(experimentId);
+            resultReport = ConvertTypes.Convert(proxyResultReport);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -390,15 +378,15 @@ public class BatchServiceBrokerAPI {
              * Set authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.ClientSubmissionReport proxyClientSubmissionReport = this.batchServiceBrokerProxy.submit(this.labServerId, experimentSpecification, priorityHint, emailNotification);
-            clientSubmissionReport = this.ConvertType(proxyClientSubmissionReport);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.ClientSubmissionReport proxyClientSubmissionReport = this.batchServiceBrokerProxy.submit(this.labServerId, experimentSpecification, priorityHint, emailNotification);
+            clientSubmissionReport = ConvertTypes.Convert(proxyClientSubmissionReport);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -424,15 +412,15 @@ public class BatchServiceBrokerAPI {
              * Set authentication information and call the web service
              */
             this.SetSbAuthHeader();
-            uq.ilabs.batchservicebroker.ValidationReport proxyValidationReport = this.batchServiceBrokerProxy.validate(this.labServerId, experimentSpecification);
-            validationReport = this.ConvertType(proxyValidationReport);
+            edu.mit.ilab.ilabs.batchservicebroker.proxy.ValidationReport proxyValidationReport = this.batchServiceBrokerProxy.validate(this.labServerId, experimentSpecification);
+            validationReport = ConvertTypes.Convert(proxyValidationReport);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         } finally {
             this.UnsetSbAuthHeader();
         }
@@ -459,10 +447,10 @@ public class BatchServiceBrokerAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_ServiceBrokerUnaccessible);
+            throw new WebServiceException(STRERR_ServiceBrokerUnaccessible);
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName,
@@ -480,165 +468,21 @@ public class BatchServiceBrokerAPI {
          * Create authentication header
          */
         SbAuthHeader sbAuthHeader = new SbAuthHeader();
-        sbAuthHeader.setCouponID(this.couponId);
-        sbAuthHeader.setCouponPassKey(this.couponPasskey);
+        sbAuthHeader.setCouponId(this.couponId);
+        sbAuthHeader.setCouponPasskey(this.couponPasskey);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext().put(this.qNameSbAuthHeader.getLocalPart(), sbAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext();
+        requestContext.put(SbAuthHeader.class.getSimpleName(), sbAuthHeader);
     }
 
     /**
      *
      */
     private void UnsetSbAuthHeader() {
-        ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext().remove(this.qNameSbAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.batchServiceBrokerProxy).getRequestContext();
+        requestContext.remove(SbAuthHeader.class.getSimpleName());
     }
-
-    //<editor-fold defaultstate="collapsed" desc="ConvertType">
-    /**
-     *
-     * @param arrayOfString
-     * @return String[]
-     */
-    private String[] ConvertType(uq.ilabs.batchservicebroker.ArrayOfString arrayOfString) {
-        String[] strings = null;
-
-        if (arrayOfString != null) {
-            strings = arrayOfString.getString().toArray(new String[0]);
-        }
-
-        return strings;
-    }
-
-    /**
-     *
-     * @param proxyClientSubmissionReport
-     * @return ClientSubmissionReport
-     */
-    private ClientSubmissionReport ConvertType(uq.ilabs.batchservicebroker.ClientSubmissionReport proxyClientSubmissionReport) {
-        ClientSubmissionReport clientSubmissionReport = null;
-
-        if (proxyClientSubmissionReport != null) {
-            clientSubmissionReport = new ClientSubmissionReport();
-            clientSubmissionReport.setExperimentId(proxyClientSubmissionReport.getExperimentID());
-            clientSubmissionReport.setMinTimeToLive(proxyClientSubmissionReport.getMinTimeToLive());
-            clientSubmissionReport.setValidationReport(this.ConvertType(proxyClientSubmissionReport.getVReport()));
-            clientSubmissionReport.setWaitEstimate(this.ConvertType(proxyClientSubmissionReport.getWait()));
-        }
-
-        return clientSubmissionReport;
-    }
-
-    /**
-     *
-     * @param proxyExperimentStatus
-     * @return ExperimentStatus
-     */
-    private ExperimentStatus ConvertType(uq.ilabs.batchservicebroker.ExperimentStatus proxyExperimentStatus) {
-        ExperimentStatus experimentStatus = null;
-
-        if (proxyExperimentStatus != null) {
-            experimentStatus = new ExperimentStatus();
-            experimentStatus.setEstRemainingRuntime(proxyExperimentStatus.getEstRemainingRuntime());
-            experimentStatus.setEstRuntime(proxyExperimentStatus.getEstRuntime());
-            experimentStatus.setStatusCode(StatusCodes.ToStatusCode(proxyExperimentStatus.getStatusCode()));
-            experimentStatus.setWaitEstimate(this.ConvertType(proxyExperimentStatus.getWait()));
-        }
-
-        return experimentStatus;
-    }
-
-    /**
-     *
-     * @param proxyLabExperimentStatus
-     * @return LabExperimentStatus
-     */
-    private LabExperimentStatus ConvertType(uq.ilabs.batchservicebroker.LabExperimentStatus proxyLabExperimentStatus) {
-        LabExperimentStatus labExperimentStatus = null;
-
-        if (proxyLabExperimentStatus != null) {
-            labExperimentStatus = new LabExperimentStatus();
-            labExperimentStatus.setMinTimetoLive(proxyLabExperimentStatus.getMinTimetoLive());
-            labExperimentStatus.setExperimentStatus(this.ConvertType(proxyLabExperimentStatus.getStatusReport()));
-        }
-
-        return labExperimentStatus;
-    }
-
-    /**
-     *
-     * @param proxyLabStatus
-     * @return LabStatus
-     */
-    private LabStatus ConvertType(uq.ilabs.batchservicebroker.LabStatus proxyLabStatus) {
-        LabStatus labStatus = null;
-
-        if (proxyLabStatus != null) {
-            labStatus = new LabStatus();
-            labStatus.setOnline(proxyLabStatus.isOnline());
-            labStatus.setLabStatusMessage(proxyLabStatus.getLabStatusMessage());
-        }
-
-        return labStatus;
-    }
-
-    /**
-     *
-     * @param proxyResultReport
-     * @return ResultReport
-     */
-    private ResultReport ConvertType(uq.ilabs.batchservicebroker.ResultReport proxyResultReport) {
-        ResultReport resultReport = null;
-
-        if (proxyResultReport != null) {
-            resultReport = new ResultReport();
-            resultReport.setErrorMessage(proxyResultReport.getErrorMessage());
-            resultReport.setXmlExperimentResults(proxyResultReport.getExperimentResults());
-            resultReport.setStatusCode(StatusCodes.ToStatusCode(proxyResultReport.getStatusCode()));
-            resultReport.setXmlBlobExtension(proxyResultReport.getXmlBlobExtension());
-            resultReport.setXmlResultExtension(proxyResultReport.getXmlResultExtension());
-            resultReport.setWarningMessages(this.ConvertType(proxyResultReport.getWarningMessages()));
-        }
-
-        return resultReport;
-    }
-
-    /**
-     *
-     * @param proxyValidationReport
-     * @return ValidationReport
-     */
-    private ValidationReport ConvertType(uq.ilabs.batchservicebroker.ValidationReport proxyValidationReport) {
-        ValidationReport validationReport = null;
-
-        if (proxyValidationReport != null) {
-            validationReport = new ValidationReport();
-            validationReport.setAccepted(proxyValidationReport.isAccepted());
-            validationReport.setErrorMessage(proxyValidationReport.getErrorMessage());
-            validationReport.setEstRuntime(proxyValidationReport.getEstRuntime());
-            validationReport.setWarningMessages(ConvertType(proxyValidationReport.getWarningMessages()));
-        }
-
-        return validationReport;
-    }
-
-    /**
-     *
-     * @param proxyWaitEstimate
-     * @return WaitEstimate
-     */
-    private WaitEstimate ConvertType(uq.ilabs.batchservicebroker.WaitEstimate proxyWaitEstimate) {
-        WaitEstimate waitEstimate = null;
-
-        if (proxyWaitEstimate != null) {
-            waitEstimate = new WaitEstimate();
-            waitEstimate.setEffectiveQueueLength(proxyWaitEstimate.getEffectiveQueueLength());
-            waitEstimate.setEstWait(proxyWaitEstimate.getEstWait());
-        }
-
-        return waitEstimate;
-    }
-    //</editor-fold>
 }

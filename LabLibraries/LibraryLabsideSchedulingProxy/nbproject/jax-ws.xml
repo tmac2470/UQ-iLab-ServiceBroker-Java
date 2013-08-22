@@ -5,7 +5,7 @@
     <client name="ILabsideSchedulingProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/ILabsideSchedulingProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>ILabsideSchedulingProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uq.ilabs.labsidescheduling</package-name>
+      <package-name forceReplace="true">edu.mit.ilab.ilabs</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <binding>
         <file-name>ILabsideSchedulingProxy.asmx_handler.xml</file-name>
@@ -34,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uq.ilabs.labsidescheduling</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.labsidescheduling.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

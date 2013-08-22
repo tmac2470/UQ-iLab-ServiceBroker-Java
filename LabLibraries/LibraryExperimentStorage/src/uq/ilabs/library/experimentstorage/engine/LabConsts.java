@@ -16,5 +16,8 @@ public class LabConsts {
     public static final String STRPRM_LogFilesPath = "LogFilesPath";
     public static final String STRPRM_LogLevel = "LogLevel";
     public static final String STRPRM_XmlConfigPropertiesPath = "XmlConfigPropertiesPath";
-
+    /*
+     * String constants
+     */
+    public static final String STR_MakeSelection = "-- Make Selection --";
 }

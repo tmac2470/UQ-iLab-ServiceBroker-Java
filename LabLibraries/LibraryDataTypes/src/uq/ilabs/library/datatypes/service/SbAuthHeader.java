@@ -10,25 +10,25 @@ package uq.ilabs.library.datatypes.service;
  */
 public class SbAuthHeader {
 
-    protected long couponID;
-    protected String couponPassKey;
+    public static final String STR_CouponId = "couponID";
+    public static final String STR_CouponPasskey = "couponPassKey";
+    //
+    protected long couponId;
+    protected String couponPasskey;
 
-    public long getCouponID() {
-        return couponID;
+    public long getCouponId() {
+        return couponId;
     }
 
-    public void setCouponID(long couponID) {
-        this.couponID = couponID;
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
     }
 
-    public String getCouponPassKey() {
-        return couponPassKey;
+    public String getCouponPasskey() {
+        return couponPasskey;
     }
 
-    public void setCouponPassKey(String couponPassKey) {
-        this.couponPassKey = couponPassKey;
-    }
-
-    public SbAuthHeader() {
+    public void setCouponPasskey(String couponPasskey) {
+        this.couponPasskey = couponPasskey;
     }
 }

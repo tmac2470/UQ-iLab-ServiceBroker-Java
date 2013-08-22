@@ -12,6 +12,11 @@ import uq.ilabs.library.datatypes.ticketing.Coupon;
  */
 public class AuthenticationHeader {
 
+    public static final String STR_Coupon = "coupon";
+    public static final String STR_IssuerGuid = "issuerGuid";
+    public static final String STR_CouponId = "couponId";
+    public static final String STR_Passkey = "passkey";
+    //
     protected Coupon coupon;
 
     public Coupon getCoupon() {

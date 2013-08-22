@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Manage Services
+            </ui:define>
+
+            <ui:define name="content">
+                #{manageServicesBean.pageLoad()}
+                <h4>
+                    Select a Service:
+                </h4>
+                <h:form>
+                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageServicesBean.hsomService}">
+                        <f:selectItems value="#{manageServicesBean.serviceList}" var="i" itemLabel="#{i.label}" itemValue="#{i.value}" />
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageServicesBean.actionSelect()}"/>
+                </h:form>
+                <p />
+                <h4>
+                    Service Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                        <tr>
+                                            <td class="information">
+                                                Service Name:
+                                            </td>
+                                            <td class="information">
+                                                <h:panelGroup rendered="#{!manageServicesBean.registered}">
+                                                    <h:inputText class="hinputText" value="#{manageServicesBean.hitServiceName}" />
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                                    <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageServicesBean.hitServiceName}" />
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="information">
+                                                Service Guid:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageServicesBean.hitServiceGuid}" />
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                    <tr>
+                                        <td class="label">
+                                            Service Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageServicesBean.registered}">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitServiceUrl}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageServicesBean.hitServiceUrl}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <h:panelGroup rendered="#{!manageServicesBean.registered}">
+                                        <tr>
+                                            <td class="label">
+                                                Service Passkey:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitServicePasskey}" />
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                        <tr>
+                                            <td class="label">
+                                                Client Url:
+                                            </td>
+                                            <td class="information">
+                                                <h:panelGroup rendered="#{!manageServicesBean.registered}">
+                                                    <h:inputText class="hinputText" value="#{manageServicesBean.hitClientUrl}" />
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                                    <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageServicesBean.hitClientUrl}" />
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Service Type:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageServicesBean.hitServiceType}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <h4>
+                                                    Optional Information
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Description:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputTextarea class="hinputTextarea" rows="2" value="#{manageServicesBean.htaDescription}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Location:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitLocation}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Information Url:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitInfoUrl}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Contact Name:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitContactName}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Contact Email:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputText" value="#{manageServicesBean.hitContactEmail}" />
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td class="buttons">
+                                            <h:panelGroup rendered="#{!manageServicesBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Register" action="#{manageServicesBean.actionRegister()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageServicesBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Update" action="#{manageServicesBean.actionUpdate()}"/>
+                                            </h:panelGroup>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="Delete" action="#{manageServicesBean.actionDelete()}" disabled="#{!manageServicesBean.registered}"
+                                                             onclick="javascript:return confirm('Delete Service... Are you really sure?');"/>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="New" action="#{manageServicesBean.actionNew()}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputText styleClass="#{manageServicesBean.holMessageClass}" value="#{manageServicesBean.holMessage}" rendered="#{!empty(manageServicesBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

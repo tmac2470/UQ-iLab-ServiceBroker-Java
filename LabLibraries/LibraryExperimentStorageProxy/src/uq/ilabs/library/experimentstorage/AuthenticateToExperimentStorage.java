@@ -8,7 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
-import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
@@ -20,10 +19,10 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-import edu.mit.ilab.ilabs.AgentAuthHeader;
-import edu.mit.ilab.ilabs.Coupon;
-import edu.mit.ilab.ilabs.ObjectFactory;
-import edu.mit.ilab.ilabs.OperationAuthHeader;
+import uq.ilabs.library.datatypes.service.AgentAuthHeader;
+import uq.ilabs.library.datatypes.service.AuthenticationHeader;
+import uq.ilabs.library.datatypes.service.OperationAuthHeader;
+import uq.ilabs.library.datatypes.ticketing.Coupon;
 import uq.ilabs.library.lab.utilities.Logfile;
 
 /**
@@ -32,22 +31,8 @@ import uq.ilabs.library.lab.utilities.Logfile;
  */
 public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageContext> {
 
-    //<editor-fold defaultstate="collapsed" desc="Constants">
-    /*
-     * String constants
-     */
-    private static final String STR_AgentGuid = "agentGuid";
-    private static final String STR_Coupon = "coupon";
-    private static final String STR_CouponIssuerGuid = "issuerGuid";
-    private static final String STR_CouponCouponId = "couponId";
-    private static final String STR_CouponPasskey = "passkey";
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private static boolean initialised = false;
     private static SOAPFactory soapFactory;
-    private static ObjectFactory objectFactory;
-    private static QName qnameAgentAuthHeader;
-    private static QName qnameOperationAuthHeader;
     //</editor-fold>
 
     @Override
@@ -60,17 +45,10 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
         if ((Boolean) messageContext.get(SOAPMessageContext.MESSAGE_OUTBOUND_PROPERTY) == true) {
             try {
                 /*
-                 * Check if local static variables have been initialised
+                 * Check if SOAPFactory instance have been created
                  */
-                if (initialised == false) {
+                if (soapFactory == null) {
                     soapFactory = SOAPFactory.newInstance();
-                    objectFactory = new ObjectFactory();
-                    JAXBElement<AgentAuthHeader> jaxbElementAgentAuthHeader = objectFactory.createAgentAuthHeader(new AgentAuthHeader());
-                    qnameAgentAuthHeader = jaxbElementAgentAuthHeader.getName();
-                    JAXBElement<OperationAuthHeader> jaxbElementOperationAuthHeader = objectFactory.createOperationAuthHeader(new OperationAuthHeader());
-                    qnameOperationAuthHeader = jaxbElementOperationAuthHeader.getName();
-
-                    initialised = true;
                 }
 
                 /*
@@ -83,7 +61,7 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
                  */
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 messageContext.getMessage().writeTo(outputStream);
-                System.out.println(outputStream.toString());
+//                System.out.println(outputStream.toString());
 
                 success = true;
             } catch (SOAPException | IOException ex) {
@@ -127,19 +105,19 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
         /*
          * Get authentication header information and process the information according to the authentication header type
          */
-        Object object = messageContext.get(qnameAgentAuthHeader.getLocalPart());
+        Object object = messageContext.get(AgentAuthHeader.class.getSimpleName());
         if (object != null && object instanceof AgentAuthHeader) {
             /*
              * AgentAuthHeader
              */
-            this.ProcessAgentAuthHeader((AgentAuthHeader) object, qnameAgentAuthHeader, soapHeader);
+            this.ProcessAgentAuthHeader((AgentAuthHeader) object, QnameFactory.getAgentAuthHeaderQName(), soapHeader);
         }
-        object = messageContext.get(qnameOperationAuthHeader.getLocalPart());
+        object = messageContext.get(OperationAuthHeader.class.getSimpleName());
         if (object != null && object instanceof OperationAuthHeader) {
             /*
              * OperationAuthHeader
              */
-            this.ProcessOperationAuthHeader((OperationAuthHeader) object, qnameOperationAuthHeader, soapHeader);
+            this.ProcessOperationAuthHeader((OperationAuthHeader) object, QnameFactory.getOperationAuthHeaderQName(), soapHeader);
         }
 
     }
@@ -167,7 +145,7 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
                 /*
                  * Create AgentGuid element
                  */
-                QName qName = new QName(qnameAuthHeader.getNamespaceURI(), STR_AgentGuid, qnameAuthHeader.getPrefix());
+                QName qName = new QName(qnameAuthHeader.getNamespaceURI(), AgentAuthHeader.STR_AgentGuid, qnameAuthHeader.getPrefix());
                 SOAPElement element = soapFactory.createElement(qName);
                 element.addTextNode(agentAuthHeader.getAgentGuid());
                 headerElement.addChildElement(element);
@@ -241,13 +219,13 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
             /*
              * Create the coupon element
              */
-            QName qNameCoupon = new QName(qNameAuthHeader.getNamespaceURI(), STR_Coupon, qNameAuthHeader.getPrefix());
+            QName qNameCoupon = new QName(qNameAuthHeader.getNamespaceURI(), AuthenticationHeader.STR_Coupon, qNameAuthHeader.getPrefix());
             couponElement = soapFactory.createElement(qNameCoupon);
 
             /*
              * Create couponId element and add to the coupon element
              */
-            QName qName = new QName(qNameCoupon.getNamespaceURI(), STR_CouponCouponId, qNameCoupon.getPrefix());
+            QName qName = new QName(qNameCoupon.getNamespaceURI(), AuthenticationHeader.STR_CouponId, qNameCoupon.getPrefix());
             SOAPElement element = soapFactory.createElement(qName);
             element.addTextNode(Long.toString(coupon.getCouponId()));
             couponElement.addChildElement(element);
@@ -255,7 +233,7 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
             /*
              * Create the issuerGuid element and add to the coupon element
              */
-            qName = new QName(qNameCoupon.getNamespaceURI(), STR_CouponIssuerGuid, qNameCoupon.getPrefix());
+            qName = new QName(qNameCoupon.getNamespaceURI(), AuthenticationHeader.STR_IssuerGuid, qNameCoupon.getPrefix());
             element = soapFactory.createElement(qName);
             element.addTextNode(coupon.getIssuerGuid());
             couponElement.addChildElement(element);
@@ -263,7 +241,7 @@ public class AuthenticateToExperimentStorage implements SOAPHandler<SOAPMessageC
             /*
              * Create passkey element and add to the coupon element
              */
-            qName = new QName(qNameCoupon.getNamespaceURI(), STR_CouponPasskey, qNameCoupon.getPrefix());
+            qName = new QName(qNameCoupon.getNamespaceURI(), AuthenticationHeader.STR_Passkey, qNameCoupon.getPrefix());
             element = soapFactory.createElement(qName);
             element.addTextNode(coupon.getPasskey());
             couponElement.addChildElement(element);

@@ -6,9 +6,9 @@ package uq.ilabs.experimentstorage.client;
 
 import java.util.Map;
 import java.util.logging.Level;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import uq.ilabs.library.lab.utilities.Logfile;
 import uq.ilabs.library.lab.utilities.Password;
 import uq.ilabs.library.experimentstorage.client.Consts;
@@ -21,7 +21,7 @@ import uq.ilabs.library.experimentstorage.client.ExperimentStorageSession;
  *
  * @author uqlpayne
  */
-@ManagedBean
+@Named(value = "loginBean")
 @RequestScoped
 public class LoginBean {
 

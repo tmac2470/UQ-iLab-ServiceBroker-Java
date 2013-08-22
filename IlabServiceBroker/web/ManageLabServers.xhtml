@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Manage Batch LabServers
+            </ui:define>
+
+            <ui:define name="content">
+                #{manageLabServersBean.pageLoad()}
+                <h4>
+                    Select a LabServer:
+                </h4>
+                <h:form>
+                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabServersBean.hsomLabServer}">
+                        <f:selectItems value="#{manageLabServersBean.labServers}" />
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageLabServersBean.actionSelect()}"/>
+                </h:form>
+                <p />
+                <h4>
+                    LabServer Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="label">
+                                            LabServer Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageLabServersBean.registered}">
+                                                <h:inputText class="hinputText" value="#{manageLabServersBean.hitLabServerName}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabServersBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageLabServersBean.hitLabServerName}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            LabServer Guid:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageLabServersBean.registered}">
+                                                <h:inputText class="hinputText" style="width: 400px;" value="#{manageLabServersBean.hitLabServerGuid}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" action="#{manageLabServersBean.actionCreateGuid()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabServersBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{manageLabServersBean.hitLabServerGuid}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" disabled="true" action="#{manageLabServersBean.actionCreateGuid()}"/>
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            WebService Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitWebServiceUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Outgoing Passkey:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitOutgoingPasskey}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Incoming Passkey:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitIncomingPasskey}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                Optional Information
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Description:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="2" value="#{manageLabServersBean.htaDescription}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Location:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitLocation}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Information Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitInfoUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitContactName}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Email:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabServersBean.hitContactEmail}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td class="buttons">
+                                            <h:panelGroup rendered="#{!manageLabServersBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Save" action="#{manageLabServersBean.actionSave()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabServersBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Update" action="#{manageLabServersBean.actionUpdate()}"/>
+                                            </h:panelGroup>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="Delete" action="#{manageLabServersBean.actionDelete()}" disabled="#{!manageLabServersBean.registered}"
+                                                             onclick="javascript:return confirm('Delete LabServer... Are you really sure?');"/>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="New" action="#{manageLabServersBean.actionNew()}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{manageLabServersBean.holMessageClass}" value="#{manageLabServersBean.holMessage}" rendered="#{!empty(manageLabServersBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

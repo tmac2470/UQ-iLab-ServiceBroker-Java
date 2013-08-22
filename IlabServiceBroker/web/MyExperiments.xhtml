@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 250px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                My Experiments
+            </ui:define>
+
+            <ui:define name="content">
+                #{myExperimentsBean.pageLoad()}
+                <table>
+                    <tr valign="top">
+                        <td>
+                            <h4>
+                                Select Experiment:
+                            </h4>
+                            <h:form>
+                                <h:selectOneListbox size="10" styleClass="hselectOneMenu" style="width: 303px;" value="#{myExperimentsBean.hsomExperimentId}" >
+                                    <f:selectItems value="#{myExperimentsBean.experimentsList}" var="i" itemLabel="#{i.label}" itemValue="#{i.value}" />
+                                </h:selectOneListbox>
+                                <p>
+                                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{myExperimentsBean.actionSelect()}"/>
+                                </p>
+                            </h:form>
+                        </td>
+                        <td style="padding-left: 20px;">
+                            <h4>
+                                Experiment Information:
+                            </h4>
+                            <h:form>
+                                <table  border="1">
+                                    <tr>
+                                        <td class="infotable">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td class="label">
+                                                        Experiment Id:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitExperimentId}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        LabClient:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitLabClient}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        LabServer:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitLabServer}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        User:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitUser}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        Group:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitGroup}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        Status:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitStatus}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        Submission Time:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitSubmissionTime}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        Completion Time:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitCompletionTime}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        Total Records:
+                                                    </td>
+                                                    <td>
+                                                        <h:inputText class="hinputText" value="#{myExperimentsBean.hitTotalRecords}" readonly="true" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td class="buttons">
+                                                        <h:commandButton styleClass="hcommandButton" value="Records" disabled="#{myExperimentsBean.hcbRecordsDisabled}" action="#{myExperimentsBean.actionShowRecords()}"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h:form>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{myExperimentsBean.holMessageClass}" value="#{myExperimentsBean.holMessage}" rendered="#{!empty(myExperimentsBean.holMessage)}" />
+                </p>
+                <h:panelGroup rendered="#{myExperimentsBean.hpgRecordsRendered}">
+                    <table  border="1" cellpadding="5">
+                        <tr>
+                            <th>Record</th>
+                            <th>Type</th>
+                            <th>Data</th>
+                        </tr>
+                        <ui:repeat value="#{myExperimentsBean.experimentRecords}" var="record">
+                            <tr>
+                                <td>#{record.sequenceNum}</td>
+                                <td>#{record.recordType}</td>
+                                <td>#{record.contents}</td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                </h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

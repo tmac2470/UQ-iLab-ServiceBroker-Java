@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Manage LabClients
+            </ui:define>
+
+            <ui:define name="content">
+                #{manageLabClientsBean.pageLoad()}
+                <h4>
+                    Select a LabClient:
+                </h4>
+                <h:form>
+                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomLabClient}">
+                        <f:selectItems value="#{manageLabClientsBean.labClients}" />
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageLabClientsBean.actionSelect()}"/>
+                </h:form>
+                <p />
+                <h4>
+                    LabClient Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="label">
+                                            Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageLabClientsBean.registered}">
+                                                <h:inputText class="hinputText" value="#{manageLabClientsBean.hitClientName}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabClientsBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageLabClientsBean.hitClientName}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Guid<sup>1</sup>:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageLabClientsBean.registered}">
+                                                <h:inputText class="hinputText" style="width: 400px;" value="#{manageLabClientsBean.hitClientGuid}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabClientsBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{manageLabClientsBean.hitClientGuid}" />
+                                            </h:panelGroup>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="Create" disabled="#{manageLabClientsBean.registered}" action="#{manageLabClientsBean.actionCreateGuid()}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Title:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabClientsBean.hitTitle}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Version:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabClientsBean.hitVersion}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Description:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="2" value="#{manageLabClientsBean.htaDescription}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Client Type:
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu styleClass="hselectOneMenu" value="#{manageLabClientsBean.hsomClientType}" onchange="form.submit();">
+                                                <f:selectItems value="#{manageLabClientsBean.clientTypes}" />
+                                            </h:selectOneMenu>
+                                            &nbsp;
+                                            <h:panelGroup rendered="#{manageLabClientsBean.interactive}">
+                                                Reentrant
+                                                <h:selectBooleanCheckbox value="#{manageLabClientsBean.hcbReentrant}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelwrap">
+                                            Loader Script:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="3" value="#{manageLabClientsBean.htaLoaderScript}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                Optional Information
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabClientsBean.hitContactName}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Email:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabClientsBean.hitContactEmail}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelwrap">
+                                            Documentation Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageLabClientsBean.hitDocumentationUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelwrap">
+                                            Notes:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="1" value="#{manageLabClientsBean.htaNotes}" />
+                                        </td>
+                                    </tr>
+                                    <h:panelGroup rendered="#{manageLabClientsBean.registered}">
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <h4>
+                                                    Associated Services
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                LabServer:
+                                            </td>
+                                            <td class="information">
+                                                <h:panelGroup rendered="#{manageLabClientsBean.lsRegistered == false}">
+                                                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomLsProcessAgent}">
+                                                        <f:selectItems value="#{manageLabClientsBean.blsProcessAgents}" />
+                                                    </h:selectOneMenu>
+                                                    &nbsp;
+                                                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageLabClientsBean.actionSelectLabServer()}"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{manageLabClientsBean.lsRegistered == true}">
+                                                    <h:inputText class="hinputText" style="width: 400px;" readonly="true" value="#{manageLabClientsBean.hitLabServer}" />
+                                                    &nbsp;
+                                                    <h:commandButton styleClass="hcommandButton" value="Remove" action="#{manageLabClientsBean.actionRemoveLabServer()}"/>
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Ess:
+                                            </td>
+                                            <td class="information">
+                                                <h:panelGroup rendered="#{manageLabClientsBean.essRegistered == false}">
+                                                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomEssProcessAgent}">
+                                                        <f:selectItems value="#{manageLabClientsBean.essProcessAgents}" />
+                                                    </h:selectOneMenu>
+                                                    &nbsp;
+                                                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageLabClientsBean.actionSelectEss()}"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{manageLabClientsBean.essRegistered == true}">
+                                                    <h:inputText class="hinputText" style="width: 400px;" readonly="true" value="#{manageLabClientsBean.hitEssProcessAgent}" />
+                                                    &nbsp;
+                                                    <h:commandButton styleClass="hcommandButton" value="Remove" action="#{manageLabClientsBean.actionRemoveEss()}"/>
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                        <h:panelGroup rendered="#{manageLabClientsBean.interactive}">
+                                            <tr>
+                                                <td class="label">
+                                                    Uss:
+                                                </td>
+                                                <td class="information">
+                                                    <h:panelGroup rendered="#{manageLabClientsBean.ussRegistered == false}">
+                                                        <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomUssProcessAgent}">
+                                                            <f:selectItems value="#{manageLabClientsBean.ussProcessAgents}" />
+                                                        </h:selectOneMenu>
+                                                        &nbsp;
+                                                        <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageLabClientsBean.actionSelectUss()}"/>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup rendered="#{manageLabClientsBean.essRegistered == true}">
+                                                        <h:inputText class="hinputText" style="width: 400px;" readonly="true" value="#{manageLabClientsBean.hitUssProcessAgent}" />
+                                                        &nbsp;
+                                                        <h:commandButton styleClass="hcommandButton" value="Remove" action="#{manageLabClientsBean.actionRemoveUss()}"/>
+                                                    </h:panelGroup>
+                                                </td>
+                                            </tr>
+                                        </h:panelGroup>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <h4>
+                                                    Associated Groups
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Groups:
+                                            </td>
+                                            <td class="information">
+                                                <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomAssociatedGroup}">
+                                                    <f:selectItems value="#{manageLabClientsBean.associatedGroupList}" />
+                                                </h:selectOneMenu>
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Remove" action="#{manageLabClientsBean.actionRemoveGroup()}"
+                                                                 disabled="#{manageLabClientsBean.associatedGroupList == null}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Available:
+                                            </td>
+                                            <td class="information">
+                                                <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageLabClientsBean.hsomAvailableGroup}">
+                                                    <f:selectItems value="#{manageLabClientsBean.availableGroupList}" />
+                                                </h:selectOneMenu>
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Add" action="#{manageLabClientsBean.actionAddGroup()}"
+                                                                 disabled="#{manageLabClientsBean.availableGroupList == null}" />
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td class="buttons">
+                                            <h:panelGroup rendered="#{!manageLabClientsBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Save" action="#{manageLabClientsBean.actionSave()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageLabClientsBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Update" action="#{manageLabClientsBean.actionUpdate()}"/>
+                                            </h:panelGroup>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="Delete" action="#{manageLabClientsBean.actionDelete()}" disabled="#{manageLabClientsBean.deleteDisabled}"
+                                                             onclick="javascript:return confirm('Delete LabClient... Are you really sure?');"/>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="New" action="#{manageLabClientsBean.actionNew()}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <small>1. <i>Not required for Batch LabClients.</i></small>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{manageLabClientsBean.holMessageClass}" value="#{manageLabClientsBean.holMessage}" rendered="#{!empty(manageLabClientsBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

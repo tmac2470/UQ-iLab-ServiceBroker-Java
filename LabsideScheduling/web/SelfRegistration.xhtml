@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./LabsideScheduling.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Self Registration
+            </ui:define>
+
+            <ui:define name="content">
+                #{selfRegistrationBean.pageLoad()}
+                <h4>
+                    Service Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="label">
+                                            Service Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputText" value="#{selfRegistrationBean.hitServiceName}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{selfRegistrationBean.hitServiceName}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Service Guid:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputText" style="width: 400px;" value="#{selfRegistrationBean.hitServiceGuid}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" action="#{selfRegistrationBean.actionCreateGuid()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{selfRegistrationBean.hitServiceGuid}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" disabled="true" action="#{selfRegistrationBean.actionCreateGuid()}"/>
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Service Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitServiceUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Service Passkey:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputText" style="width: 400px;" value="#{selfRegistrationBean.hitServicePasskey}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" action="#{selfRegistrationBean.actionCreatePasskey()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{selfRegistrationBean.hitServicePasskey}" />
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Create" disabled="true" action="#{selfRegistrationBean.actionCreatePasskey()}"/>
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Client Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitClientUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Service Email:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitContactEmail}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                Optional Information
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Description:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="2" value="#{selfRegistrationBean.htaDescription}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Location:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitLocation}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Info Url:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitInfoUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitContactName}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td class="buttons">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
+                                                <h:commandButton styleClass="hcommandButton" value="Save" action="#{selfRegistrationBean.actionSave()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
+                                                <h:commandButton styleClass="hcommandButton" value="Update" action="#{selfRegistrationBean.actionUpdate()}"/>
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Test" action="#{selfRegistrationBean.actionTest()}"/>
+                                            </h:panelGroup>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{selfRegistrationBean.holMessageClass}" value="#{selfRegistrationBean.holMessage}" rendered="#{!empty(selfRegistrationBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

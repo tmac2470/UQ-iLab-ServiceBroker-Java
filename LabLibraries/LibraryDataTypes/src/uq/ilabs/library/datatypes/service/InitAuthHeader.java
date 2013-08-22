@@ -10,6 +10,8 @@ package uq.ilabs.library.datatypes.service;
  */
 public class InitAuthHeader {
 
+    public static final String STR_InitPasskey = "initPasskey";
+    //
     protected String initPasskey;
 
     public String getInitPasskey() {

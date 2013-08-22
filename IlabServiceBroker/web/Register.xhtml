@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextarea { width: 300px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Register
+            </ui:define>
+
+            <ui:define name="content">
+                #{registerBean.pageLoad()}
+                <p>
+                    Register for a new iLab ServiceBroker account by filling out the form below. You will receive a confirmation email.
+                </p>
+                <h4>
+                    Registration Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="label">
+                                            Username:
+                                        </td>
+                                        <td>
+                                            <h:inputText class="hinputText" value="#{registerBean.hitUsername}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            First Name:
+                                        </td>
+                                        <td>
+                                            <h:inputText class="hinputText" value="#{registerBean.hitFirstName}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Last Name:
+                                        </td>
+                                        <td>
+                                            <h:inputText class="hinputText" value="#{registerBean.hitLastname}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Email:
+                                        </td>
+                                        <td>
+                                            <h:inputText class="hinputText" value="#{registerBean.hitContactEmail}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Password:
+                                        </td>
+                                        <td>
+                                            <h:inputSecret class="hinputText" value="#{registerBean.hisPassword}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Confirm Password:
+                                        </td>
+                                        <td>
+                                            <h:inputSecret class="hinputText" value="#{registerBean.hisConfirmPassword}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Affiliation:
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu styleClass="hselectOneMenu" value="#{registerBean.hsomAffiliation}">
+                                                <f:selectItems value="#{registerBean.affiliations}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Requested Group:
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu styleClass="hselectOneMenu" value="#{registerBean.hsomRequestedGroup}">
+                                                <f:selectItems value="#{registerBean.requestedGroups}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                Optional Information
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelwrap">
+                                            Reason for requesting account:
+                                        </td>
+                                        <td>
+                                            <h:inputTextarea class="hinputTextarea" rows="4" value="#{registerBean.htaRegisterReason}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <h:commandButton styleClass="hcommandButton" value="Submit" action="#{registerBean.actionSubmit()}"/>
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Cancel" action="#{registerBean.actionCancel()}"/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{registerBean.holMessageClass}" value="#{registerBean.holMessage}" rendered="#{!empty(registerBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

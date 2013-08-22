@@ -24,15 +24,15 @@
     </servlet>
     <servlet>
         <servlet-name>ExperimentStorageServlet</servlet-name>
-        <servlet-class>uq.ilabs.experimentstorage.client.ExperimentStorageServlet</servlet-class>
+        <servlet-class>uq.ilabs.experimentstorage.ExperimentStorageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>uq.ilabs.experimentstorage.client.LogoutServlet</servlet-class>
+        <servlet-class>uq.ilabs.experimentstorage.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewExpiredServlet</servlet-name>
-        <servlet-class>uq.ilabs.experimentstorage.client.ViewExpiredServlet</servlet-class>
+        <servlet-class>uq.ilabs.experimentstorage.ViewExpiredServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>

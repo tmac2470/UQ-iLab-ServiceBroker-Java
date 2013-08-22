@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+            </ui:define>
+
+            <ui:define name="title">
+                My Groups
+            </ui:define>
+
+            <ui:define name="content">
+                #{myGroupsBean.pageLoad()}
+                <h:panelGroup rendered="#{myGroupsBean.groups != null}">
+                    <p>
+                        Select the group you would like to use for this session.
+                    </p>
+                    <h4>
+                        Available Groups and Labs:
+                    </h4>
+                    <h:form>
+                        <table  border="1">
+                            <tr>
+                                <td class="infotable">
+                                    <ui:repeat value="#{myGroupsBean.groups}" var="group">
+                                        <h:commandLink style="font-weight: bold;" value="#{group.name}" action="#{myGroupsBean.actionSelectGroup(group)}" /> - #{group.description}
+                                        <br />
+                                        <ul>
+                                            <ui:repeat value="#{group.labs}" var="lab">
+                                                <li>#{lab}</li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </ui:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                </h:panelGroup>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{myGroupsBean.holMessageClass}" value="#{myGroupsBean.holMessage}" rendered="#{!empty(myGroupsBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -7,10 +7,10 @@ package uq.ilabs.experimentstorage.client;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewExpiredException;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import uq.ilabs.library.datatypes.processagent.ProcessAgentTypes;
 import uq.ilabs.library.datatypes.processagent.StatusReport;
 import uq.ilabs.library.datatypes.ticketing.Coupon;
@@ -20,13 +20,13 @@ import uq.ilabs.library.processagent.database.types.ProcessAgentInfo;
 import uq.ilabs.library.processagent.database.types.SystemSupportInfo;
 import uq.ilabs.library.experimentstorage.client.Consts;
 import uq.ilabs.library.experimentstorage.client.ExperimentStorageSession;
-import uq.ilabs.library.processagent.ProcessAgentAPI;
+import uq.ilabs.library.processagent.proxy.ProcessAgentAPI;
 
 /**
  *
  * @author uqlpayne
  */
-@ManagedBean
+@Named(value = "selfRegistrationBean")
 @SessionScoped
 public class SelfRegistrationBean implements Serializable {
 
@@ -69,6 +69,7 @@ public class SelfRegistrationBean implements Serializable {
     private String hitContactName;
     private String hitContactEmail;
     private boolean registered;
+    private boolean configured;
     private String holMessage;
     private String holMessageClass;
 
@@ -156,6 +157,10 @@ public class SelfRegistrationBean implements Serializable {
         return registered;
     }
 
+    public boolean isConfigured() {
+        return configured;
+    }
+
     public String getHolMessage() {
         return holMessage;
     }
@@ -170,11 +175,7 @@ public class SelfRegistrationBean implements Serializable {
      */
     public SelfRegistrationBean() {
         this.experimentStorageSession = (ExperimentStorageSession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(Consts.STRSSN_ExperimentStorage);
-
-        try {
-            this.processAgentsDB = new ProcessAgentsDB(this.experimentStorageSession.getDbConnection());
-        } catch (Exception ex) {
-        }
+        this.processAgentsDB = this.experimentStorageSession.getServiceManagement().getProcessAgentsDB();
     }
 
     public void pageLoad() {
@@ -232,6 +233,14 @@ public class SelfRegistrationBean implements Serializable {
         if (processAgentInfo != null) {
             try {
                 /*
+                 * Check if default ProcessAgentInfo exists, if it does then delete it
+                 */
+                ProcessAgentInfo selfProcessAgentInfo = this.processAgentsDB.RetrieveSelf();
+                if (selfProcessAgentInfo != null) {
+                    this.processAgentsDB.Delete(selfProcessAgentInfo.getAgentId());
+                }
+
+                /*
                  * Save the information
                  */
                 if (this.processAgentsDB.Add(processAgentInfo) < 0) {
@@ -242,13 +251,14 @@ public class SelfRegistrationBean implements Serializable {
                  * Update session
                  */
                 this.experimentStorageSession.setTitle(processAgentInfo.getAgentName());
-                this.experimentStorageSession.setGuid(processAgentInfo.getAgentGuid());
+                this.experimentStorageSession.setServiceGuid(processAgentInfo.getAgentGuid());
                 this.experimentStorageSession.setContactEmail(processAgentInfo.getSystemSupportInfo().getContactEmail());
 
                 /*
                  * Information saved successfully
                  */
                 this.registered = true;
+                this.configured = true;
                 this.ShowMessageInfo(String.format(STR_SaveSuccessful_arg, processAgentInfo.getAgentName()));
 
             } catch (Exception ex) {
@@ -329,7 +339,7 @@ public class SelfRegistrationBean implements Serializable {
                 throw new NullPointerException(ProcessAgentAPI.STRERR_ProcessAgentUnaccessible);
             }
 
-            ShowMessageInfo(String.format(ProcessAgentAPI.STR_ProcessAgentStatus_arg2,
+            ShowMessageInfo(String.format(ProcessAgentAPI.STR_ServiceStatus_arg2,
                     statusReport.isOnline() ? ProcessAgentAPI.STR_Online : ProcessAgentAPI.STR_Offline, statusReport.getPayload()));
 
         } catch (Exception ex) {
@@ -371,7 +381,7 @@ public class SelfRegistrationBean implements Serializable {
                  */
                 this.hitServiceName = this.hitServiceName.trim();
                 if (this.hitServiceName.isEmpty() == true) {
-                    throw new Exception(String.format(STRERR_NotSpecified_arg, STRERR_ServiceName));
+                    throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ServiceName));
                 }
                 processAgentInfo.setAgentName(this.hitServiceName);
 
@@ -380,7 +390,7 @@ public class SelfRegistrationBean implements Serializable {
                  */
                 this.hitServiceGuid = this.hitServiceGuid.trim();
                 if (this.hitServiceGuid.isEmpty() == true) {
-                    throw new Exception(String.format(STRERR_NotSpecified_arg, STRERR_ServiceGuid));
+                    throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ServiceGuid));
                 }
                 processAgentInfo.setAgentGuid(this.hitServiceGuid);
 
@@ -389,7 +399,7 @@ public class SelfRegistrationBean implements Serializable {
                  */
                 this.hitServicePasskey = this.hitServicePasskey.trim();
                 if (this.hitServicePasskey.isEmpty() == true) {
-                    throw new Exception(String.format(STRERR_NotSpecified_arg, STRERR_ServicePasskey));
+                    throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ServicePasskey));
                 }
                 processAgentInfo.setIssuerGuid(this.hitServicePasskey);
             }
@@ -401,7 +411,7 @@ public class SelfRegistrationBean implements Serializable {
              */
             this.hitServiceUrl = this.hitServiceUrl.trim();
             if (this.hitServiceUrl.isEmpty() == true) {
-                throw new Exception(String.format(STRERR_NotSpecified_arg, STRERR_ServiceUrl));
+                throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ServiceUrl));
             }
             processAgentInfo.setServiceUrl(this.hitServiceUrl);
 
@@ -410,9 +420,18 @@ public class SelfRegistrationBean implements Serializable {
              */
             this.hitClientUrl = this.hitClientUrl.trim();
             if (this.hitClientUrl.isEmpty() == true) {
-                throw new Exception(String.format(STRERR_NotSpecified_arg, STRERR_ClientUrl));
+                throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ClientUrl));
             }
             processAgentInfo.setClientUrl(this.hitClientUrl);
+
+            /*
+             * Check that Contact Email has been entered
+             */
+            this.hitContactEmail = this.hitContactEmail.trim();
+            if (this.hitContactEmail.isEmpty() == true) {
+                throw new RuntimeException(String.format(STRERR_NotSpecified_arg, STRERR_ContactEmail));
+            }
+            systemSupportInfo.setContactEmail(this.hitContactEmail);
 
             /*
              * Optional Information
@@ -425,8 +444,6 @@ public class SelfRegistrationBean implements Serializable {
             systemSupportInfo.setInfoUrl(this.hitInfoUrl.isEmpty() ? null : this.hitInfoUrl);
             this.hitContactName = this.hitContactName.trim();
             systemSupportInfo.setContactName(this.hitContactName.isEmpty() ? null : this.hitContactName);
-            this.hitContactEmail = this.hitContactEmail.trim();
-            systemSupportInfo.setContactEmail(this.hitContactEmail.isEmpty() ? null : this.hitContactEmail);
         } catch (Exception ex) {
             this.ShowMessageError(ex.getMessage());
             processAgentInfo = null;
@@ -445,26 +462,43 @@ public class SelfRegistrationBean implements Serializable {
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
         try {
+            /*
+             * Check if ProcessAgentInfo for self is registered
+             */
             ProcessAgentInfo processAgentInfo = this.processAgentsDB.RetrieveSelf();
-            if (processAgentInfo != null) {
-                this.hitServiceName = processAgentInfo.getAgentName();
-                this.hitServiceGuid = processAgentInfo.getAgentGuid();
-                this.hitServiceUrl = processAgentInfo.getServiceUrl();
-                this.hitServicePasskey = processAgentInfo.getIssuerGuid();
-                this.hitClientUrl = processAgentInfo.getClientUrl();
-
-                SystemSupportInfo systemSupportInfo = processAgentInfo.getSystemSupportInfo();
-                this.htaDescription = systemSupportInfo.getDescription();
-                this.hitLocation = systemSupportInfo.getLocation();
-                this.hitInfoUrl = systemSupportInfo.getInfoUrl();
-                this.hitContactName = systemSupportInfo.getContactName();
-                this.hitContactEmail = systemSupportInfo.getContactEmail();
-
-                this.registered = true;
-                this.ShowMessageInfo(null);
-            } else {
-                this.ShowMessageError(STRERR_ServiceNotRegistered);
+            if (processAgentInfo == null) {
+                throw new RuntimeException(STRERR_ServiceNotRegistered);
             }
+            this.registered = true;
+
+            /*
+             * Update web page
+             */
+            this.hitServiceName = processAgentInfo.getAgentName();
+            this.hitServiceGuid = processAgentInfo.getAgentGuid();
+            this.hitServiceUrl = processAgentInfo.getServiceUrl();
+            this.hitServicePasskey = processAgentInfo.getIssuerGuid();
+            this.hitClientUrl = processAgentInfo.getClientUrl();
+
+            SystemSupportInfo systemSupportInfo = processAgentInfo.getSystemSupportInfo();
+            this.htaDescription = systemSupportInfo.getDescription();
+            this.hitLocation = systemSupportInfo.getLocation();
+            this.hitInfoUrl = systemSupportInfo.getInfoUrl();
+            this.hitContactName = systemSupportInfo.getContactName();
+            this.hitContactEmail = systemSupportInfo.getContactEmail();
+
+            /*
+             * Check if ProcessAgentInfo for self is configured
+             */
+            if (processAgentInfo.getAgentGuid() == null || processAgentInfo.getIssuerGuid() == null) {
+                throw new RuntimeException(STRERR_ServiceNotRegistered);
+            }
+            if (processAgentInfo.getAgentGuid().trim().isEmpty() == true || processAgentInfo.getIssuerGuid().trim().isEmpty() == true) {
+                throw new RuntimeException(STRERR_ServiceNotRegistered);
+            }
+
+            this.configured = true;
+            this.ShowMessageInfo(null);
         } catch (Exception ex) {
             this.ShowMessageError(ex.getMessage());
             Logfile.WriteError(ex.toString());

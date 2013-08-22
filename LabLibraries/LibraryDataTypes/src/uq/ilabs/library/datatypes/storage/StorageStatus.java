@@ -13,14 +13,14 @@ import uq.ilabs.library.datatypes.batch.StatusCodes;
  */
 public class StorageStatus {
 
-    public long experimentId;
-    public StorageStatusCodes statusCode;
-    public StatusCodes batchStatusCode;
-    public int recordCount;
-    public String issuerGuid;
-    public Calendar dateCreated;
-    public Calendar dateModified;
-    public Calendar dateClosed;
+    protected long experimentId;
+    protected StorageStatusCodes statusCode;
+    protected StatusCodes batchStatusCode;
+    protected int recordCount;
+    protected String issuerGuid;
+    protected Calendar dateCreated;
+    protected Calendar dateModified;
+    protected Calendar dateClosed;
 
     public long getExperimentId() {
         return experimentId;

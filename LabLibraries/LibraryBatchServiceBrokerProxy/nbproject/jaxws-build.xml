@@ -19,7 +19,7 @@
     <target name="wsimport-client-IBatchServiceBrokerProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx"/>
         <property name="wsdl-IBatchServiceBrokerProxy.asmx" location="xml-resources/web-service-references/IBatchServiceBrokerProxy.asmx/wsdl/IBatchServiceBrokerProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx" wsdl="${wsdl-IBatchServiceBrokerProxy.asmx}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IBatchServiceBrokerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.batchservicebroker">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx" wsdl="${wsdl-IBatchServiceBrokerProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IBatchServiceBrokerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.ilabs.batchservicebroker.proxy">
             <binding dir="xml-resources/web-service-references/IBatchServiceBrokerProxy.asmx/bindings" includes="IBatchServiceBrokerProxy.asmx_handler.xml"/>
             <depends file="${wsdl-IBatchServiceBrokerProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx"/>
@@ -37,7 +37,7 @@
     </target>
     <target name="wsimport-client-clean-IBatchServiceBrokerProxy.asmx" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/IBatchServiceBrokerProxy.asmx"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uq/ilabs/batchservicebroker"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-IBatchServiceBrokerProxy.asmx"/>
 </project>

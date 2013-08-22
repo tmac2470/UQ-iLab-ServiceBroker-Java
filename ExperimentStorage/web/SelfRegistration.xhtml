@@ -33,10 +33,10 @@
                                             Service Name:
                                         </td>
                                         <td class="information">
-                                            <h:panelGroup rendered="#{!selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputText" value="#{selfRegistrationBean.hitServiceName}" />
                                             </h:panelGroup>
-                                            <h:panelGroup rendered="#{selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputTextReadOnly" readonly="true" value="#{selfRegistrationBean.hitServiceName}" />
                                             </h:panelGroup>
                                         </td>
@@ -46,12 +46,12 @@
                                             Service Guid:
                                         </td>
                                         <td class="information">
-                                            <h:panelGroup rendered="#{!selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputText" style="width: 400px;" value="#{selfRegistrationBean.hitServiceGuid}" />
                                                 &nbsp;
                                                 <h:commandButton styleClass="hcommandButton" value="Create" action="#{selfRegistrationBean.actionCreateGuid()}"/>
                                             </h:panelGroup>
-                                            <h:panelGroup rendered="#{selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{selfRegistrationBean.hitServiceGuid}" />
                                                 &nbsp;
                                                 <h:commandButton styleClass="hcommandButton" value="Create" disabled="true" action="#{selfRegistrationBean.actionCreateGuid()}"/>
@@ -71,12 +71,12 @@
                                             Service Passkey:
                                         </td>
                                         <td class="information">
-                                            <h:panelGroup rendered="#{!selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputText" style="width: 400px;" value="#{selfRegistrationBean.hitServicePasskey}" />
                                                 &nbsp;
                                                 <h:commandButton styleClass="hcommandButton" value="Create" action="#{selfRegistrationBean.actionCreatePasskey()}"/>
                                             </h:panelGroup>
-                                            <h:panelGroup rendered="#{selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
                                                 <h:inputText class="hinputTextReadOnly" readonly="true" style="width: 400px;" value="#{selfRegistrationBean.hitServicePasskey}" />
                                                 &nbsp;
                                                 <h:commandButton styleClass="hcommandButton" value="Create" disabled="true" action="#{selfRegistrationBean.actionCreatePasskey()}"/>
@@ -89,6 +89,14 @@
                                         </td>
                                         <td class="information">
                                             <h:inputText class="hinputText" value="#{selfRegistrationBean.hitClientUrl}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Service Email:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitContactEmail}" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,21 +143,13 @@
                                     </tr>
                                     <tr>
                                         <td class="label">
-                                            Contact Email:
-                                        </td>
-                                        <td class="information">
-                                            <h:inputText class="hinputText" value="#{selfRegistrationBean.hitContactEmail}" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">
                                             &nbsp;
                                         </td>
                                         <td class="buttons">
-                                            <h:panelGroup rendered="#{!selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{!selfRegistrationBean.configured}">
                                                 <h:commandButton styleClass="hcommandButton" value="Save" action="#{selfRegistrationBean.actionSave()}"/>
                                             </h:panelGroup>
-                                            <h:panelGroup rendered="#{selfRegistrationBean.registered}">
+                                            <h:panelGroup rendered="#{selfRegistrationBean.configured}">
                                                 <h:commandButton styleClass="hcommandButton" value="Update" action="#{selfRegistrationBean.actionUpdate()}"/>
                                                 &nbsp;
                                                 <h:commandButton styleClass="hcommandButton" value="Test" action="#{selfRegistrationBean.actionTest()}"/>

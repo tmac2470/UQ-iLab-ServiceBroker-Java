@@ -5,7 +5,7 @@
     <client name="ITicketIssuerProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>ITicketIssuerProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uq.ilabs.ticketissuer</package-name>
+      <package-name forceReplace="true">edu.mit.ilab.ilabs.ticketissuer.proxy</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <binding>
         <file-name>ITicketIssuerProxy.asmx_handler.xml</file-name>
@@ -34,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uq.ilabs.ticketissuer</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.ticketissuer.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

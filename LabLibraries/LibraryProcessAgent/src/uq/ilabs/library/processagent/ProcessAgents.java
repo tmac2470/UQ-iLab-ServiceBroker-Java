@@ -6,7 +6,6 @@ package uq.ilabs.library.processagent;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
-import javax.annotation.PreDestroy;
 import uq.ilabs.library.datatypes.processagent.ProcessAgent;
 import uq.ilabs.library.datatypes.processagent.ServiceDescription;
 import uq.ilabs.library.datatypes.ticketing.Coupon;
@@ -24,7 +23,7 @@ public class ProcessAgents {
 
     //<editor-fold defaultstate="collapsed" desc="Constants">
     private static final String STR_ClassName = ProcessAgents.class.getName();
-    private static final Level logLevel = Level.CONFIG;
+    private static final Level logLevel = Level.FINE;
     /*
      * String constants for exception messages
      */
@@ -57,9 +56,9 @@ public class ProcessAgents {
             if (this.ticketing == null) {
                 throw new NullPointerException(Ticketing.class.getSimpleName());
             }
-            if (this.ticketing.Start() == false) {
-                throw new RuntimeException(STRERR_TicketingThreadFailedToStart);
-            }
+//            if (this.ticketing.Start() == false) {
+//                throw new RuntimeException(STRERR_TicketingThreadFailedToStart);
+//            }
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
             throw ex;

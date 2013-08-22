@@ -1,0 +1,2661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s0="http://ilab.mit.edu" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ilab.mit.edu/iLabs/Services" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://ilab.mit.edu/iLabs/type" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://ilab.mit.edu/iLabs/Services" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu">
+      <s:element name="Cancel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sbAuthHeader" type="s0:sbAuthHeader" />
+      <s:complexType name="sbAuthHeader">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="couponID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="couponPassKey" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetEffectiveQueueLength">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="priorityHint" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEffectiveQueueLengthResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEffectiveQueueLengthResult" type="s0:WaitEstimate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WaitEstimate">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="effectiveQueueLength" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="estWait" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetExperimentStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExperimentStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExperimentStatusResult" type="s0:LabExperimentStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LabExperimentStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="statusReport" type="s0:ExperimentStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="minTimetoLive" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExperimentStatus">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="statusCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="wait" type="s0:WaitEstimate" />
+          <s:element minOccurs="1" maxOccurs="1" name="estRuntime" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="estRemainingRuntime" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetLabConfiguration">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabConfigurationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLabConfigurationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLabInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLabStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLabStatusResult" type="s0:LabStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LabStatus">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="online" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="labStatusMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RetrieveResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveResultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveResultResult" type="s0:ResultReport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResultReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="statusCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="experimentResults" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="xmlResultExtension" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="xmlBlobExtension" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="warningMessages" type="s0:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="errorMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Submit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="experimentSpecification" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="priorityHint" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="emailNotification" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitResult" type="s0:ClientSubmissionReport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ClientSubmissionReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="vReport" type="s0:ValidationReport" />
+          <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="minTimeToLive" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="wait" type="s0:WaitEstimate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ValidationReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="accepted" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="warningMessages" type="s0:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="errorMessage" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="estRuntime" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Validate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="experimentSpecification" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateResult" type="s0:ValidationReport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Notify">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NotifyResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveClientItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="itemValue" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveClientItemResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LoadClientItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadClientItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadClientItemResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteClientItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteClientItemResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListAllClientItems">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListAllClientItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListAllClientItemsResult" type="s0:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveSpecification">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveSpecificationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveSpecificationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperimentResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperimentResultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveExperimentResultResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveLabConfiguration">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveLabConfigurationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveLabConfigurationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveAnnotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="annotation" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveAnnotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveAnnotationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveAnnotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveAnnotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveAnnotationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExperimentInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="experimentIDs" type="s0:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetExperimentInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExperimentInformationResult" type="s0:ArrayOfExperimentInformation" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfExperimentInformation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExperimentInformation" nillable="true" type="s0:ExperimentInformation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExperimentInformation">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="labServerID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="effectiveGroupID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="submissionTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="completionTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="expirationTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="minTimeToLive" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="priorityHint" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="statusCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="validationWarningMessages" type="s0:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="validationErrorMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="executionWarningMessages" type="s0:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="executionErrorMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="annotation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="xmlResultExtension" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="xmlBlobExtension" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/Services">
+      <s:import namespace="http://ilab.mit.edu/iLabs/type" />
+      <s:element name="SaveClientData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="itemValue" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveClientDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LoadClientData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadClientDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadClientDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteClientData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteClientDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListClientDataItems">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListClientDataItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListClientDataItemsResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateExperiment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateExperimentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateExperimentResult" type="s2:StorageStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OpenExperiment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="OpenExperimentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OpenExperimentResult" type="s2:StorageStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgentCloseExperiment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:coupon" />
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AgentCloseExperimentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AgentCloseExperimentResult" type="s2:StorageStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClientCloseExperiment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClientCloseExperimentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ClientCloseExperimentResult" type="s2:StorageStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperiment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperimentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveExperimentResult" type="s2:Experiment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperimentSummary">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carray" type="tns:ArrayOfCriterion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCriterion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Criterion" nillable="true" type="s2:Criterion" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RetrieveExperimentSummaryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveExperimentSummaryResult" type="tns:ArrayOfExperimentSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfExperimentSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExperimentSummary" nillable="true" type="s2:ExperimentSummary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RetrieveExperimentRecords">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="carray" type="tns:ArrayOfCriterion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveExperimentRecordsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveExperimentRecordsResult" type="tns:ArrayOfExperimentRecord" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfExperimentRecord">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExperimentRecord" nillable="true" type="s2:ExperimentRecord" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestExperimentAccess">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestExperimentAccessResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:RequestExperimentAccessResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetAnnotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="annotation" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetAnnotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetAnnotationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnnotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnnotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAnnotationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RevokeReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labClientGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RevokeReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RevokeReservationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestAuthorization">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="types" type="tns:ArrayOfString" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestAuthorizationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:RequestAuthorizationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:AddTicketResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:CreateTicketResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:RedeemTicketResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestTicketCancellation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestTicketCancellationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestTicketCancellationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetServiceTime">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServiceTimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetServiceTimeResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStatus">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:GetStatusResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StatusNotification">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:report" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StatusNotificationResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CancelTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelTicketResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InstallDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:service" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:inIdentCoupon" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:outIdentCoupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InstallDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:InstallDomainCredentialsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="originalGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:agent" />
+            <s:element minOccurs="0" maxOccurs="1" name="extra" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:inCoupon" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:outCoupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyDomainCredentialsResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveDomainCredentialsResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyProcessAgent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="originalGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s2:agent" />
+            <s:element minOccurs="0" maxOccurs="1" name="extra" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyProcessAgentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyProcessAgentResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetireProcessAgent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="state" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetireProcessAgentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RetireProcessAgentResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Register">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="registerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info" type="tns:ArrayOfServiceDescription" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfServiceDescription">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ServiceDescription" nillable="true" type="s2:ServiceDescription" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegisterResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/type">
+      <s:element name="OperationAuthHeader" type="s2:OperationAuthHeader" />
+      <s:complexType name="OperationAuthHeader">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:AuthenticationHeader" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="coupon" type="s2:Coupon" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:complexType name="Coupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="couponId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="passkey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="StorageStatus">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="recordCount" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="creationTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="closeTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="lastModified" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="coupon" nillable="true" type="s2:Coupon" />
+      <s:element name="AgentAuthHeader" type="s2:AgentAuthHeader" />
+      <s:complexType name="AgentAuthHeader">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:AuthenticationHeader">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="agentGuid" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Experiment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="records" type="s2:ArrayOfExperimentRecord" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfExperimentRecord">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExperimentRecord" nillable="true" type="s2:ExperimentRecord" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExperimentRecord">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="submitter" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="sequenceNum" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="timestamp" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="xmlSearchable" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="contents" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Criterion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="attribute" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="predicate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExperimentSummary">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="experimentId" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="scheduledStart" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="creationTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="closeTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="recordCount" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="essGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="labServerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="clientVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="annotation" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestExperimentAccessResult" nillable="true" type="s2:Coupon" />
+      <s:element name="RequestAuthorizationResult" nillable="true" type="s2:Coupon" />
+      <s:element name="AddTicketResult" nillable="true" type="s2:Ticket" />
+      <s:complexType name="Ticket">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ticketId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="couponId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sponsorGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="redeemerGuid" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="creationTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isCancelled" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateTicketResult" nillable="true" type="s2:Coupon" />
+      <s:element name="RedeemTicketResult" nillable="true" type="s2:Ticket" />
+      <s:element name="GetStatusResult" nillable="true" type="s2:StatusReport" />
+      <s:complexType name="StatusReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="online" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="report" nillable="true" type="s2:StatusNotificationReport" />
+      <s:complexType name="StatusNotificationReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="alertCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="time" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="service" nillable="true" type="s2:ProcessAgent" />
+      <s:complexType name="ProcessAgent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="agentGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="agentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="codeBaseUrl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="webServiceUrl" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="inIdentCoupon" nillable="true" type="s2:Coupon" />
+      <s:element name="outIdentCoupon" nillable="true" type="s2:Coupon" />
+      <s:element name="InstallDomainCredentialsResult" nillable="true" type="s2:ProcessAgent" />
+      <s:element name="InitAuthHeader" type="s2:InitAuthHeader" />
+      <s:complexType name="InitAuthHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="initPasskey" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="agent" nillable="true" type="s2:ProcessAgent" />
+      <s:element name="inCoupon" nillable="true" type="s2:Coupon" />
+      <s:element name="outCoupon" nillable="true" type="s2:Coupon" />
+      <s:complexType name="ServiceDescription">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="serviceProviderInfo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="coupon" type="s2:Coupon" />
+          <s:element minOccurs="0" maxOccurs="1" name="consumerInfo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CancelSoapIn">
+    <wsdl:part name="parameters" element="s0:Cancel" />
+  </wsdl:message>
+  <wsdl:message name="CancelSoapOut">
+    <wsdl:part name="parameters" element="s0:CancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetEffectiveQueueLengthSoapIn">
+    <wsdl:part name="parameters" element="s0:GetEffectiveQueueLength" />
+  </wsdl:message>
+  <wsdl:message name="GetEffectiveQueueLengthSoapOut">
+    <wsdl:part name="parameters" element="s0:GetEffectiveQueueLengthResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEffectiveQueueLengthsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentStatusSoapIn">
+    <wsdl:part name="parameters" element="s0:GetExperimentStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentStatusSoapOut">
+    <wsdl:part name="parameters" element="s0:GetExperimentStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentStatussbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetLabConfigurationSoapIn">
+    <wsdl:part name="parameters" element="s0:GetLabConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="GetLabConfigurationSoapOut">
+    <wsdl:part name="parameters" element="s0:GetLabConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLabConfigurationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetLabInfoSoapIn">
+    <wsdl:part name="parameters" element="s0:GetLabInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetLabInfoSoapOut">
+    <wsdl:part name="parameters" element="s0:GetLabInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLabInfosbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetLabStatusSoapIn">
+    <wsdl:part name="parameters" element="s0:GetLabStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetLabStatusSoapOut">
+    <wsdl:part name="parameters" element="s0:GetLabStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLabStatussbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveResultSoapIn">
+    <wsdl:part name="parameters" element="s0:RetrieveResult" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveResultSoapOut">
+    <wsdl:part name="parameters" element="s0:RetrieveResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveResultsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="SubmitSoapIn">
+    <wsdl:part name="parameters" element="s0:Submit" />
+  </wsdl:message>
+  <wsdl:message name="SubmitSoapOut">
+    <wsdl:part name="parameters" element="s0:SubmitResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ValidateSoapIn">
+    <wsdl:part name="parameters" element="s0:Validate" />
+  </wsdl:message>
+  <wsdl:message name="ValidateSoapOut">
+    <wsdl:part name="parameters" element="s0:ValidateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidatesbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="NotifySoapIn">
+    <wsdl:part name="parameters" element="s0:Notify" />
+  </wsdl:message>
+  <wsdl:message name="NotifySoapOut">
+    <wsdl:part name="parameters" element="s0:NotifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="NotifysbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientItemSoapIn">
+    <wsdl:part name="parameters" element="s0:SaveClientItem" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientItemSoapOut">
+    <wsdl:part name="parameters" element="s0:SaveClientItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientItemsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientItemSoapIn">
+    <wsdl:part name="parameters" element="s0:LoadClientItem" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientItemSoapOut">
+    <wsdl:part name="parameters" element="s0:LoadClientItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientItemsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientItemSoapIn">
+    <wsdl:part name="parameters" element="s0:DeleteClientItem" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientItemSoapOut">
+    <wsdl:part name="parameters" element="s0:DeleteClientItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientItemsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ListAllClientItemsSoapIn">
+    <wsdl:part name="parameters" element="s0:ListAllClientItems" />
+  </wsdl:message>
+  <wsdl:message name="ListAllClientItemsSoapOut">
+    <wsdl:part name="parameters" element="s0:ListAllClientItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListAllClientItemssbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveSpecificationSoapIn">
+    <wsdl:part name="parameters" element="s0:RetrieveSpecification" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveSpecificationSoapOut">
+    <wsdl:part name="parameters" element="s0:RetrieveSpecificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveSpecificationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentResultSoapIn">
+    <wsdl:part name="parameters" element="s0:RetrieveExperimentResult" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentResultSoapOut">
+    <wsdl:part name="parameters" element="s0:RetrieveExperimentResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentResultsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveLabConfigurationSoapIn">
+    <wsdl:part name="parameters" element="s0:RetrieveLabConfiguration" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveLabConfigurationSoapOut">
+    <wsdl:part name="parameters" element="s0:RetrieveLabConfigurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveLabConfigurationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="SaveAnnotationSoapIn">
+    <wsdl:part name="parameters" element="s0:SaveAnnotation" />
+  </wsdl:message>
+  <wsdl:message name="SaveAnnotationSoapOut">
+    <wsdl:part name="parameters" element="s0:SaveAnnotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveAnnotationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveAnnotationSoapIn">
+    <wsdl:part name="parameters" element="s0:RetrieveAnnotation" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveAnnotationSoapOut">
+    <wsdl:part name="parameters" element="s0:RetrieveAnnotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveAnnotationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentInformationSoapIn">
+    <wsdl:part name="parameters" element="s0:GetExperimentInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentInformationSoapOut">
+    <wsdl:part name="parameters" element="s0:GetExperimentInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExperimentInformationsbAuthHeader">
+    <wsdl:part name="sbAuthHeader" element="s0:sbAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientDataSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveClientData" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientDataSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveClientDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveClientDataOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientDataSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadClientData" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientDataSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadClientDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadClientDataOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientDataSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteClientData" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientDataSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteClientDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteClientDataOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ListClientDataItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListClientDataItems" />
+  </wsdl:message>
+  <wsdl:message name="ListClientDataItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListClientDataItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListClientDataItemsOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CreateExperimentSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateExperiment" />
+  </wsdl:message>
+  <wsdl:message name="CreateExperimentSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateExperimentResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateExperimentOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="OpenExperimentSoapIn">
+    <wsdl:part name="parameters" element="tns:OpenExperiment" />
+  </wsdl:message>
+  <wsdl:message name="OpenExperimentSoapOut">
+    <wsdl:part name="parameters" element="tns:OpenExperimentResponse" />
+  </wsdl:message>
+  <wsdl:message name="OpenExperimentOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="AgentCloseExperimentSoapIn">
+    <wsdl:part name="parameters" element="tns:AgentCloseExperiment" />
+  </wsdl:message>
+  <wsdl:message name="AgentCloseExperimentSoapOut">
+    <wsdl:part name="parameters" element="tns:AgentCloseExperimentResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentCloseExperimentAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ClientCloseExperimentSoapIn">
+    <wsdl:part name="parameters" element="tns:ClientCloseExperiment" />
+  </wsdl:message>
+  <wsdl:message name="ClientCloseExperimentSoapOut">
+    <wsdl:part name="parameters" element="tns:ClientCloseExperimentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClientCloseExperimentOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentSoapIn">
+    <wsdl:part name="parameters" element="tns:RetrieveExperiment" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentSoapOut">
+    <wsdl:part name="parameters" element="tns:RetrieveExperimentResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentSummarySoapIn">
+    <wsdl:part name="parameters" element="tns:RetrieveExperimentSummary" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentSummarySoapOut">
+    <wsdl:part name="parameters" element="tns:RetrieveExperimentSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentSummaryOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentRecordsSoapIn">
+    <wsdl:part name="parameters" element="tns:RetrieveExperimentRecords" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentRecordsSoapOut">
+    <wsdl:part name="parameters" element="tns:RetrieveExperimentRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveExperimentRecordsOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RequestExperimentAccessSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestExperimentAccess" />
+  </wsdl:message>
+  <wsdl:message name="RequestExperimentAccessSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestExperimentAccessResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestExperimentAccessOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="SetAnnotationSoapIn">
+    <wsdl:part name="parameters" element="tns:SetAnnotation" />
+  </wsdl:message>
+  <wsdl:message name="SetAnnotationSoapOut">
+    <wsdl:part name="parameters" element="tns:SetAnnotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetAnnotationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAnnotationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAnnotation" />
+  </wsdl:message>
+  <wsdl:message name="GetAnnotationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAnnotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAnnotationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RevokeReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:RevokeReservation" />
+  </wsdl:message>
+  <wsdl:message name="RevokeReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:RevokeReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RevokeReservationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RequestAuthorizationSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestAuthorization" />
+  </wsdl:message>
+  <wsdl:message name="RequestAuthorizationSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestAuthorizationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestAuthorizationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RequestAuthorizationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s2:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:AddTicket" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:AddTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateTicket" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:RedeemTicket" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:RedeemTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="RedeemTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestTicketCancellation" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestTicketCancellationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestTicketCancellationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetServiceTimeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServiceTime" />
+  </wsdl:message>
+  <wsdl:message name="GetServiceTimeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServiceTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationSoapIn">
+    <wsdl:part name="parameters" element="tns:StatusNotification" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationSoapOut">
+    <wsdl:part name="parameters" element="tns:StatusNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelTicket" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:InstallDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:InstallDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsInitAuthHeader">
+    <wsdl:part name="InitAuthHeader" element="s2:InitAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyProcessAgent" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyProcessAgentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentSoapIn">
+    <wsdl:part name="parameters" element="tns:RetireProcessAgent" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentSoapOut">
+    <wsdl:part name="parameters" element="tns:RetireProcessAgentResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSoapIn">
+    <wsdl:part name="parameters" element="tns:Register" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s2:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:portType name="iLabServiceBrokerServiceSoap">
+    <wsdl:operation name="Cancel">
+      <wsdl:input message="tns:CancelSoapIn" />
+      <wsdl:output message="tns:CancelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEffectiveQueueLength">
+      <wsdl:input message="tns:GetEffectiveQueueLengthSoapIn" />
+      <wsdl:output message="tns:GetEffectiveQueueLengthSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentStatus">
+      <wsdl:input message="tns:GetExperimentStatusSoapIn" />
+      <wsdl:output message="tns:GetExperimentStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabConfiguration">
+      <wsdl:input message="tns:GetLabConfigurationSoapIn" />
+      <wsdl:output message="tns:GetLabConfigurationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabInfo">
+      <wsdl:input message="tns:GetLabInfoSoapIn" />
+      <wsdl:output message="tns:GetLabInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLabStatus">
+      <wsdl:input message="tns:GetLabStatusSoapIn" />
+      <wsdl:output message="tns:GetLabStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveResult">
+      <wsdl:input message="tns:RetrieveResultSoapIn" />
+      <wsdl:output message="tns:RetrieveResultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <wsdl:input message="tns:SubmitSoapIn" />
+      <wsdl:output message="tns:SubmitSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <wsdl:input message="tns:ValidateSoapIn" />
+      <wsdl:output message="tns:ValidateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Notify">
+      <wsdl:input message="tns:NotifySoapIn" />
+      <wsdl:output message="tns:NotifySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientItem">
+      <wsdl:input message="tns:SaveClientItemSoapIn" />
+      <wsdl:output message="tns:SaveClientItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientItem">
+      <wsdl:input message="tns:LoadClientItemSoapIn" />
+      <wsdl:output message="tns:LoadClientItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientItem">
+      <wsdl:input message="tns:DeleteClientItemSoapIn" />
+      <wsdl:output message="tns:DeleteClientItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListAllClientItems">
+      <wsdl:input message="tns:ListAllClientItemsSoapIn" />
+      <wsdl:output message="tns:ListAllClientItemsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSpecification">
+      <wsdl:input message="tns:RetrieveSpecificationSoapIn" />
+      <wsdl:output message="tns:RetrieveSpecificationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentResult">
+      <wsdl:input message="tns:RetrieveExperimentResultSoapIn" />
+      <wsdl:output message="tns:RetrieveExperimentResultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLabConfiguration">
+      <wsdl:input message="tns:RetrieveLabConfigurationSoapIn" />
+      <wsdl:output message="tns:RetrieveLabConfigurationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveAnnotation">
+      <wsdl:input message="tns:SaveAnnotationSoapIn" />
+      <wsdl:output message="tns:SaveAnnotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAnnotation">
+      <wsdl:input message="tns:RetrieveAnnotationSoapIn" />
+      <wsdl:output message="tns:RetrieveAnnotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentInformation">
+      <wsdl:input message="tns:GetExperimentInformationSoapIn" />
+      <wsdl:output message="tns:GetExperimentInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientData">
+      <wsdl:input message="tns:SaveClientDataSoapIn" />
+      <wsdl:output message="tns:SaveClientDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientData">
+      <wsdl:input message="tns:LoadClientDataSoapIn" />
+      <wsdl:output message="tns:LoadClientDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientData">
+      <wsdl:input message="tns:DeleteClientDataSoapIn" />
+      <wsdl:output message="tns:DeleteClientDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListClientDataItems">
+      <wsdl:input message="tns:ListClientDataItemsSoapIn" />
+      <wsdl:output message="tns:ListClientDataItemsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateExperiment">
+      <wsdl:input message="tns:CreateExperimentSoapIn" />
+      <wsdl:output message="tns:CreateExperimentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OpenExperiment">
+      <wsdl:input message="tns:OpenExperimentSoapIn" />
+      <wsdl:output message="tns:OpenExperimentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AgentCloseExperiment">
+      <wsdl:input message="tns:AgentCloseExperimentSoapIn" />
+      <wsdl:output message="tns:AgentCloseExperimentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClientCloseExperiment">
+      <wsdl:input message="tns:ClientCloseExperimentSoapIn" />
+      <wsdl:output message="tns:ClientCloseExperimentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperiment">
+      <wsdl:input message="tns:RetrieveExperimentSoapIn" />
+      <wsdl:output message="tns:RetrieveExperimentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentSummary">
+      <wsdl:input message="tns:RetrieveExperimentSummarySoapIn" />
+      <wsdl:output message="tns:RetrieveExperimentSummarySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentRecords">
+      <wsdl:input message="tns:RetrieveExperimentRecordsSoapIn" />
+      <wsdl:output message="tns:RetrieveExperimentRecordsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestExperimentAccess">
+      <wsdl:input message="tns:RequestExperimentAccessSoapIn" />
+      <wsdl:output message="tns:RequestExperimentAccessSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAnnotation">
+      <wsdl:input message="tns:SetAnnotationSoapIn" />
+      <wsdl:output message="tns:SetAnnotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnnotation">
+      <wsdl:input message="tns:GetAnnotationSoapIn" />
+      <wsdl:output message="tns:GetAnnotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RevokeReservation">
+      <wsdl:input message="tns:RevokeReservationSoapIn" />
+      <wsdl:output message="tns:RevokeReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestAuthorization">
+      <wsdl:input message="tns:RequestAuthorizationSoapIn" />
+      <wsdl:output message="tns:RequestAuthorizationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTicket">
+      <wsdl:input message="tns:AddTicketSoapIn" />
+      <wsdl:output message="tns:AddTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <wsdl:input message="tns:CreateTicketSoapIn" />
+      <wsdl:output message="tns:CreateTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <wsdl:input message="tns:RedeemTicketSoapIn" />
+      <wsdl:output message="tns:RedeemTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <wsdl:input message="tns:RequestTicketCancellationSoapIn" />
+      <wsdl:output message="tns:RequestTicketCancellationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <wsdl:input message="tns:GetServiceTimeSoapIn" />
+      <wsdl:output message="tns:GetServiceTimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <wsdl:input message="tns:GetStatusSoapIn" />
+      <wsdl:output message="tns:GetStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <wsdl:input message="tns:StatusNotificationSoapIn" />
+      <wsdl:output message="tns:StatusNotificationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <wsdl:input message="tns:CancelTicketSoapIn" />
+      <wsdl:output message="tns:CancelTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <wsdl:input message="tns:InstallDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:InstallDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <wsdl:input message="tns:ModifyDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:ModifyDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <wsdl:input message="tns:RemoveDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:RemoveDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <wsdl:input message="tns:ModifyProcessAgentSoapIn" />
+      <wsdl:output message="tns:ModifyProcessAgentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <wsdl:input message="tns:RetireProcessAgentSoapIn" />
+      <wsdl:output message="tns:RetireProcessAgentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <wsdl:input message="tns:RegisterSoapIn" />
+      <wsdl:output message="tns:RegisterSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="iLabServiceBrokerServiceSoap" type="tns:iLabServiceBrokerServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Cancel">
+      <soap:operation soapAction="http://ilab.mit.edu/Cancel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEffectiveQueueLength">
+      <soap:operation soapAction="http://ilab.mit.edu/GetEffectiveQueueLength" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetEffectiveQueueLengthsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentStatus">
+      <soap:operation soapAction="http://ilab.mit.edu/GetExperimentStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExperimentStatussbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabConfiguration">
+      <soap:operation soapAction="http://ilab.mit.edu/GetLabConfiguration" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetLabConfigurationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/GetLabInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetLabInfosbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabStatus">
+      <soap:operation soapAction="http://ilab.mit.edu/GetLabStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetLabStatussbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveResult">
+      <soap:operation soapAction="http://ilab.mit.edu/RetrieveResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveResultsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <soap:operation soapAction="http://ilab.mit.edu/Submit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SubmitsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap:operation soapAction="http://ilab.mit.edu/Validate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidatesbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Notify">
+      <soap:operation soapAction="http://ilab.mit.edu/Notify" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:NotifysbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientItem">
+      <soap:operation soapAction="http://ilab.mit.edu/SaveClientItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientItem">
+      <soap:operation soapAction="http://ilab.mit.edu/LoadClientItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:LoadClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientItem">
+      <soap:operation soapAction="http://ilab.mit.edu/DeleteClientItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:DeleteClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAllClientItems">
+      <soap:operation soapAction="http://ilab.mit.edu/ListAllClientItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ListAllClientItemssbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSpecification">
+      <soap:operation soapAction="http://ilab.mit.edu/RetrieveSpecification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveSpecificationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentResult">
+      <soap:operation soapAction="http://ilab.mit.edu/RetrieveExperimentResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveExperimentResultsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLabConfiguration">
+      <soap:operation soapAction="http://ilab.mit.edu/RetrieveLabConfiguration" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveLabConfigurationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAnnotation">
+      <soap:operation soapAction="http://ilab.mit.edu/SaveAnnotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveAnnotationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAnnotation">
+      <soap:operation soapAction="http://ilab.mit.edu/RetrieveAnnotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveAnnotationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentInformation">
+      <soap:operation soapAction="http://ilab.mit.edu/GetExperimentInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExperimentInformationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientData">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/SaveClientData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientData">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/LoadClientData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:LoadClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientData">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/DeleteClientData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:DeleteClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListClientDataItems">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ListClientDataItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ListClientDataItemsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateExperiment">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateExperiment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CreateExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OpenExperiment">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/OpenExperiment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:OpenExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgentCloseExperiment">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AgentCloseExperiment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AgentCloseExperimentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClientCloseExperiment">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ClientCloseExperiment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ClientCloseExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperiment">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperiment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentSummary">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperimentSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveExperimentSummaryOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentRecords">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperimentRecords" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveExperimentRecordsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestExperimentAccess">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestExperimentAccess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RequestExperimentAccessOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAnnotation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/SetAnnotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SetAnnotationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnnotation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetAnnotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAnnotationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevokeReservation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RevokeReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RevokeReservationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestAuthorization">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestAuthorization" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RequestAuthorizationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+        <soap:header message="tns:RequestAuthorizationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CreateTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RedeemTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestTicketCancellation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RequestTicketCancellationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetServiceTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/StatusNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:StatusNotificationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/CancelTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/InstallDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InstallDomainCredentialsInitAuthHeader" part="InitAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyProcessAgent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetireProcessAgent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetireProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/Register" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RegisterAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="iLabServiceBrokerServiceSoap12" type="tns:iLabServiceBrokerServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Cancel">
+      <soap12:operation soapAction="http://ilab.mit.edu/Cancel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEffectiveQueueLength">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetEffectiveQueueLength" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetEffectiveQueueLengthsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentStatus">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetExperimentStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExperimentStatussbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabConfiguration">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetLabConfiguration" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetLabConfigurationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetLabInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetLabInfosbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLabStatus">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetLabStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetLabStatussbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveResult">
+      <soap12:operation soapAction="http://ilab.mit.edu/RetrieveResult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveResultsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <soap12:operation soapAction="http://ilab.mit.edu/Submit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SubmitsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap12:operation soapAction="http://ilab.mit.edu/Validate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidatesbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Notify">
+      <soap12:operation soapAction="http://ilab.mit.edu/Notify" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:NotifysbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientItem">
+      <soap12:operation soapAction="http://ilab.mit.edu/SaveClientItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SaveClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientItem">
+      <soap12:operation soapAction="http://ilab.mit.edu/LoadClientItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:LoadClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientItem">
+      <soap12:operation soapAction="http://ilab.mit.edu/DeleteClientItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:DeleteClientItemsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAllClientItems">
+      <soap12:operation soapAction="http://ilab.mit.edu/ListAllClientItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ListAllClientItemssbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSpecification">
+      <soap12:operation soapAction="http://ilab.mit.edu/RetrieveSpecification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveSpecificationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentResult">
+      <soap12:operation soapAction="http://ilab.mit.edu/RetrieveExperimentResult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveExperimentResultsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveLabConfiguration">
+      <soap12:operation soapAction="http://ilab.mit.edu/RetrieveLabConfiguration" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveLabConfigurationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAnnotation">
+      <soap12:operation soapAction="http://ilab.mit.edu/SaveAnnotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SaveAnnotationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAnnotation">
+      <soap12:operation soapAction="http://ilab.mit.edu/RetrieveAnnotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveAnnotationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExperimentInformation">
+      <soap12:operation soapAction="http://ilab.mit.edu/GetExperimentInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExperimentInformationsbAuthHeader" part="sbAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveClientData">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/SaveClientData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SaveClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadClientData">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/LoadClientData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:LoadClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClientData">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/DeleteClientData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:DeleteClientDataOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListClientDataItems">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ListClientDataItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ListClientDataItemsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateExperiment">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateExperiment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CreateExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OpenExperiment">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/OpenExperiment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:OpenExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AgentCloseExperiment">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AgentCloseExperiment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AgentCloseExperimentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClientCloseExperiment">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ClientCloseExperiment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ClientCloseExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperiment">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperiment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveExperimentOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentSummary">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperimentSummary" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveExperimentSummaryOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveExperimentRecords">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveExperimentRecords" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveExperimentRecordsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestExperimentAccess">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestExperimentAccess" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RequestExperimentAccessOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAnnotation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/SetAnnotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SetAnnotationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnnotation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetAnnotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAnnotationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevokeReservation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RevokeReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RevokeReservationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestAuthorization">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestAuthorization" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RequestAuthorizationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+        <soap12:header message="tns:RequestAuthorizationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/CreateTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CreateTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RedeemTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestTicketCancellation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RequestTicketCancellation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RequestTicketCancellationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetServiceTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/StatusNotification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:StatusNotificationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/CancelTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/InstallDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InstallDomainCredentialsInitAuthHeader" part="InitAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyProcessAgent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetireProcessAgent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetireProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/Register" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RegisterAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="iLabServiceBrokerService">
+    <wsdl:port name="iLabServiceBrokerServiceSoap" binding="tns:iLabServiceBrokerServiceSoap">
+      <soap:address location="http://localhost:8093/IiLabServiceBrokerService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="iLabServiceBrokerServiceSoap12" binding="tns:iLabServiceBrokerServiceSoap12">
+      <soap12:address location="http://localhost:8093/IiLabServiceBrokerService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

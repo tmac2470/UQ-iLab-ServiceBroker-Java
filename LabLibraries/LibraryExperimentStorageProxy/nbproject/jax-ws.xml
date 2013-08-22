@@ -5,7 +5,7 @@
     <client name="IExperimentStorageProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/IExperimentStorageProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>IExperimentStorageProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">edu.mit.ilab.ilabs</package-name>
+      <package-name forceReplace="true">edu.mit.ilab.ilabs.experimentstorage.proxy</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <binding>
         <file-name>IExperimentStorageProxy.asmx_handler.xml</file-name>
@@ -34,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>edu.mit.ilab.ilabs</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.experimentstorage.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

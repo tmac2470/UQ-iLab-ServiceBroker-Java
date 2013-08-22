@@ -9,9 +9,9 @@ import uq.ilabs.library.experimentstorage.database.ExperimentRecordsDB;
 import uq.ilabs.library.experimentstorage.database.ExperimentsDB;
 import uq.ilabs.library.lab.database.DBConnection;
 import uq.ilabs.library.lab.utilities.Logfile;
+import uq.ilabs.library.processagent.ProcessAgents;
 import uq.ilabs.library.processagent.Ticketing;
 import uq.ilabs.library.processagent.database.ProcessAgentsDB;
-import uq.ilabs.library.processagent.database.types.ProcessAgentInfo;
 
 /**
  *
@@ -24,15 +24,24 @@ public class ServiceManagement {
     private static final Level logLevel = Level.CONFIG;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
-    private DBConnection dbConnection;
+    private ConfigProperties configProperties;
     private ExperimentsDB experimentsDB;
     private ExperimentRecordsDB experimentRecordsDB;
     private ProcessAgentsDB processAgentsDB;
+    private ProcessAgents processAgents;
     private Ticketing ticketing;
     private String serviceGuid;
 
     public DBConnection getDbConnection() {
-        return dbConnection;
+        return (configProperties != null) ? configProperties.getDbConnection() : null;
+    }
+
+    public String getVersion() {
+        return (configProperties != null) ? configProperties.getVersion() : null;
+    }
+
+    public String getNavMenuPhotoUrl() {
+        return (configProperties != null) ? configProperties.getNavMenuPhotoUrl() : null;
     }
 
     public ExperimentsDB getExperimentsDB() {
@@ -47,12 +56,20 @@ public class ServiceManagement {
         return processAgentsDB;
     }
 
+    public ProcessAgents getProcessAgents() {
+        return processAgents;
+    }
+
     public Ticketing getTicketing() {
         return ticketing;
     }
 
     public String getServiceGuid() {
-        return this.GetServiceGuid();
+        return serviceGuid;
+    }
+
+    public void setServiceGuid(String serviceGuid) {
+        this.serviceGuid = serviceGuid;
     }
     //</editor-fold>
 
@@ -74,22 +91,31 @@ public class ServiceManagement {
             }
 
             /*
+             * Save to local variables
+             */
+            this.configProperties = configProperties;
+
+            /*
              * Create database API class instances
              */
-            this.dbConnection = configProperties.getDbConnection();
-            this.experimentsDB = new ExperimentsDB(this.dbConnection);
+            DBConnection dbConnection = configProperties.getDbConnection();
+            this.experimentsDB = new ExperimentsDB(dbConnection);
             if (this.experimentsDB == null) {
                 throw new NullPointerException(ExperimentsDB.class.getSimpleName());
             }
-            this.experimentRecordsDB = new ExperimentRecordsDB(this.dbConnection);
+            this.experimentRecordsDB = new ExperimentRecordsDB(dbConnection);
             if (this.experimentRecordsDB == null) {
                 throw new NullPointerException(ExperimentRecordsDB.class.getSimpleName());
             }
-            this.processAgentsDB = new ProcessAgentsDB(this.dbConnection);
+            this.processAgentsDB = new ProcessAgentsDB(dbConnection);
             if (this.processAgentsDB == null) {
                 throw new NullPointerException(ProcessAgentsDB.class.getSimpleName());
             }
-            this.ticketing = new Ticketing(this.dbConnection);
+            this.processAgents = new ProcessAgents(dbConnection);
+            if (this.processAgents == null) {
+                throw new NullPointerException(ProcessAgents.class.getSimpleName());
+            }
+            this.ticketing = new Ticketing(dbConnection);
             if (this.ticketing == null) {
                 throw new NullPointerException(Ticketing.class.getSimpleName());
             }
@@ -99,20 +125,5 @@ public class ServiceManagement {
         }
 
         Logfile.WriteCompleted(logLevel, STR_ClassName, methodName);
-    }
-
-    /**
-     *
-     * @return String
-     */
-    private String GetServiceGuid() {
-        if (this.serviceGuid == null) {
-            ProcessAgentInfo processAgentInfo = this.processAgentsDB.RetrieveSelf();
-            if (processAgentInfo != null) {
-                this.serviceGuid = processAgentInfo.getAgentGuid();
-            }
-        }
-
-        return this.serviceGuid;
     }
 }

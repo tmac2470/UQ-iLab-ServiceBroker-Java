@@ -6,10 +6,10 @@ package uq.ilabs.experimentstorage.client;
 
 import java.io.Serializable;
 import java.util.logging.Level;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewExpiredException;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import uq.ilabs.library.lab.utilities.Logfile;
 import uq.ilabs.library.lab.utilities.Password;
 import uq.ilabs.library.experimentstorage.client.Consts;
@@ -21,7 +21,7 @@ import uq.ilabs.library.experimentstorage.database.types.UserInfo;
  *
  * @author uqlpayne
  */
-@ManagedBean
+@Named(value = "myAccountBean")
 @SessionScoped
 public class MyAccountBean implements Serializable {
 

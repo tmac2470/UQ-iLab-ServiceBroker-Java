@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+            </ui:define>
+
+            <ui:define name="title">
+                My Labs
+            </ui:define>
+
+            <ui:define name="content">
+                #{myLabsBean.pageLoad()}
+                <h:panelGroup rendered="#{myLabsBean.labClientInfoList != null and myLabsBean.holTitle == null}">
+                    <h4>
+                        Select a Lab:
+                    </h4>
+                    <h:form>
+                        <table  border="1">
+                            <tr>
+                                <td class="infotable">
+                                    <ui:repeat value="#{myLabsBean.labClientInfoList}" var="labClientInfo">
+                                        <p>
+                                            <h:commandLink style="font-weight: bold;" value="#{labClientInfo.name}" action="#{myLabsBean.actionSelectLabClient(labClientInfo)}" /> - #{labClientInfo.title}
+                                        </p>
+                                    </ui:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{myLabsBean.holTitle != null}">
+                    <br />
+                    <h:form>
+                        <table  border="1">
+                            <tr>
+                                <td class="infotable" style="width: 500px;">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="labelbold">
+                                                LabClient:
+                                            </td>
+                                            <td>
+                                                <h:outputLabel value="#{myLabsBean.holTitle}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="labelbold">
+                                                Version:
+                                            </td>
+                                            <td>
+                                                <h:outputLabel value="#{myLabsBean.holVersion}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="labelbold">
+                                                Description:
+                                            </td>
+                                            <td>
+                                                <h:outputLabel value="#{myLabsBean.holDescription}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                &nbsp;
+                                            </td>
+                                            <td class="buttons">
+                                                <h:commandButton styleClass="hcommandButton" value="Launch" action="#{myLabsBean.actionLaunchLabClient()}"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                    <h:outputLabel escape="false" value="#{myLabsBean.holLaunchScript}" />
+                </h:panelGroup>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{myLabsBean.holMessageClass}" value="#{myLabsBean.holMessage}" rendered="#{!empty(myLabsBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/template.css" rel="stylesheet" type="text/css" />
+        <ui:insert name="stylesheet"></ui:insert>
+        <script type="text/javascript">
+            function expand(id) {
+                document.getElementById(id).className = "menuHover";
+            }
+            function collapse(id) {
+                document.getElementById(id).className = "menuNormal";
+            }
+        </script>
+        <title><ui:insert name="title">Facelets Template</ui:insert></title>
+    </h:head>
+
+    <h:body>
+        #{ilabServiceBrokerBean.checkViewExpired()}
+        <table id="template" cellpadding="0" width="100%">
+            <tr>
+                <td colspan="2">
+                    <table id="banner" cellpadding="0">
+                        <tr>
+                            <td class="logo">
+                                <a href="http://www.uq.edu.au/" target="_blank">
+                                    <img src="./resources/img/uq-logo2.gif" width="200" height="72" alt="uq-logo" />
+                                </a>
+                            </td>
+                            <td class="title">
+                                #{ilabServiceBrokerBean.title}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table id="statusbar" cellpadding="0">
+                        <tr>
+                            <td class="user">
+                                #{ilabServiceBrokerBean.username}
+                            </td>
+                            <td class="group">
+                                #{ilabServiceBrokerBean.groupname}
+                            </td>
+                            <td class="version">
+                                Version #{ilabServiceBrokerBean.version}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="navigation">
+                    <table id="navmenu" cellpadding="0">
+                        <tr>
+                            <td>
+                                <img src="#{ilabServiceBrokerBean.navmenuPhotoUrl}" width="200" alt="&nbsp;Image&nbsp;not&nbsp;available!&nbsp;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="header">
+                                ON THIS SITE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li><a href="Home.xhtml">&#187;&nbsp;Home</a></li>
+                                    <h:panelGroup rendered="#{ilabServiceBrokerBean.configured}">
+                                        <h:panelGroup rendered="#{!ilabServiceBrokerBean.loggedIn}">
+                                            <li><a href="LostPassword.xhtml">&#187;&nbsp;Lost Password</a></li>
+                                            <li><a href="Register.xhtml">&#187;&nbsp;New Registration</a></li>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{ilabServiceBrokerBean.loggedIn}">
+                                            <h:panelGroup rendered="#{!ilabServiceBrokerBean.administrator}">
+                                                <li><a href="MyGroups.xhtml">&#187;&nbsp;My Groups</a></li>
+                                                <h:panelGroup rendered="#{!empty(ilabServiceBrokerBean.groupname)}">
+                                                    <li><a href="MyLabs.xhtml">&#187;&nbsp;My Labs</a></li>
+                                                    <li><a href="MyExperiments.xhtml">&#187;&nbsp;My Experiments</a></li>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{ilabServiceBrokerBean.administrator}">
+                                                <div onmouseover="expand('manageMenu');" onmouseout="collapse('manageMenu');">
+                                                    <li class="submenu"><a>&#187;&nbsp;Manage ...&nbsp;</a>
+                                                        <div id="manageMenu" class="menuNormal">
+                                                            <table cellpadding="0" width="180px">
+                                                                <tr>
+                                                                    <td>
+                                                                        <ul>
+                                                                            <li><a href="ManageUsers.xhtml">&#187;&nbsp;Users</a></li>
+                                                                            <li><a href="ManageGroups.xhtml">&#187;&nbsp;Groups</a></li>
+                                                                            <li><a href="ManageLabClients.xhtml">&#187;&nbsp;LabClients</a></li>
+                                                                            <li><a href="ManageLabServers.xhtml">&#187;&nbsp;Batch LabServers</a></li>
+                                                                            <li><a href="ManageServices.xhtml">&#187;&nbsp;Services</a></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ilabServiceBrokerBean.loggedIn}">
+                                        <h:panelGroup rendered="#{ilabServiceBrokerBean.administrator}">
+                                            <li><a href="SelfRegistration.xhtml">&#187;&nbsp;Self Registration</a></li>
+                                        </h:panelGroup>
+                                        <li><a href="MyAccount.xhtml">&#187;&nbsp;My Account</a></li>
+                                        <!--<li><a href="Help.xhtml">&#187;&nbsp;Help</a></li>-->
+                                        <li><a href="Logout.xhtml">&#187;&nbsp;Logout</a></li>
+                                    </h:panelGroup>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </td>
+                <td class="pagecontent">
+                    <table id="content" cellpadding="0">
+                        <tr>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="./resources/img/level2-arrow.gif" width="28" height="28" alt="level2-arrow"/>
+                                        </td>
+                                        <td class="title">
+                                            <ui:insert name="title">Content Title</ui:insert>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="./resources/img/level2-underline.gif" width="395" height="1" alt="level2-underline"/>
+                            </td>
+                            <td class="filler">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <ui:insert name="content">Content of webpage.</ui:insert>
+                                <p>
+                                    &nbsp;
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table id="feedback" cellpadding="0">
+                        <tr>
+                            <td class="timezone">
+                                #{ilabServiceBrokerBean.timezone}
+                            </td>
+                            <td>
+                                <a href="mailto:#{ilabServiceBrokerBean.contactEmail}">Feedback</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table id="footer" cellpadding="0">
+                        <tr>
+                            <td class="left">
+                                <a href="http://www.ceit.uq.edu.au/" target="_blank">
+                                    <img class="image" src="./resources/img/ceit_logo.gif" width="176" height="64" alt="ceit-logo"/>
+                                </a>
+                            </td>
+                            <td class="filler">
+                                &nbsp;
+                            </td>
+                            <td class="right">
+                                <a href="http://www.mit.edu/" target="_blank">
+                                    <img class="image" src="./resources/img/mit-blackred-footer1.gif" width="334" height="36" alt="mit-logo"/>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </h:body>
+
+</html>

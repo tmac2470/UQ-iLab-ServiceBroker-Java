@@ -19,7 +19,7 @@
     <target name="wsimport-client-ILabsideSchedulingProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx"/>
         <property name="wsdl-ILabsideSchedulingProxy.asmx" location="xml-resources/web-service-references/ILabsideSchedulingProxy.asmx/wsdl/ILabsideSchedulingProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx" wsdl="${wsdl-ILabsideSchedulingProxy.asmx}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/ILabsideSchedulingProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.labsidescheduling">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx" wsdl="${wsdl-ILabsideSchedulingProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/ILabsideSchedulingProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.ilabs.labsidescheduling.proxy">
             <binding dir="xml-resources/web-service-references/ILabsideSchedulingProxy.asmx/bindings" includes="ILabsideSchedulingProxy.asmx_handler.xml"/>
             <depends file="${wsdl-ILabsideSchedulingProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx"/>
@@ -37,7 +37,7 @@
     </target>
     <target name="wsimport-client-clean-ILabsideSchedulingProxy.asmx" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/ILabsideSchedulingProxy.asmx"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uq/ilabs/labsidescheduling"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab/ilabs"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-ILabsideSchedulingProxy.asmx"/>
 </project>

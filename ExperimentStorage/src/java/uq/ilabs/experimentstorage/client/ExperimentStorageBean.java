@@ -6,12 +6,10 @@ package uq.ilabs.experimentstorage.client;
 
 import java.io.Serializable;
 import java.util.logging.Level;
-import javax.annotation.PreDestroy;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewExpiredException;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import uq.ilabs.experimentstorage.service.ExperimentStorageService;
+import javax.inject.Named;
 import uq.ilabs.library.experimentstorage.client.Consts;
 import uq.ilabs.library.experimentstorage.client.ExperimentStorageSession;
 import uq.ilabs.library.lab.utilities.Logfile;
@@ -21,7 +19,7 @@ import uq.ilabs.library.experimentstorage.client.UserSession;
  *
  * @author uqlpayne
  */
-@ManagedBean
+@Named(value = "experimentStorageBean")
 @SessionScoped
 public class ExperimentStorageBean implements Serializable {
 
@@ -131,7 +129,7 @@ public class ExperimentStorageBean implements Serializable {
         String url = null;
 
         if (this.experimentStorageSession != null) {
-            url = this.experimentStorageSession.getNavmenuPhotoUrl();
+            url = this.experimentStorageSession.getNavMenuPhotoUrl();
             if (url != null) {
                 url = url.trim();
             }
@@ -176,7 +174,7 @@ public class ExperimentStorageBean implements Serializable {
      * Creates a new instance of ExperimentStorageBean
      */
     public ExperimentStorageBean() {
-        final String methodName = "UsersideSchedulingBean";
+        final String methodName = "ExperimentStorageClientBean";
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
         this.experimentStorageSession = (ExperimentStorageSession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(Consts.STRSSN_ExperimentStorage);
@@ -190,34 +188,6 @@ public class ExperimentStorageBean implements Serializable {
     public void checkViewExpired() {
         if (this.experimentStorageSession == null) {
             throw new ViewExpiredException();
-        }
-    }
-
-    @PreDestroy
-    private void preDestroy() {
-        final String methodName = "preDestroy";
-
-        /*
-         * Prevent from being called more than once
-         */
-        if (this.experimentStorageSession != null) {
-            Logfile.WriteCalled(Level.INFO, STR_ClassName, methodName);
-
-            /*
-             * Check if ExperimentStorageService is running. If not, close the logger here
-             * otherwise let the service close the logger when it is finished.
-             */
-            if (ExperimentStorageService.isInitialised() == false) {
-                /*
-                 * Deregister the database driver and close the logger
-                 */
-                this.experimentStorageSession.getDbConnection().DeRegister();
-                Logfile.CloseLogger();
-            }
-
-            this.experimentStorageSession = null;
-
-            Logfile.WriteCompleted(Level.INFO, STR_ClassName, methodName);
         }
     }
 }

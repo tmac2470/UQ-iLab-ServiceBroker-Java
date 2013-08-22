@@ -19,7 +19,7 @@
     <target name="wsimport-client-IExperimentStorageProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx"/>
         <property name="wsdl-IExperimentStorageProxy.asmx" location="xml-resources/web-service-references/IExperimentStorageProxy.asmx/wsdl/IExperimentStorageProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx" wsdl="${wsdl-IExperimentStorageProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IExperimentStorageProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.ilabs">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx" wsdl="${wsdl-IExperimentStorageProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/IExperimentStorageProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.ilabs.experimentstorage.proxy">
             <binding dir="xml-resources/web-service-references/IExperimentStorageProxy.asmx/bindings" includes="IExperimentStorageProxy.asmx_handler.xml"/>
             <depends file="${wsdl-IExperimentStorageProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx"/>
@@ -37,7 +37,7 @@
     </target>
     <target name="wsimport-client-clean-IExperimentStorageProxy.asmx" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/IExperimentStorageProxy.asmx"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab/ilabs"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab/ilabs/experimentstorage/proxy"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-IExperimentStorageProxy.asmx"/>
 </project>

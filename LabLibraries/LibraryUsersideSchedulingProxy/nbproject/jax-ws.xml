@@ -5,8 +5,12 @@
     <client name="IUsersideSchedulingProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/IUsersideSchedulingProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>IUsersideSchedulingProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uq.ilabs.usersidescheduling</package-name>
+      <package-name forceReplace="true">edu.mit.ilab.ilabs</package-name>
       <catalog-file>catalog.xml</catalog-file>
+      <binding>
+        <file-name>IUsersideSchedulingProxy.asmx_handler.xml</file-name>
+      </binding>
+      <handler-binding-file>IUsersideSchedulingProxy.asmx_handler.xml</handler-binding-file>
       <wsimport-options>
         <wsimport-option>
           <wsimport-option-name>extension</wsimport-option-name>
@@ -30,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uq.ilabs.usersidescheduling</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.usersidescheduling.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./IlabServiceBroker.xhtml">
+
+            <ui:define name="stylesheet">
+                <style>
+                    .hinputText, .hinputTextReadOnly, .hinputTextarea { width: 500px; }
+                </style>
+            </ui:define>
+
+            <ui:define name="title">
+                Manage Groups
+            </ui:define>
+
+            <ui:define name="content">
+                #{manageGroupsBean.pageLoad()}
+                <h4>
+                    Select a Group:
+                </h4>
+                <h:form>
+                    <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{manageGroupsBean.hsomGroupId}">
+                        <f:selectItems value="#{manageGroupsBean.groupList}" var="i" itemLabel="#{i.label}" itemValue="#{i.value}" />
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:commandButton styleClass="hcommandButton" value="Select" action="#{manageGroupsBean.actionSelect()}"/>
+                </h:form>
+                <p />
+                <h4>
+                    Group Information:
+                </h4>
+                <h:form>
+                    <table  border="1">
+                        <tr>
+                            <td class="infotable">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="label">
+                                            Group Name:
+                                        </td>
+                                        <td class="information">
+                                            <h:panelGroup rendered="#{!manageGroupsBean.registered}">
+                                                <h:inputText class="hinputText" value="#{manageGroupsBean.hitGroupName}" />
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageGroupsBean.registered}">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{manageGroupsBean.hitGroupName}" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Group Type:
+                                        </td>
+                                        <td class="information">
+                                            <h:selectOneMenu styleClass="hselectOneMenu" style="width: 503px;" value="#{manageGroupsBean.hsomGroupType}">
+                                                <f:selectItems value="#{manageGroupsBean.groupTypes}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Description:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputTextarea class="hinputTextarea" rows="2" value="#{manageGroupsBean.htaDescription}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                Optional Information
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            Contact Email:
+                                        </td>
+                                        <td class="information">
+                                            <h:inputText class="hinputText" value="#{manageGroupsBean.hitContactEmail}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">
+                                            &nbsp;
+                                        </td>
+                                        <td class="buttons">
+                                            <h:panelGroup rendered="#{!manageGroupsBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Save" action="#{manageGroupsBean.actionSave()}"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{manageGroupsBean.registered}">
+                                                <h:commandButton styleClass="hcommandButton" value="Update" action="#{manageGroupsBean.actionUpdate()}"/>
+                                                &nbsp;
+                                                <h:commandButton styleClass="hcommandButton" value="Delete" action="#{manageGroupsBean.actionDelete()}"
+                                                                 onclick="javascript:return confirm('Delete Group... Are you really sure?');"/>
+                                            </h:panelGroup>
+                                            &nbsp;
+                                            <h:commandButton styleClass="hcommandButton" value="New" action="#{manageGroupsBean.actionNew()}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+                <p>
+                    <br />
+                    <h:outputLabel styleClass="#{manageGroupsBean.holMessageClass}" value="#{manageGroupsBean.holMessage}" rendered="#{!empty(manageGroupsBean.holMessage)}" />
+                </p>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

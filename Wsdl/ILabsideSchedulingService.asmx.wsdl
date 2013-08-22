@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ilab.mit.edu/iLabs/Services" xmlns:s1="http://ilab.mit.edu/iLabs/type" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://ilab.mit.edu/iLabs/Services" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/Services">
+      <s:import namespace="http://ilab.mit.edu/iLabs/type" />
+      <s:element name="RetrieveAvailableTimePeriods">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveAvailableTimePeriodsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveAvailableTimePeriodsResult" type="tns:ArrayOfTimePeriod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTimePeriod">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TimePeriod" nillable="true" type="s1:TimePeriod" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ConfirmReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmReservationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RedeemReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RedeemReservationResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveReservation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveReservationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveReservationResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUSSInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussUrl" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUSSInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddUSSInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyUSSInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussUrl" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyUSSInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyUSSInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveUSSInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveUSSInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveUSSInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCredentialSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCredentialSetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddCredentialSetResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyCredentialSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyCredentialSetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyCredentialSetResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCredentialSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceBrokerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ussGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCredentialSetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCredentialSetResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExperimentInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientVersion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="providerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExperimentInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddExperimentInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyExperimentInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="labServerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientVersion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="providerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyExperimentInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyExperimentInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveExperimentInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="labServerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveExperimentInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveExperimentInfoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetServiceTime">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServiceTimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetServiceTimeResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStatus">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:GetStatusResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StatusNotification">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:report" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StatusNotificationResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CancelTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:coupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="redeemer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelTicketResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InstallDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:service" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:inIdentCoupon" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:outIdentCoupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InstallDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:InstallDomainCredentialsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="originalGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:agent" />
+            <s:element minOccurs="0" maxOccurs="1" name="extra" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:inCoupon" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:outCoupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyDomainCredentialsResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveDomainCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveDomainCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveDomainCredentialsResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyProcessAgent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="originalGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:agent" />
+            <s:element minOccurs="0" maxOccurs="1" name="extra" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyProcessAgentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ModifyProcessAgentResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetireProcessAgent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="state" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetireProcessAgentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RetireProcessAgentResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Register">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="registerGuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="info" type="tns:ArrayOfServiceDescription" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfServiceDescription">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ServiceDescription" nillable="true" type="s1:ServiceDescription" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegisterResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ilab.mit.edu/iLabs/type">
+      <s:complexType name="TimePeriod">
+        <s:complexContent mixed="false">
+          <s:extension base="s1:TimeBlock">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="quantum" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TimeBlock">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="startTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="duration" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OperationAuthHeader" type="s1:OperationAuthHeader" />
+      <s:complexType name="OperationAuthHeader">
+        <s:complexContent mixed="false">
+          <s:extension base="s1:AuthenticationHeader" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="coupon" type="s1:Coupon" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:complexType name="Coupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="couponId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="issuerGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="passkey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="coupon" nillable="true" type="s1:Coupon" />
+      <s:element name="AgentAuthHeader" type="s1:AgentAuthHeader" />
+      <s:complexType name="AgentAuthHeader">
+        <s:complexContent mixed="false">
+          <s:extension base="s1:AuthenticationHeader">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="agentGuid" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GetStatusResult" nillable="true" type="s1:StatusReport" />
+      <s:complexType name="StatusReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="online" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="report" nillable="true" type="s1:StatusNotificationReport" />
+      <s:complexType name="StatusNotificationReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="alertCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="serviceGuid" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="time" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="payload" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="service" nillable="true" type="s1:ProcessAgent" />
+      <s:complexType name="ProcessAgent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="agentGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="agentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="domainGuid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="codeBaseUrl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="webServiceUrl" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="inIdentCoupon" nillable="true" type="s1:Coupon" />
+      <s:element name="outIdentCoupon" nillable="true" type="s1:Coupon" />
+      <s:element name="InstallDomainCredentialsResult" nillable="true" type="s1:ProcessAgent" />
+      <s:element name="InitAuthHeader" type="s1:InitAuthHeader" />
+      <s:complexType name="InitAuthHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="initPasskey" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="agent" nillable="true" type="s1:ProcessAgent" />
+      <s:element name="inCoupon" nillable="true" type="s1:Coupon" />
+      <s:element name="outCoupon" nillable="true" type="s1:Coupon" />
+      <s:complexType name="ServiceDescription">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="serviceProviderInfo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="coupon" type="s1:Coupon" />
+          <s:element minOccurs="0" maxOccurs="1" name="consumerInfo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RetrieveAvailableTimePeriodsSoapIn">
+    <wsdl:part name="parameters" element="tns:RetrieveAvailableTimePeriods" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveAvailableTimePeriodsSoapOut">
+    <wsdl:part name="parameters" element="tns:RetrieveAvailableTimePeriodsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveAvailableTimePeriodsOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s1:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmReservation" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmReservationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s1:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RedeemReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:RedeemReservation" />
+  </wsdl:message>
+  <wsdl:message name="RedeemReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:RedeemReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RedeemReservationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s1:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveReservationSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveReservation" />
+  </wsdl:message>
+  <wsdl:message name="RemoveReservationSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveReservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveReservationOperationAuthHeader">
+    <wsdl:part name="OperationAuthHeader" element="s1:OperationAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddUSSInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:AddUSSInfo" />
+  </wsdl:message>
+  <wsdl:message name="AddUSSInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:AddUSSInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddUSSInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyUSSInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyUSSInfo" />
+  </wsdl:message>
+  <wsdl:message name="ModifyUSSInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyUSSInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyUSSInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveUSSInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveUSSInfo" />
+  </wsdl:message>
+  <wsdl:message name="RemoveUSSInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveUSSInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveUSSInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddCredentialSetSoapIn">
+    <wsdl:part name="parameters" element="tns:AddCredentialSet" />
+  </wsdl:message>
+  <wsdl:message name="AddCredentialSetSoapOut">
+    <wsdl:part name="parameters" element="tns:AddCredentialSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCredentialSetAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyCredentialSetSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyCredentialSet" />
+  </wsdl:message>
+  <wsdl:message name="ModifyCredentialSetSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyCredentialSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyCredentialSetAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCredentialSetSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCredentialSet" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCredentialSetSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCredentialSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCredentialSetAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddExperimentInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:AddExperimentInfo" />
+  </wsdl:message>
+  <wsdl:message name="AddExperimentInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:AddExperimentInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddExperimentInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyExperimentInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyExperimentInfo" />
+  </wsdl:message>
+  <wsdl:message name="ModifyExperimentInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyExperimentInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyExperimentInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveExperimentInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveExperimentInfo" />
+  </wsdl:message>
+  <wsdl:message name="RemoveExperimentInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveExperimentInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveExperimentInfoAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetServiceTimeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServiceTime" />
+  </wsdl:message>
+  <wsdl:message name="GetServiceTimeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServiceTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationSoapIn">
+    <wsdl:part name="parameters" element="tns:StatusNotification" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationSoapOut">
+    <wsdl:part name="parameters" element="tns:StatusNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="StatusNotificationAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelTicket" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelTicketAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:InstallDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:InstallDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="InstallDomainCredentialsInitAuthHeader">
+    <wsdl:part name="InitAuthHeader" element="s1:InitAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyDomainCredentialsAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveDomainCredentials" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveDomainCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveDomainCredentialsAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyProcessAgent" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyProcessAgentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyProcessAgentAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentSoapIn">
+    <wsdl:part name="parameters" element="tns:RetireProcessAgent" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentSoapOut">
+    <wsdl:part name="parameters" element="tns:RetireProcessAgentResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetireProcessAgentAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSoapIn">
+    <wsdl:part name="parameters" element="tns:Register" />
+  </wsdl:message>
+  <wsdl:message name="RegisterSoapOut">
+    <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegisterAgentAuthHeader">
+    <wsdl:part name="AgentAuthHeader" element="s1:AgentAuthHeader" />
+  </wsdl:message>
+  <wsdl:portType name="LabsideSchedulingServiceSoap">
+    <wsdl:operation name="RetrieveAvailableTimePeriods">
+      <wsdl:input message="tns:RetrieveAvailableTimePeriodsSoapIn" />
+      <wsdl:output message="tns:RetrieveAvailableTimePeriodsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmReservation">
+      <wsdl:input message="tns:ConfirmReservationSoapIn" />
+      <wsdl:output message="tns:ConfirmReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RedeemReservation">
+      <wsdl:input message="tns:RedeemReservationSoapIn" />
+      <wsdl:output message="tns:RedeemReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReservation">
+      <wsdl:input message="tns:RemoveReservationSoapIn" />
+      <wsdl:output message="tns:RemoveReservationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUSSInfo">
+      <wsdl:input message="tns:AddUSSInfoSoapIn" />
+      <wsdl:output message="tns:AddUSSInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyUSSInfo">
+      <wsdl:input message="tns:ModifyUSSInfoSoapIn" />
+      <wsdl:output message="tns:ModifyUSSInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUSSInfo">
+      <wsdl:input message="tns:RemoveUSSInfoSoapIn" />
+      <wsdl:output message="tns:RemoveUSSInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCredentialSet">
+      <wsdl:input message="tns:AddCredentialSetSoapIn" />
+      <wsdl:output message="tns:AddCredentialSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyCredentialSet">
+      <wsdl:input message="tns:ModifyCredentialSetSoapIn" />
+      <wsdl:output message="tns:ModifyCredentialSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCredentialSet">
+      <wsdl:input message="tns:RemoveCredentialSetSoapIn" />
+      <wsdl:output message="tns:RemoveCredentialSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddExperimentInfo">
+      <wsdl:input message="tns:AddExperimentInfoSoapIn" />
+      <wsdl:output message="tns:AddExperimentInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyExperimentInfo">
+      <wsdl:input message="tns:ModifyExperimentInfoSoapIn" />
+      <wsdl:output message="tns:ModifyExperimentInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveExperimentInfo">
+      <wsdl:input message="tns:RemoveExperimentInfoSoapIn" />
+      <wsdl:output message="tns:RemoveExperimentInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <wsdl:input message="tns:GetServiceTimeSoapIn" />
+      <wsdl:output message="tns:GetServiceTimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <wsdl:input message="tns:GetStatusSoapIn" />
+      <wsdl:output message="tns:GetStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <wsdl:input message="tns:StatusNotificationSoapIn" />
+      <wsdl:output message="tns:StatusNotificationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <wsdl:input message="tns:CancelTicketSoapIn" />
+      <wsdl:output message="tns:CancelTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <wsdl:input message="tns:InstallDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:InstallDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <wsdl:input message="tns:ModifyDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:ModifyDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <wsdl:input message="tns:RemoveDomainCredentialsSoapIn" />
+      <wsdl:output message="tns:RemoveDomainCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <wsdl:input message="tns:ModifyProcessAgentSoapIn" />
+      <wsdl:output message="tns:ModifyProcessAgentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <wsdl:input message="tns:RetireProcessAgentSoapIn" />
+      <wsdl:output message="tns:RetireProcessAgentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <wsdl:input message="tns:RegisterSoapIn" />
+      <wsdl:output message="tns:RegisterSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LabsideSchedulingServiceSoap" type="tns:LabsideSchedulingServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RetrieveAvailableTimePeriods">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveAvailableTimePeriods" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetrieveAvailableTimePeriodsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmReservation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ConfirmReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ConfirmReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemReservation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RedeemReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReservation">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveReservation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUSSInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddUSSInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyUSSInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyUSSInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUSSInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveUSSInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCredentialSet">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddCredentialSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyCredentialSet">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyCredentialSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCredentialSet">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveCredentialSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExperimentInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyExperimentInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveExperimentInfo">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetServiceTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/StatusNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:StatusNotificationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/CancelTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/InstallDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InstallDomainCredentialsInitAuthHeader" part="InitAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RemoveDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyProcessAgent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ModifyProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetireProcessAgent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RetireProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap:operation soapAction="http://ilab.mit.edu/iLabs/Services/Register" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RegisterAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LabsideSchedulingServiceSoap12" type="tns:LabsideSchedulingServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RetrieveAvailableTimePeriods">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetrieveAvailableTimePeriods" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetrieveAvailableTimePeriodsOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmReservation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ConfirmReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ConfirmReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RedeemReservation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RedeemReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RedeemReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveReservation">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveReservation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveReservationOperationAuthHeader" part="OperationAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUSSInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddUSSInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyUSSInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyUSSInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUSSInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveUSSInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveUSSInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCredentialSet">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddCredentialSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyCredentialSet">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyCredentialSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCredentialSet">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveCredentialSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveCredentialSetAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExperimentInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/AddExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyExperimentInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveExperimentInfo">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveExperimentInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveExperimentInfoAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTime">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetServiceTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/GetStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StatusNotification">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/StatusNotification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:StatusNotificationAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTicket">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/CancelTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelTicketAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InstallDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/InstallDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InstallDomainCredentialsInitAuthHeader" part="InitAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveDomainCredentials">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RemoveDomainCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RemoveDomainCredentialsAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyProcessAgent">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/ModifyProcessAgent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ModifyProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetireProcessAgent">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/RetireProcessAgent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RetireProcessAgentAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap12:operation soapAction="http://ilab.mit.edu/iLabs/Services/Register" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RegisterAgentAuthHeader" part="AgentAuthHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LabsideSchedulingService">
+    <wsdl:port name="LabsideSchedulingServiceSoap" binding="tns:LabsideSchedulingServiceSoap">
+      <soap:address location="http://localhost:8095/ILabsideSchedulingService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LabsideSchedulingServiceSoap12" binding="tns:LabsideSchedulingServiceSoap12">
+      <soap12:address location="http://localhost:8095/ILabsideSchedulingService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

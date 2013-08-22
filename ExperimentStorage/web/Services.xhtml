@@ -26,7 +26,7 @@
                 </h4>
                 <h:form>
                     <h:selectOneMenu styleClass="hselectOneMenu" style="width: 403px;" value="#{servicesBean.hsomService}">
-                        <f:selectItems value="#{servicesBean.services}" />
+                        <f:selectItems value="#{servicesBean.serviceList}" var="i" itemLabel="#{i.label}" itemValue="#{i.value}" />
                     </h:selectOneMenu>
                     &nbsp;
                     <h:commandButton styleClass="hcommandButton" value="Select" action="#{servicesBean.actionSelect()}"/>
@@ -47,14 +47,6 @@
                                             </td>
                                             <td class="information">
                                                 <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceName}" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">
-                                                Service Type:
-                                            </td>
-                                            <td class="information">
-                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceType}" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -79,6 +71,14 @@
                                             </td>
                                             <td class="information">
                                                 <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitClientUrl}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">
+                                                Service Type:
+                                            </td>
+                                            <td class="information">
+                                                <h:inputText class="hinputTextReadOnly" readonly="true" value="#{servicesBean.hitServiceType}" />
                                             </td>
                                         </tr>
                                         <tr>

@@ -5,7 +5,7 @@
     <client name="IProcessAgentProxy.asmx">
       <wsdl-url>file:/D:/NetBeans/ServiceBroker/Wsdl/IProcessAgentProxy.asmx.wsdl</wsdl-url>
       <local-wsdl-file>IProcessAgentProxy.asmx.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uq.ilabs.processagent</package-name>
+      <package-name forceReplace="true">edu.mit.ilab.ilabs.processagent.proxy</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <binding>
         <file-name>IProcessAgentProxy.asmx_handler.xml</file-name>
@@ -34,7 +34,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uq.ilabs.processagent</wsimport-option-value>
+          <wsimport-option-value>edu.mit.ilab.ilabs.processagent.proxy</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

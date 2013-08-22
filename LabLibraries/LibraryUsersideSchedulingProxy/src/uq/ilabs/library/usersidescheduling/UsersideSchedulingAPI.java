@@ -4,28 +4,20 @@
  */
 package uq.ilabs.library.usersidescheduling;
 
+import edu.mit.ilab.ilabs.usersidescheduling.proxy.UsersideSchedulingProxy;
+import edu.mit.ilab.ilabs.usersidescheduling.proxy.UsersideSchedulingProxySoap;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.ProtocolException;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 import uq.ilabs.library.datatypes.scheduling.Reservation;
 import uq.ilabs.library.datatypes.scheduling.TimePeriod;
 import uq.ilabs.library.datatypes.ticketing.Coupon;
 import uq.ilabs.library.lab.utilities.Logfile;
-import uq.ilabs.usersidescheduling.AgentAuthHeader;
-import uq.ilabs.usersidescheduling.ArrayOfReservation;
-import uq.ilabs.usersidescheduling.ArrayOfTimePeriod;
-import uq.ilabs.usersidescheduling.ObjectFactory;
-import uq.ilabs.usersidescheduling.OperationAuthHeader;
-import uq.ilabs.usersidescheduling.UsersideSchedulingProxy;
-import uq.ilabs.usersidescheduling.UsersideSchedulingProxySoap;
+import java.util.Map;
+import uq.ilabs.library.datatypes.service.AgentAuthHeader;
+import uq.ilabs.library.datatypes.service.OperationAuthHeader;
 
 /**
  *
@@ -48,8 +40,6 @@ public class UsersideSchedulingAPI {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private UsersideSchedulingProxySoap usersideSchedulingProxy;
-    private QName qnameAgentAuthHeader;
-    private QName qnameOperationAuthHeader;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private String authHeaderAgentGuid;
@@ -93,15 +83,6 @@ public class UsersideSchedulingAPI {
             this.usersideSchedulingProxy = webServiceClient.getUsersideSchedulingProxySoap();
             ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
-            /*
-             * Get authentication header QName
-             */
-            ObjectFactory objectFactory = new ObjectFactory();
-            JAXBElement<AgentAuthHeader> jaxbElementAgentAuthHeader = objectFactory.createAgentAuthHeader(new AgentAuthHeader());
-            this.qnameAgentAuthHeader = jaxbElementAgentAuthHeader.getName();
-            JAXBElement<OperationAuthHeader> jaxbElementOperationAuthHeader = objectFactory.createOperationAuthHeader(new OperationAuthHeader());
-            this.qnameOperationAuthHeader = jaxbElementOperationAuthHeader.getName();
-
         } catch (NullPointerException | IllegalArgumentException ex) {
             Logfile.WriteError(ex.toString());
             throw ex;
@@ -132,10 +113,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -171,10 +152,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -206,10 +187,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -241,14 +222,14 @@ public class UsersideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            retval = this.usersideSchedulingProxy.addReservation(serviceBrokerGuid, userName, groupName, labServerGuid, labClientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
+            retval = this.usersideSchedulingProxy.addReservation(serviceBrokerGuid, userName, groupName, labServerGuid, labClientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -279,16 +260,16 @@ public class UsersideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfReservation arrayOfReservation = this.usersideSchedulingProxy.listReservations(
-                    serviceBrokerGuid, userName, labServerGuid, labClientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
-            reservations = this.ConvertType(arrayOfReservation);
+            edu.mit.ilab.ilabs.usersidescheduling.proxy.ArrayOfReservation proxyArrayOfReservation = this.usersideSchedulingProxy.listReservations(
+                    serviceBrokerGuid, userName, labServerGuid, labClientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
+            reservations = ConvertTypes.Convert(proxyArrayOfReservation);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -320,10 +301,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -359,10 +340,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -394,10 +375,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -426,15 +407,15 @@ public class UsersideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            uq.ilabs.usersidescheduling.Reservation proxyReservation = this.usersideSchedulingProxy.redeemReservation(serviceBrokerGuid, userName, labServerGuid, clientGuid);
-            reservation = ConvertType(proxyReservation);
+            edu.mit.ilab.ilabs.usersidescheduling.proxy.Reservation proxyReservation = this.usersideSchedulingProxy.redeemReservation(serviceBrokerGuid, userName, labServerGuid, clientGuid);
+            reservation = ConvertTypes.Convert(proxyReservation);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -465,10 +446,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -500,10 +481,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -533,10 +514,10 @@ public class UsersideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -567,16 +548,16 @@ public class UsersideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfTimePeriod arrayOfTimePeriod = this.usersideSchedulingProxy.retrieveAvailableTimePeriods(
-                    serviceBrokerGuid, groupName, labServerGuid, clientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
-            timePeriods = this.ConvertType(arrayOfTimePeriod);
+            edu.mit.ilab.ilabs.usersidescheduling.proxy.ArrayOfTimePeriod proxyArrayOfTimePeriod = this.usersideSchedulingProxy.retrieveAvailableTimePeriods(
+                    serviceBrokerGuid, groupName, labServerGuid, clientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
+            timePeriods = ConvertTypes.Convert(proxyArrayOfTimePeriod);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -609,14 +590,14 @@ public class UsersideSchedulingAPI {
              */
             this.SetOperationAuthHeader();
             retval = this.usersideSchedulingProxy.revokeReservation(
-                    serviceBrokerGuid, groupName, labServerGuid, labClientGuid, this.ConvertType(startTime), this.ConvertType(endTime), message);
+                    serviceBrokerGuid, groupName, labServerGuid, labClientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime), message);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_UsersideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_UsersideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -636,12 +617,13 @@ public class UsersideSchedulingAPI {
          */
         AgentAuthHeader agentAuthHeader = new AgentAuthHeader();
         agentAuthHeader.setAgentGuid(this.authHeaderAgentGuid);
-        agentAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        agentAuthHeader.setCoupon(this.authHeaderCoupon);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().put(this.qnameAgentAuthHeader.getLocalPart(), agentAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.usersideSchedulingProxy).getRequestContext();
+        requestContext.put(AgentAuthHeader.class.getSimpleName(), agentAuthHeader);
     }
 
     /**
@@ -652,130 +634,28 @@ public class UsersideSchedulingAPI {
          * Create authentication header
          */
         OperationAuthHeader operationAuthHeader = new OperationAuthHeader();
-        operationAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        operationAuthHeader.setCoupon(this.authHeaderCoupon);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.usersideSchedulingProxy).getRequestContext();
+        requestContext.put(OperationAuthHeader.class.getSimpleName(), operationAuthHeader);
     }
 
     /**
      *
      */
     private void UnsetAgentAuthHeader() {
-        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.usersideSchedulingProxy).getRequestContext();
+        requestContext.remove(AgentAuthHeader.class.getSimpleName());
     }
 
     /**
      *
      */
     private void UnsetOperationAuthHeader() {
-        ((BindingProvider) this.usersideSchedulingProxy).getRequestContext().remove(this.qnameOperationAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.usersideSchedulingProxy).getRequestContext();
+        requestContext.remove(OperationAuthHeader.class.getSimpleName());
     }
-
-    //<editor-fold defaultstate="collapsed" desc="ConvertType">
-    /**
-     *
-     * @param coupon
-     * @return uq.ilabs.usersidescheduling.Coupon
-     */
-    private uq.ilabs.usersidescheduling.Coupon ConvertType(Coupon coupon) {
-        uq.ilabs.usersidescheduling.Coupon proxyCoupon = null;
-
-        if (coupon != null) {
-            proxyCoupon = new uq.ilabs.usersidescheduling.Coupon();
-            proxyCoupon.setCouponId(coupon.getCouponId());
-            proxyCoupon.setIssuerGuid(coupon.getIssuerGuid());
-            proxyCoupon.setPasskey(coupon.getPasskey());
-        }
-
-        return proxyCoupon;
-    }
-
-    /**
-     *
-     * @param proxyCoupon
-     * @return Coupon
-     */
-    private Reservation ConvertType(uq.ilabs.usersidescheduling.Reservation proxyReservation) {
-        Reservation reservation = null;
-
-        if (proxyReservation != null) {
-            reservation = new Reservation();
-            reservation.setUserName(proxyReservation.getUserName());
-            reservation.setStartTime(this.ConvertType(proxyReservation.getStartTime()));
-            reservation.setDuration(proxyReservation.getDuration());
-        }
-
-        return reservation;
-    }
-
-    /**
-     *
-     * @param calendar
-     * @return XMLGregorianCalendar
-     */
-    private XMLGregorianCalendar ConvertType(Calendar calendar) {
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-
-        if (calendar != null) {
-            try {
-                DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTime(calendar.getTime());
-                xmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException ex) {
-            }
-        }
-
-        return xmlGregorianCalendar;
-    }
-
-    /**
-     *
-     * @param xmlGregorianCalendar
-     * @return Calendar
-     */
-    private Calendar ConvertType(XMLGregorianCalendar xmlGregorianCalendar) {
-        Calendar calendar = null;
-
-        if (xmlGregorianCalendar != null) {
-            calendar = Calendar.getInstance();
-            calendar.setTime(xmlGregorianCalendar.toGregorianCalendar().getTime());
-        }
-
-        return calendar;
-    }
-
-    /**
-     *
-     * @param arrayOfReservation
-     * @return Reservation[]
-     */
-    private Reservation[] ConvertType(ArrayOfReservation arrayOfReservation) {
-        Reservation reservations[] = null;
-
-        if (arrayOfReservation != null) {
-            reservations = arrayOfReservation.getReservation().toArray(new Reservation[0]);
-        }
-
-        return reservations;
-    }
-
-    /**
-     *
-     * @param arrayOfTimePeriod
-     * @return TimePeriod[]
-     */
-    private TimePeriod[] ConvertType(ArrayOfTimePeriod arrayOfTimePeriod) {
-        TimePeriod timePeriods[] = null;
-
-        if (arrayOfTimePeriod != null) {
-            timePeriods = arrayOfTimePeriod.getTimePeriod().toArray(new TimePeriod[0]);
-        }
-
-        return timePeriods;
-    }
-    //</editor-fold>
 }

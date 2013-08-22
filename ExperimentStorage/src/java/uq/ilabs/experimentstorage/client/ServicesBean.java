@@ -5,13 +5,16 @@
 package uq.ilabs.experimentstorage.client;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.logging.Level;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewExpiredException;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import uq.ilabs.experimentstorage.client.types.ListItem;
 import uq.ilabs.library.experimentstorage.client.Consts;
 import uq.ilabs.library.experimentstorage.client.ExperimentStorageSession;
+import uq.ilabs.library.experimentstorage.engine.LabConsts;
 import uq.ilabs.library.lab.utilities.Logfile;
 import uq.ilabs.library.processagent.database.ProcessAgentsDB;
 import uq.ilabs.library.processagent.database.types.ProcessAgentInfo;
@@ -21,7 +24,7 @@ import uq.ilabs.library.processagent.database.types.SystemSupportInfo;
  *
  * @author uqlpayne
  */
-@ManagedBean
+@Named(value = "servicesBean")
 @SessionScoped
 public class ServicesBean implements Serializable {
 
@@ -32,6 +35,7 @@ public class ServicesBean implements Serializable {
      * String constants
      */
     private static final String STR_Service_arg = "Service '%s' ";
+    private static final String STR_ServiceNameType_arg2 = "%s:%s";
     /*
      * String constants for exception messages
      */
@@ -39,22 +43,21 @@ public class ServicesBean implements Serializable {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private ExperimentStorageSession experimentStorageSession;
-    private ProcessAgentsDB processAgentsDB;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private String hsomService;
     private String hitServiceName;
-    private String hitServiceType;
     private String hitServiceUrl;
     private String hitServiceGuid;
     private String hitClientUrl;
+    private String hitServiceType;
     private String htaDescription;
     private String hitLocation;
     private String hitInfoUrl;
     private String hitContactName;
     private String hitContactEmail;
     //
-    private String[] services;
+    private ArrayList<ListItem> serviceList;
     private boolean registered;
     private String holMessage;
     private String holMessageClass;
@@ -73,14 +76,6 @@ public class ServicesBean implements Serializable {
 
     public void setHitServiceName(String hitServiceName) {
         this.hitServiceName = hitServiceName;
-    }
-
-    public String getHitServiceType() {
-        return hitServiceType;
-    }
-
-    public void setHitServiceType(String hitServiceType) {
-        this.hitServiceType = hitServiceType;
     }
 
     public String getHitServiceUrl() {
@@ -105,6 +100,14 @@ public class ServicesBean implements Serializable {
 
     public void setHitClientUrl(String hitClientUrl) {
         this.hitClientUrl = hitClientUrl;
+    }
+
+    public String getHitServiceType() {
+        return hitServiceType;
+    }
+
+    public void setHitServiceType(String hitServiceType) {
+        this.hitServiceType = hitServiceType;
     }
 
     public String getHtaDescription() {
@@ -147,8 +150,8 @@ public class ServicesBean implements Serializable {
         this.hitContactEmail = hitContactEmail;
     }
 
-    public String[] getServices() {
-        return services;
+    public ArrayList<ListItem> getServiceList() {
+        return serviceList;
     }
 
     public boolean isRegistered() {
@@ -169,11 +172,6 @@ public class ServicesBean implements Serializable {
      */
     public ServicesBean() {
         this.experimentStorageSession = (ExperimentStorageSession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(Consts.STRSSN_ExperimentStorage);
-
-        try {
-            this.processAgentsDB = new ProcessAgentsDB(this.experimentStorageSession.getDbConnection());
-        } catch (Exception ex) {
-        }
     }
 
     /**
@@ -191,7 +189,7 @@ public class ServicesBean implements Serializable {
             /*
              * Not a postback, initialise page controls
              */
-            this.services = this.CreateServicesList();
+            this.serviceList = this.CreateServiceList();
 
             /*
              * Clear the page
@@ -206,10 +204,13 @@ public class ServicesBean implements Serializable {
      */
     public String actionSelect() {
 
-        if (this.hsomService != null && this.hsomService.equals(this.services[0]) == false) {
-            this.PopulateServiceInfo();
-            this.hsomService = this.services[0];
-            this.ShowMessageInfo(null);
+        if (this.hsomService != null && this.serviceList != null && this.serviceList.size() > 0) {
+            String value = this.serviceList.get(0).getValue();
+            if (this.hsomService.equals(value) == false) {
+                this.PopulateServiceInfo();
+                this.hsomService = value;
+                this.ShowMessageInfo(null);
+            }
         }
 
         /* Navigate to the current page */
@@ -224,12 +225,13 @@ public class ServicesBean implements Serializable {
         final String methodName = "actionNew";
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName);
 
-        this.hsomService = this.services[0];
+        this.hsomService = (this.serviceList != null && this.serviceList.size() > 0)
+                ? this.serviceList.get(0).getValue() : null;
         this.hitServiceName = null;
-        this.hitServiceType = null;
         this.hitServiceGuid = null;
         this.hitServiceUrl = null;
         this.hitClientUrl = null;
+        this.hitServiceType = null;
         this.htaDescription = null;
         this.hitLocation = null;
         this.hitInfoUrl = null;
@@ -251,28 +253,34 @@ public class ServicesBean implements Serializable {
 
     /**
      *
-     * @return String[]
+     * @return ArrayList of ListItem
      */
-    private String[] CreateServicesList() {
-        String[] servicesList = null;
+    private ArrayList<ListItem> CreateServiceList() {
+
+        ArrayList<ListItem> itemsList = null;
 
         try {
             /*
              * Get the list of ProcessAgent names
              */
-            String[] stringArray = this.processAgentsDB.GetListAll();
+            ProcessAgentsDB processAgentsDB = this.experimentStorageSession.getServiceManagement().getProcessAgentsDB();
+            String[] stringArray = processAgentsDB.GetListAll();
             if (stringArray != null) {
-                servicesList = new String[stringArray.length + 1];
-                System.arraycopy(stringArray, 0, servicesList, 1, stringArray.length);
-            } else {
-                servicesList = new String[1];
+                itemsList = new ArrayList<>();
+                itemsList.add(new ListItem(LabConsts.STR_MakeSelection, LabConsts.STR_MakeSelection));
+                for (String string : stringArray) {
+                    ProcessAgentInfo processAgentInfo = processAgentsDB.RetrieveByName(string);
+                    if (processAgentInfo.isSelf() == false) {
+                        String label = String.format(STR_ServiceNameType_arg2, processAgentInfo.getAgentType().name(), processAgentInfo.getAgentName());
+                        itemsList.add(new ListItem(label, processAgentInfo.getAgentName()));
+                    }
+                }
             }
-            servicesList[0] = "";
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
         }
 
-        return servicesList;
+        return itemsList;
     }
 
     /**
@@ -284,9 +292,10 @@ public class ServicesBean implements Serializable {
 
         try {
             /*
-             * Retrieve the ProcessAgentInfo for the specified LabServer
+             * Retrieve the ProcessAgentInfo for the specified service
              */
-            ProcessAgentInfo processAgentInfo = this.processAgentsDB.RetrieveByName(this.hsomService);
+            ProcessAgentsDB processAgentsDB = this.experimentStorageSession.getServiceManagement().getProcessAgentsDB();
+            ProcessAgentInfo processAgentInfo = processAgentsDB.RetrieveByName(this.hsomService);
             if (processAgentInfo == null) {
                 throw new Exception(String.format(STRERR_RetrieveFailed_arg, this.hsomService));
             }
@@ -295,10 +304,10 @@ public class ServicesBean implements Serializable {
              * Update information
              */
             this.hitServiceName = processAgentInfo.getAgentName();
-            this.hitServiceType = processAgentInfo.getAgentType().toString();
             this.hitServiceGuid = processAgentInfo.getAgentGuid();
             this.hitServiceUrl = processAgentInfo.getServiceUrl();
             this.hitClientUrl = processAgentInfo.getClientUrl();
+            this.hitServiceType = processAgentInfo.getAgentType().toString();
 
             SystemSupportInfo systemSupportInfo = processAgentInfo.getSystemSupportInfo();
             this.htaDescription = systemSupportInfo.getDescription();

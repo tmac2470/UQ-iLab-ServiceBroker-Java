@@ -24,7 +24,7 @@ public class Ticketing implements Runnable {
 
     //<editor-fold defaultstate="collapsed" desc="Constants">
     private static final String STR_ClassName = Ticketing.class.getName();
-    private static final Level logLevel = Level.INFO;
+    private static final Level logLevel = Level.FINE;
     /*
      * String constants for logfile messages
      */
@@ -381,7 +381,7 @@ public class Ticketing implements Runnable {
             if (arrayList != null) {
                 count = arrayList.size();
                 Logfile.Write(String.format(STRLOG_DeletingTickets_arg, count));
-                
+
                 /*
                  * Delete each ticket in the list
                  */

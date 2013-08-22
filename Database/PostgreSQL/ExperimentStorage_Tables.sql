@@ -57,5 +57,6 @@ CREATE TABLE Users
     DateCreated timestamp DEFAULT current_timestamp,
     DateModified timestamp,
 
-    PRIMARY KEY(Username)
+    PRIMARY KEY(UserId),
+    UNIQUE(Username)
 );

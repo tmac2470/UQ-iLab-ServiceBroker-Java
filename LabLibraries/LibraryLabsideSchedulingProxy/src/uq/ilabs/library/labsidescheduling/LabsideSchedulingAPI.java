@@ -4,24 +4,17 @@
  */
 package uq.ilabs.library.labsidescheduling;
 
+import edu.mit.ilab.ilabs.labsidescheduling.proxy.LabsideSchedulingProxy;
+import edu.mit.ilab.ilabs.labsidescheduling.proxy.LabsideSchedulingProxySoap;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.ProtocolException;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
-import uq.ilabs.labsidescheduling.AgentAuthHeader;
-import uq.ilabs.labsidescheduling.ArrayOfTimePeriod;
-import uq.ilabs.labsidescheduling.LabsideSchedulingProxy;
-import uq.ilabs.labsidescheduling.LabsideSchedulingProxySoap;
-import uq.ilabs.labsidescheduling.ObjectFactory;
-import uq.ilabs.labsidescheduling.OperationAuthHeader;
+import java.util.Map;
 import uq.ilabs.library.datatypes.scheduling.TimePeriod;
+import uq.ilabs.library.datatypes.service.AgentAuthHeader;
+import uq.ilabs.library.datatypes.service.OperationAuthHeader;
 import uq.ilabs.library.datatypes.ticketing.Coupon;
 import uq.ilabs.library.lab.utilities.Logfile;
 
@@ -46,8 +39,6 @@ public class LabsideSchedulingAPI {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private LabsideSchedulingProxySoap labsideSchedulingProxy;
-    private QName qnameAgentAuthHeader;
-    private QName qnameOperationAuthHeader;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Properties">
     private String authHeaderAgentGuid;
@@ -91,15 +82,6 @@ public class LabsideSchedulingAPI {
             this.labsideSchedulingProxy = webServiceClient.getLabsideSchedulingProxySoap();
             ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 
-            /*
-             * Get authentication header QName
-             */
-            ObjectFactory objectFactory = new ObjectFactory();
-            JAXBElement<AgentAuthHeader> jaxbElementAgentAuthHeader = objectFactory.createAgentAuthHeader(new AgentAuthHeader());
-            this.qnameAgentAuthHeader = jaxbElementAgentAuthHeader.getName();
-            JAXBElement<OperationAuthHeader> jaxbElementOperationAuthHeader = objectFactory.createOperationAuthHeader(new OperationAuthHeader());
-            this.qnameOperationAuthHeader = jaxbElementOperationAuthHeader.getName();
-
         } catch (NullPointerException | IllegalArgumentException ex) {
             Logfile.WriteError(ex.toString());
             throw ex;
@@ -131,10 +113,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -169,10 +151,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -201,14 +183,14 @@ public class LabsideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            retval = this.labsideSchedulingProxy.addUSSInfo(ussGuid, ussName, ussUrl, this.ConvertType(coupon));
+            retval = this.labsideSchedulingProxy.addUSSInfo(ussGuid, ussName, ussUrl, ConvertTypes.Convert(coupon));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -241,14 +223,14 @@ public class LabsideSchedulingAPI {
              */
             this.SetOperationAuthHeader();
             retval = this.labsideSchedulingProxy.confirmReservation(
-                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
+                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -281,10 +263,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -319,10 +301,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -351,14 +333,14 @@ public class LabsideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetAgentAuthHeader();
-            retval = this.labsideSchedulingProxy.modifyUSSInfo(ussGuid, ussName, ussUrl, this.ConvertType(coupon));
+            retval = this.labsideSchedulingProxy.modifyUSSInfo(ussGuid, ussName, ussUrl, ConvertTypes.Convert(coupon));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -391,14 +373,14 @@ public class LabsideSchedulingAPI {
              */
             this.SetOperationAuthHeader();
             retval = this.labsideSchedulingProxy.redeemReservation(
-                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
+                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -430,10 +412,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -464,10 +446,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -500,14 +482,14 @@ public class LabsideSchedulingAPI {
              */
             this.SetOperationAuthHeader();
             retval = this.labsideSchedulingProxy.removeReservation(
-                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
+                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -537,10 +519,10 @@ public class LabsideSchedulingAPI {
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetAgentAuthHeader();
         }
@@ -572,16 +554,16 @@ public class LabsideSchedulingAPI {
              * Set authentication information and call the web service
              */
             this.SetOperationAuthHeader();
-            ArrayOfTimePeriod arrayOfTimePeriod = this.labsideSchedulingProxy.retrieveAvailableTimePeriods(
-                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, this.ConvertType(startTime), this.ConvertType(endTime));
-            timePeriods = this.ConvertType(arrayOfTimePeriod);
+            edu.mit.ilab.ilabs.labsidescheduling.proxy.ArrayOfTimePeriod proxyArrayOfTimePeriod = this.labsideSchedulingProxy.retrieveAvailableTimePeriods(
+                    serviceBrokerGuid, groupName, ussGuid, labServerGuid, clientGuid, ConvertTypes.Convert(startTime), ConvertTypes.Convert(endTime));
+            timePeriods = ConvertTypes.Convert(proxyArrayOfTimePeriod);
 
         } catch (SOAPFaultException ex) {
             Logfile.Write(ex.getMessage());
-            throw new ProtocolException(ex.getFault().getFaultString());
+            throw new WebServiceException(ex.getFault().getFaultString());
         } catch (Exception ex) {
             Logfile.WriteError(ex.toString());
-            throw new ProtocolException(STRERR_LabsideSchedulingUnaccessible);
+            throw new WebServiceException(STRERR_LabsideSchedulingUnaccessible);
         } finally {
             this.UnsetOperationAuthHeader();
         }
@@ -601,12 +583,13 @@ public class LabsideSchedulingAPI {
          */
         AgentAuthHeader agentAuthHeader = new AgentAuthHeader();
         agentAuthHeader.setAgentGuid(this.authHeaderAgentGuid);
-        agentAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        agentAuthHeader.setCoupon(this.authHeaderCoupon);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().put(this.qnameAgentAuthHeader.getLocalPart(), agentAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.labsideSchedulingProxy).getRequestContext();
+        requestContext.put(AgentAuthHeader.class.getSimpleName(), agentAuthHeader);
     }
 
     /**
@@ -617,81 +600,28 @@ public class LabsideSchedulingAPI {
          * Create authentication header
          */
         OperationAuthHeader operationAuthHeader = new OperationAuthHeader();
-        operationAuthHeader.setCoupon(this.ConvertType(this.authHeaderCoupon));
+        operationAuthHeader.setCoupon(this.authHeaderCoupon);
 
         /*
          * Pass the authentication header to the message handler through the message context
          */
-        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().put(this.qnameOperationAuthHeader.getLocalPart(), operationAuthHeader);
+        Map<String, Object> requestContext = ((BindingProvider) this.labsideSchedulingProxy).getRequestContext();
+        requestContext.put(OperationAuthHeader.class.getSimpleName(), operationAuthHeader);
     }
 
     /**
      *
      */
     private void UnsetAgentAuthHeader() {
-        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().remove(this.qnameAgentAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.labsideSchedulingProxy).getRequestContext();
+        requestContext.remove(AgentAuthHeader.class.getSimpleName());
     }
 
     /**
      *
      */
     private void UnsetOperationAuthHeader() {
-        ((BindingProvider) this.labsideSchedulingProxy).getRequestContext().remove(this.qnameOperationAuthHeader.getLocalPart());
+        Map<String, Object> requestContext = ((BindingProvider) this.labsideSchedulingProxy).getRequestContext();
+        requestContext.remove(OperationAuthHeader.class.getSimpleName());
     }
-
-    //<editor-fold defaultstate="collapsed" desc="ConvertType">
-    /**
-     *
-     * @param coupon
-     * @return uq.ilabs.labsidescheduling.Coupon
-     */
-    private uq.ilabs.labsidescheduling.Coupon ConvertType(Coupon coupon) {
-        uq.ilabs.labsidescheduling.Coupon proxyCoupon = null;
-
-        if (coupon != null) {
-            proxyCoupon = new uq.ilabs.labsidescheduling.Coupon();
-            proxyCoupon.setCouponId(coupon.getCouponId());
-            proxyCoupon.setIssuerGuid(coupon.getIssuerGuid());
-            proxyCoupon.setPasskey(coupon.getPasskey());
-        }
-
-        return proxyCoupon;
-    }
-
-    /**
-     *
-     * @param calendar
-     * @return XMLGregorianCalendar
-     */
-    private XMLGregorianCalendar ConvertType(Calendar calendar) {
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-
-        if (calendar != null) {
-            try {
-                DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-                GregorianCalendar gregorianCalendar = new GregorianCalendar();
-                gregorianCalendar.setTime(calendar.getTime());
-                xmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException ex) {
-            }
-        }
-
-        return xmlGregorianCalendar;
-    }
-
-    /**
-     *
-     * @param arrayOfTimePeriod
-     * @return TimePeriod[]
-     */
-    private TimePeriod[] ConvertType(ArrayOfTimePeriod arrayOfTimePeriod) {
-        TimePeriod timePeriods[] = null;
-
-        if (arrayOfTimePeriod != null) {
-            timePeriods = arrayOfTimePeriod.getTimePeriod().toArray(new TimePeriod[0]);
-        }
-
-        return timePeriods;
-    }
-    //</editor-fold>
 }

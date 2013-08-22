@@ -19,7 +19,7 @@
     <target name="wsimport-client-ITicketIssuerProxy.asmx" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx"/>
         <property name="wsdl-ITicketIssuerProxy.asmx" location="xml-resources/web-service-references/ITicketIssuerProxy.asmx/wsdl/ITicketIssuerProxy.asmx.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx" wsdl="${wsdl-ITicketIssuerProxy.asmx}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="uq.ilabs.ticketissuer">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx" destdir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx" wsdl="${wsdl-ITicketIssuerProxy.asmx}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="file:/D:/NetBeans/ServiceBroker/Wsdl/ITicketIssuerProxy.asmx.wsdl" xnocompile="true" xendorsed="true" package="edu.mit.ilab.ilabs.ticketissuer.proxy">
             <binding dir="xml-resources/web-service-references/ITicketIssuerProxy.asmx/bindings" includes="ITicketIssuerProxy.asmx_handler.xml"/>
             <depends file="${wsdl-ITicketIssuerProxy.asmx}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx"/>
@@ -37,7 +37,7 @@
     </target>
     <target name="wsimport-client-clean-ITicketIssuerProxy.asmx" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/ITicketIssuerProxy.asmx"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uq/ilabs/ticketissuer"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/edu/mit/ilab/ilabs/ticketissuer/proxy"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-ITicketIssuerProxy.asmx"/>
 </project>

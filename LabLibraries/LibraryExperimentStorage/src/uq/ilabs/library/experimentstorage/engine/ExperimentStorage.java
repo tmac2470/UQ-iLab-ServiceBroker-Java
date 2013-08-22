@@ -152,7 +152,7 @@ public class ExperimentStorage {
      * @return
      */
     public StorageStatus CloseExperiment(long experimentId, String issuerGuid) {
-        final String methodName = "GetExperimentStatus";
+        final String methodName = "CloseExperiment";
         Logfile.WriteCalled(logLevel, STR_ClassName, methodName,
                 String.format(STRLOG_ExperimentIdIssuerGuid_arg2, experimentId, issuerGuid));
 

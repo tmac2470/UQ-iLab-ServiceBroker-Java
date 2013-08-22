@@ -4,6 +4,7 @@
  */
 package uq.ilabs.library.experimentstorage.client;
 
+import uq.ilabs.library.experimentstorage.engine.ServiceManagement;
 import uq.ilabs.library.lab.database.DBConnection;
 
 /**
@@ -13,12 +14,9 @@ import uq.ilabs.library.lab.database.DBConnection;
 public class ExperimentStorageSession {
 
     private String title;
-    private String version;
-    private String navmenuPhotoUrl;
-    private String guid;
     private String contactEmail;
+    private ServiceManagement serviceManagement;
     private UserSession userSession;
-    private DBConnection dbConnection;
 
     public String getTitle() {
         return title;
@@ -28,36 +26,20 @@ public class ExperimentStorageSession {
         this.title = title;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getNavmenuPhotoUrl() {
-        return navmenuPhotoUrl;
-    }
-
-    public void setNavmenuPhotoUrl(String navmenuPhotoUrl) {
-        this.navmenuPhotoUrl = navmenuPhotoUrl;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
     public String getContactEmail() {
         return contactEmail;
     }
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public ServiceManagement getServiceManagement() {
+        return serviceManagement;
+    }
+
+    public void setServiceManagement(ServiceManagement serviceManagement) {
+        this.serviceManagement = serviceManagement;
     }
 
     public UserSession getUserSession() {
@@ -69,10 +51,24 @@ public class ExperimentStorageSession {
     }
 
     public DBConnection getDbConnection() {
-        return dbConnection;
+        return (serviceManagement != null) ? serviceManagement.getDbConnection() : null;
     }
 
-    public void setDbConnection(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
+    public String getVersion() {
+        return (serviceManagement != null) ? serviceManagement.getVersion() : null;
+    }
+
+    public String getNavMenuPhotoUrl() {
+        return (serviceManagement != null) ? serviceManagement.getNavMenuPhotoUrl() : null;
+    }
+
+    public String getServiceGuid() {
+        return (serviceManagement != null) ? serviceManagement.getServiceGuid() : null;
+    }
+
+    public void setServiceGuid(String serviceGuid) {
+        if (serviceManagement != null) {
+            serviceManagement.setServiceGuid(serviceGuid);
+        }
     }
 }
