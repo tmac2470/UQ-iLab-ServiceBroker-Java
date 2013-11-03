@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>LogFilesPath</param-name>
-        <param-value>/LogFiles/LabsideScheduling.log</param-value>
+        <param-value>/logs/LabsideScheduling.log</param-value>
     </context-param>
     <context-param>
         <param-name>LogLevel</param-name>
